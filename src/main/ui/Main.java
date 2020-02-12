@@ -1,7 +1,14 @@
 package ui;
 
+import model.Game;
+
 public class Main {
     public static void main(String[] args) {
-
+        Game game = new Game();
+        game.initialize();
+        game.displayBoard();
+        while (true) {
+            game.update();
+        }
     }
 }
