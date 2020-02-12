@@ -12,11 +12,12 @@ import java.util.ArrayList;
 public class Game {
     public final static int SIDE_LENGTH = 9;
     public final static String DIVIDING_SPACE = "   ";
+    public final static String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
+    public final static String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
     private Scanner keyboard = new Scanner(System.in);
     private Wall wallTool = new Wall();
-    private static P1 p1 = new P1();
-    private static P2 p2 = new P2();
-    //TODO make a P2
+    private static Avatar p1 = new P1();
+    private static Avatar p2 = new P2();
     protected static ArrayList<Cell> board = new ArrayList<>();
 
     //MODIFIES: this
@@ -41,22 +42,64 @@ public class Game {
     public void displayBoard() {
         //printing out top row of coordinates
         //first character needs to represent both A and 0, so needs special case
-        System.out.print("A/0" + "   ");
-        for (int column = 1; column < SIDE_LENGTH; column++) {
+        System.out.print("A/0" + DIVIDING_SPACE);
+        for (int column = 1; column <= SIDE_LENGTH; column++) {
             System.out.print(column + DIVIDING_SPACE);
         }
         System.out.println();
 
+        //printing out actual grid
         for (int row = 0; row < SIDE_LENGTH; row++) {
-            System.out.print(" " + DIVIDING_SPACE);
-            for (int column = 0; column < SIDE_LENGTH; column++) {
-                System.out.print(board.get(row * SIDE_LENGTH + column).displayCell());
+            printRowWithCells(row);
+
+            //printing out row between the rows with cells ("inter-rows")
+            if (row < SIDE_LENGTH) {
+                //printing out Letter coordinates
+                System.out.print("\n" + (char) (66 + row) + DIVIDING_SPACE);
+                //printing out horizontal walls below each cell, and middle wall segments (at corners of cells)
+                for (int column = 0; column < SIDE_LENGTH; column++) {
+                    printHorizontalWall(row, column);
+                    if (column < SIDE_LENGTH - 1 && row < SIDE_LENGTH -1) {
+                        //There is not middle wall segements at the ends (right and bottom) of the board
+                        printMiddleOfWall(row, column);
+                    }
+                }
             }
-            if (row != SIDE_LENGTH - 1) {
-                System.out.println("\n" + (char) (66 + row) + DIVIDING_SPACE);
-            }
+            System.out.println();
         }
-        System.out.println();
+    }
+
+    private void printMiddleOfWall(int row, int column) {
+        //checking for middle wall segments
+        MiddleOfWall wallMiddle = Wall.getWallMiddle((row + 1) * SIDE_LENGTH + (column + 1));
+        if (wallMiddle.isWallHere()) {
+            if (wallMiddle.isVertical()) {
+                System.out.print(VERTICAL_WALL_SPACE + "|" + VERTICAL_WALL_SPACE);
+            } else {
+                System.out.print(HORIZONTAL_WALL_SEGMENT);
+            }
+        } else {
+            System.out.print(DIVIDING_SPACE);
+        }
+    }
+
+    private void printHorizontalWall(int row, int column) {
+        //checking for horizontal wall segment
+        if (board.get(row * SIDE_LENGTH + column).isWallDown()) {
+            System.out.print("—");
+        } else {
+            System.out.print(" ");
+        }
+    }
+
+    private void printRowWithCells(int row) {
+        //Aligning left end of board
+        System.out.print(" " + DIVIDING_SPACE);
+        //printing out actual board
+        for (int column = 0; column < SIDE_LENGTH; column++) {
+            //printing out cell and walls to the right of each cell
+            System.out.print(board.get(row * SIDE_LENGTH + column).displayCell());
+        }
     }
 
     //MODIFIES: this and P1

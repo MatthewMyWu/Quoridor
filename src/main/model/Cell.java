@@ -85,13 +85,25 @@ public class Cell {
     }
 
     public String displayCell() {
+        String returnString = "";
+        //figuring out what to display in cell
         if (p1Here) {
-            return "1" + Game.DIVIDING_SPACE;
+            returnString = "1";
         } else if (p2Here) {
-            return "2" + Game.DIVIDING_SPACE;
+            returnString = "2";
         } else {
-            return "0" + Game.DIVIDING_SPACE;
+            returnString = "0";
         }
+
+        //figuring out if we need to display a wall to the right of the cell
+        if (wallRight) {
+            returnString += Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE;
+        }
+        else {
+            returnString += Game.DIVIDING_SPACE;
+        }
+        return returnString;
+
         //TODO error trap so that player 1 and 2 can't be on the same square
     }
 }

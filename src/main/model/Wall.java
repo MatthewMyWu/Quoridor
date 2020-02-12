@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Wall {
     private static ArrayList<MiddleOfWall> wallMiddles = new ArrayList<>();
 
+    //creates a new ArrayList of middle of Wall segments. Indexing starts at 0, starts at A0
     public Wall() {
         for (int row = 0; row < Game.SIDE_LENGTH; row++) {
             for (int column = 0; column < Game.SIDE_LENGTH; column++) {
@@ -43,21 +44,80 @@ public class Wall {
 
 
     //REQUIRES: coordinates must be valid coordinates for a horizontal wall
+    //MODIFIES: this and Game (board)
     //EFFECTS : places a horizontal wall at the given coordinates
-    private void placeHorizontalWall(int x1, int y1, int x2, int y2) {
-        int middleWallY = Math.abs(y2 - y1) / 2; //y coordinate of middle of wall segment
-        int middleWallX = Math.abs(x2 - x1) / 2; //y coordinate of middle of wall segment
+    private void placeHorizontalWall(int x1, int y1, int x2, int y2) throws InvalidWallException {
+        int middleWallY = y1; //y coordinate of middle of wall segment
+        int middleWallX = Math.abs(x2 + x1) / 2; //y coordinate of middle of wall segment
+        int middleWallIndex = middleWallY * Game.SIDE_LENGTH + middleWallX;
 
-            //TODO actually add the wall
+        //checking to see if we need to throw an InvalidWallException
+        if (y1 == 0 || y1 == Game.SIDE_LENGTH) {
+            //can't add a horizontal wall to the top and bottom ends of board
+            throw new InvalidWallException();
+        } else if (wallMiddles.get(middleWallIndex).isWallHere()) {
+            //can't have middle of wall intersecting the middle of another wall
+            throw new InvalidWallException();
+        } else if (Game.board.get(middleWallIndex).isWallUp() || Game.board.get(middleWallIndex - 1).isWallUp()) {
+            //can't have middle of wall intersecting the end of another HORIZONTAL wall
+            throw new InvalidWallException();
+        }
+
+        //the following 2 variables are indexes of the 2 cells above the wall
+        int topLeftCell = (middleWallY - 1) * Game.SIDE_LENGTH + middleWallX - 1;
+        int topRightCell = (middleWallY - 1) * Game.SIDE_LENGTH + middleWallX;
+        //the following 2 variables are indexes of the 2 cells below the wall
+        int bottomLeftCell = middleWallY * Game.SIDE_LENGTH + middleWallX - 1;
+        int bottomRightCell = middleWallY * Game.SIDE_LENGTH + middleWallX;
+
+        //adding wall to board
+        Game.board.get(topLeftCell).setWallDown(true);
+        Game.board.get(topRightCell).setWallDown(true);
+        Game.board.get(bottomLeftCell).setWallUp(true);
+        Game.board.get(bottomRightCell).setWallUp(true);
 
         //adding wall middle to wallMiddles
-        wallMiddles.get((middleWallY * Game.SIDE_LENGTH + middleWallX)).setWallHere(true);
+        wallMiddles.get(middleWallIndex).setWallHere(true);
+        wallMiddles.get(middleWallIndex).setVertical(false);
     }
 
 
     //REQUIRES: coordinates must be valid coordinates for a vertical wall
     //EFFECTS : places a vertical wall at the given coordinates
-    private void placeVerticalWall(int x1, int y1, int x2, int y2) {
+    private void placeVerticalWall(int x1, int y1, int x2, int y2) throws InvalidWallException {
+        int middleWallY = y1; //y coordinate of middle of wall segment
+        int middleWallX = Math.abs(x2 + x1) / 2; //y coordinate of middle of wall segment
+        int middleWallIndex = middleWallY * Game.SIDE_LENGTH + middleWallX;
+
+        //checking to see if we need to throw an InvalidWallException
+        if (x1 == 0 || x1 == Game.SIDE_LENGTH) {
+            //can't add a vertical wall to the left and right ends of board
+            throw new InvalidWallException();
+        } else if (wallMiddles.get(middleWallIndex).isWallHere()) {
+            //can't have middle of wall intersecting the middle of another wall
+            throw new InvalidWallException();
+        } else if (Game.board.get(middleWallIndex).isWallLeft() ||
+                Game.board.get(middleWallIndex - Game.SIDE_LENGTH).isWallLeft()) {
+            //can't have middle of wall intersecting the end of another VERTICAL wall
+            throw new InvalidWallException();
+        }
+
+        //the following 2 variables are indexes of the 2 cells above the wall
+        int topLeftCell = (middleWallY - 1) * Game.SIDE_LENGTH + middleWallX - 1;
+        int topRightCell = (middleWallY - 1) * Game.SIDE_LENGTH + middleWallX;
+        //the following 2 variables are indexes of the 2 cells below the wall
+        int bottomLeftCell = middleWallY * Game.SIDE_LENGTH + middleWallX - 1;
+        int bottomRightCell = middleWallY * Game.SIDE_LENGTH + middleWallX;
+
+        //adding wall to board
+        Game.board.get(topLeftCell).setWallRight(true);
+        Game.board.get(topRightCell).setWallLeft(true);
+        Game.board.get(bottomLeftCell).setWallRight(true);
+        Game.board.get(bottomRightCell).setWallLeft(true);
+
+        //adding wall middle to wallMiddles
+        wallMiddles.get(middleWallIndex).setWallHere(true);
+        wallMiddles.get(middleWallIndex).setVertical(true);
     }
 
 
@@ -88,5 +148,9 @@ public class Wall {
         } else {
             return true;
         }
+    }
+
+    public static MiddleOfWall getWallMiddle(int index) {
+        return wallMiddles.get(index);
     }
 }

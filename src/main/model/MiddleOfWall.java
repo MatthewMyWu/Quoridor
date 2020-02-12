@@ -26,6 +26,10 @@ public class MiddleOfWall {
         return isVertical;
     }
 
+    public void setVertical(boolean vertical) {
+        isVertical = vertical;
+    }
+
     public boolean isWallHere() {
         return wallHere;
     }
