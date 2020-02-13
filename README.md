@@ -7,7 +7,7 @@ especially since it ties back to my first experiences with coding. I also hope t
 I haven't been able to play it since I have finished that class; I want to be able to play it with my friends.
  
 
-##How to play Quorridor
+## How to play Quorridor
 
 It is played on a 9x9 board, and each player starts with their avatar on opposite sides (google "Quorridor" for
 a visual). It is a turn based game, and the objective is to reach the other side of the board before your opponent.
@@ -19,7 +19,7 @@ Walls are obstacles that prevent either player from moving through them. Once pl
 you can not gain more walls if you run out. However, walls can not be placed in such a way that it is impossible to
 reach the other side (it must always be possible to get to the other side).
 
-##Implemented user stories
+## Implemented user stories
 - As a user, I want to be able to see both avatars on the board
 - As a user, I want to be able to move my avatar using the keyboard
 - As a user, I want to not be able to move off the board
@@ -28,7 +28,7 @@ reach the other side (it must always be possible to get to the other side).
 - As a user, I want the game to be turn based
 - As a user, I want an indicator to show whose turn it is
 
-##Unimplemented user stories
+## Unimplemented user stories
 - As a user, I want to be able to use the mouse to add walls to the board
 - As a user, I want the game to disallow any wall placements that would make the game unwinnable
 - As a user, I want the game to be visually appealing (eg. not have text-based graphics)
