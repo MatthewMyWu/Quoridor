@@ -30,6 +30,7 @@ So far this is a very rudimentary version of the game.
 The same applies for player two, except his controls are "i", "j", "k", and "l" (respectively).
 - In order to place a wall, you must enter the coordinates of the endpoints of the wall in the form "A1,A3"
 ([letter coordinate][number coordinate],[letter coordinate][number coordinate]).
+
 Currently, there is no mechanism for either player to win the game;
  it is possible to trap the other player in a box of walls (making the game unwinnable);
  it is possible for players to be on top of each other (player 1 will be displayed if this is the case);
