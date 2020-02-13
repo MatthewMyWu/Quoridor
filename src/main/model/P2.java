@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.OutOfBoundsException;
+import exceptions.WallObstructionException;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P2 extends Avatar {
@@ -13,7 +14,7 @@ public class P2 extends Avatar {
         super(Game.SIDE_LENGTH / 2, 0);
     }
 
-    protected void move(String input) throws OutOfBoundsException {
+    protected void move(String input) throws OutOfBoundsException, WallObstructionException {
         super.moveDirection(UP_KEY, LEFT_KEY, DOWN_KEY, RIGHT_KEY, input);
         updatePosition();
     }

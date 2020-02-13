@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.OutOfBoundsException;
+import exceptions.WallObstructionException;
 
 /*Contains general methods for how each avatar should behave*/
 
@@ -17,12 +18,12 @@ public abstract class Avatar {
 
     //MODIFIES: this and Game
     //EFFECTS : implemented by player classes so up, left, down, and right input keys can be parameterized
-    protected abstract void move(String input) throws OutOfBoundsException;
+    protected abstract void move(String input) throws OutOfBoundsException, WallObstructionException;
 
     //MODIFIES: this and Game
     //EFFECTS : tries to move player in target direction, throws exceptions where necessary
     protected void moveDirection(String up, String left, String down, String right, String input)
-            throws OutOfBoundsException {
+            throws OutOfBoundsException, WallObstructionException {
         if (input.equals(up)) {
             moveUp();
         } else if (input.equals(left)) {
@@ -58,9 +59,11 @@ public abstract class Avatar {
 
     //MODIFIES: this
     //EFFECTS : moves the player up
-    private void moveUp() throws OutOfBoundsException {
+    private void moveUp() throws OutOfBoundsException, WallObstructionException {
         if (coordY == 0) {
             throw new OutOfBoundsException();
+        } else if (Game.board.get(arrayIndex).isWallUp()) {
+            throw new WallObstructionException();
         } else {
             coordY--;
         }
@@ -68,9 +71,11 @@ public abstract class Avatar {
 
     //MODIFIES: this
     //EFFECTS : moves the player left
-    private void moveLeft() throws OutOfBoundsException {
+    private void moveLeft() throws OutOfBoundsException, WallObstructionException {
         if (coordX == 0) {
             throw new OutOfBoundsException();
+        } else if (Game.board.get(arrayIndex).isWallLeft()) {
+            throw new WallObstructionException();
         } else {
             coordX--;
         }
@@ -78,9 +83,11 @@ public abstract class Avatar {
 
     //MODIFIES: this
     //EFFECTS : moves the player down
-    private void moveDown() throws OutOfBoundsException {
+    private void moveDown() throws OutOfBoundsException, WallObstructionException {
         if (coordY == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
+        } else if (Game.board.get(arrayIndex).isWallDown()) {
+            throw new WallObstructionException();
         } else {
             coordY++;
         }
@@ -88,9 +95,11 @@ public abstract class Avatar {
 
     //MODIFIES: this
     //EFFECTS : moves the player right
-    private void moveRight() throws OutOfBoundsException {
+    private void moveRight() throws OutOfBoundsException, WallObstructionException {
         if (coordX == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
+        } else if (Game.board.get(arrayIndex).isWallRight()) {
+            throw new WallObstructionException();
         } else {
             coordX++;
         }

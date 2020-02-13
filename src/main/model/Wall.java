@@ -22,7 +22,7 @@ public class Wall {
     //MODIFIES: Game (board)
     //EFFECTS : Adds a wall that spans the specified locations
     public void placeWall(String input) throws InvalidWallException {
-        //TODO check to see that wall still works if enter right coordinate first
+        //TODO check to see that wall still works if enter flipped coordinates
         //x and y coordinates of initial and latter ends of wall respectively. Indexing starts at 0 for all coordinates
         int x1 = (int) input.charAt(1) - 48;
         int y1 = (int) input.charAt(0) - 65;
@@ -85,8 +85,8 @@ public class Wall {
     //REQUIRES: coordinates must be valid coordinates for a vertical wall
     //EFFECTS : places a vertical wall at the given coordinates
     private void placeVerticalWall(int x1, int y1, int x2, int y2) throws InvalidWallException {
-        int middleWallY = y1; //y coordinate of middle of wall segment
-        int middleWallX = Math.abs(x2 + x1) / 2; //y coordinate of middle of wall segment
+        int middleWallY = Math.abs(y2 + y1) / 2; //x coordinate of middle of wall segment
+        int middleWallX = x1; //x coordinate of middle of wall segment
         int middleWallIndex = middleWallY * Game.SIDE_LENGTH + middleWallX;
 
         //checking to see if we need to throw an InvalidWallException

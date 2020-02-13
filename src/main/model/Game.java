@@ -2,6 +2,7 @@ package model;
 
 import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
+import exceptions.WallObstructionException;
 
 import java.util.Scanner;
 
@@ -59,7 +60,7 @@ public class Game {
                 //printing out horizontal walls below each cell, and middle wall segments (at corners of cells)
                 for (int column = 0; column < SIDE_LENGTH; column++) {
                     printHorizontalWall(row, column);
-                    if (column < SIDE_LENGTH - 1 && row < SIDE_LENGTH -1) {
+                    if (column < SIDE_LENGTH - 1 && row < SIDE_LENGTH - 1) {
                         //There is not middle wall segements at the ends (right and bottom) of the board
                         printMiddleOfWall(row, column);
                     }
@@ -118,12 +119,15 @@ public class Game {
     private void interpretInput(Avatar player) {
         String input = keyboard.nextLine();
         //if the input matches one of the keys to move the player:
-        if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey()) || input.equals(player.getDownKey()) ||
-                input.equals(player.getRightKey())) {
+        if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey()) || input.equals(player.getDownKey())
+                || input.equals(player.getRightKey())) {
             try {
                 player.move(input);
             } catch (OutOfBoundsException e) {
                 System.out.println("You can not move off the board");
+                interpretInput(player);
+            } catch (WallObstructionException e) {
+                System.out.println("Can not move over a wall");
                 interpretInput(player);
             }
             //if the input matches the format of placing a wall
