@@ -6,6 +6,8 @@ package model;
  * it.
  * It also contains information pertaining to where an Avatar can move if it is on this cell.*/
 
+import ui.Game;
+
 public class Cell {
     private int coordX;
     private int coordY;
@@ -17,6 +19,16 @@ public class Cell {
     private boolean wallLeft;
     private boolean wallDown;
     private boolean wallRight;
+
+    public Cell(int coordX, int coordY) {
+        this.coordX = coordX;
+        this.coordY = coordY;
+        arrayIndex = Game.SIDE_LENGTH * coordY + coordX;
+        wallUp = false;
+        wallLeft = false;
+        wallDown = false;
+        wallRight = false;
+    }
 
     public boolean isWallUp() {
         return wallUp;
@@ -66,24 +78,7 @@ public class Cell {
         this.p2Here = p2Here;
     }
 
-    public Cell(int coordX, int coordY) {
-        this.coordX = coordX;
-        this.coordY = coordY;
-        arrayIndex = Game.SIDE_LENGTH * coordY + coordX;
-        wallUp = false;
-        wallLeft = false;
-        wallDown = false;
-        wallRight = false;
-    }
-
-    public int getCoordX() {
-        return coordX;
-    }
-
-    public int getCoordY() {
-        return coordY;
-    }
-
+    //EFFECTS : prints out a cell and the wall to the right of it (if there is a wall there)
     public String displayCell() {
         String returnString = "";
         //figuring out what to display in cell
@@ -98,8 +93,7 @@ public class Cell {
         //figuring out if we need to display a wall to the right of the cell
         if (wallRight) {
             returnString += Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE;
-        }
-        else {
+        } else {
             returnString += Game.DIVIDING_SPACE;
         }
         return returnString;

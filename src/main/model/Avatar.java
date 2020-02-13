@@ -2,6 +2,7 @@ package model;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import ui.Game;
 
 /*Contains general methods for how each avatar should behave*/
 
@@ -17,8 +18,8 @@ public abstract class Avatar {
     }
 
     //MODIFIES: this and Game
-    //EFFECTS : implemented by player classes so up, left, down, and right input keys can be parameterized
-    protected abstract void move(String input) throws OutOfBoundsException, WallObstructionException;
+    /*EFFECTS : Moves the player in a direction. Abstract so up, left, down, and right input keys can be parameterized*/
+    public abstract void move(String input) throws OutOfBoundsException, WallObstructionException;
 
     //MODIFIES: this and Game
     //EFFECTS : tries to move player in target direction, throws exceptions where necessary
@@ -45,7 +46,7 @@ public abstract class Avatar {
 
     //MODIFIES: Game
     //EFFECTS : places player on the board
-    protected abstract void initialize();
+    public abstract void initialize();
 
     //MODIFIES: this (arrayIndex)
     //EFFECTS : updates the arrayIndex (used if x or y coordinates change)
@@ -106,14 +107,21 @@ public abstract class Avatar {
     }
 
     //EFFECTS : return the key that needs to be entered to move Avatar up
-    protected abstract String getUpKey();
+    public abstract String getUpKey();
 
     //EFFECTS : return the key that needs to be entered to move Avatar left
-    protected abstract String getLeftKey();
+    public abstract String getLeftKey();
 
     //EFFECTS : return the key that needs to be entered to move Avatar down
-    protected abstract String getDownKey();
+    public abstract String getDownKey();
 
     //EFFECTS : return the key that needs to be entered to move Avatar right
-    protected abstract String getRightKey();
+    public abstract String getRightKey();
+
+    //used for testing purposes
+    public void moveTo(int coordx, int coordY) {
+        this.coordX = coordx;
+        this.coordY = coordY;
+        updatePosition();
+    }
 }

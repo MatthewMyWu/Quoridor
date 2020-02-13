@@ -14,14 +14,6 @@ public class MiddleOfWall {
         wallHere = false;
     }
 
-    public int getCoordY() {
-        return coordY;
-    }
-
-    public int getCoordX() {
-        return coordX;
-    }
-
     public boolean isVertical() {
         return isVertical;
     }

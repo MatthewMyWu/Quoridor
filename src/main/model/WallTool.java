@@ -1,15 +1,18 @@
 package model;
 
 import exceptions.InvalidWallException;
-import org.omg.CORBA.DynAnyPackage.Invalid;
+import ui.Game;
 
 import java.util.ArrayList;
 
-public class Wall {
-    private static ArrayList<MiddleOfWall> wallMiddles = new ArrayList<>();
+//This tool is used for dealing with walls (eg. adding walls)
 
-    //creates a new ArrayList of middle of Wall segments. Indexing starts at 0, starts at A0
-    public Wall() {
+public class WallTool {
+    private static ArrayList<MiddleOfWall> wallMiddles;
+
+    //creates a new ArrayList of middle of Wall segments. Indexing starts at 0, starts at coordinate A0
+    public WallTool() {
+        wallMiddles = new ArrayList<>();
         for (int row = 0; row < Game.SIDE_LENGTH; row++) {
             for (int column = 0; column < Game.SIDE_LENGTH; column++) {
                 wallMiddles.add(new MiddleOfWall(row, column));
@@ -19,7 +22,6 @@ public class Wall {
     }
 
     //REQUIRES: input be of the correct format, and coordinates are on the board. This should be checked by the caller
-    //MODIFIES: Game (board)
     //EFFECTS : Adds a wall that spans the specified locations
     public void placeWall(String input) throws InvalidWallException {
         //TODO check to see that wall still works if enter flipped coordinates
@@ -30,7 +32,7 @@ public class Wall {
         int y2 = (int) input.charAt(3) - 65;
 
         //first needs to check if wall is of valid length and doesn't intersect with any other walls
-        if (validWalllength(x1, y1, x2, y2) && noWallIntersection(x1, y1, x2, y2)) {
+        if (validWalllength(x1, y1, x2, y2) && noMiddleWallIntersection(x1, y1, x2, y2)) {
             //need to determine if wall is horizontal or vertical
             if (y1 == y2) {
                 placeHorizontalWall(x1, y1, x2, y2);
@@ -83,6 +85,7 @@ public class Wall {
 
 
     //REQUIRES: coordinates must be valid coordinates for a vertical wall
+    //MODIFIES: this and Game (board)
     //EFFECTS : places a vertical wall at the given coordinates
     private void placeVerticalWall(int x1, int y1, int x2, int y2) throws InvalidWallException {
         int middleWallY = Math.abs(y2 + y1) / 2; //x coordinate of middle of wall segment
@@ -96,8 +99,8 @@ public class Wall {
         } else if (wallMiddles.get(middleWallIndex).isWallHere()) {
             //can't have middle of wall intersecting the middle of another wall
             throw new InvalidWallException();
-        } else if (Game.board.get(middleWallIndex).isWallLeft() ||
-                Game.board.get(middleWallIndex - Game.SIDE_LENGTH).isWallLeft()) {
+        } else if (Game.board.get(middleWallIndex).isWallLeft()
+                || Game.board.get(middleWallIndex - Game.SIDE_LENGTH).isWallLeft()) {
             //can't have middle of wall intersecting the end of another VERTICAL wall
             throw new InvalidWallException();
         }
@@ -139,8 +142,8 @@ public class Wall {
     }
 
     //REQUIRES: coordinates must be valid coordinates on the board
-    //EFFECTS : returns true if wall placement does not intersect with the midpoint of another wall. False otherwise
-    private boolean noWallIntersection(int x1, int y1, int x2, int y2) throws InvalidWallException {
+    //EFFECTS : returns true if middle of wall does not intersect with the midpoint of another wall. False otherwise
+    private boolean noMiddleWallIntersection(int x1, int y1, int x2, int y2) throws InvalidWallException {
         int middleWallY = Math.abs(y2 - y1) / 2; //y coordinate of middle of wall segment
         int middleWallX = Math.abs(x2 - x1) / 2; //y coordinate of middle of wall segment
         if (wallMiddles.get((middleWallY * Game.SIDE_LENGTH + middleWallX)).isWallHere()) {
@@ -154,3 +157,5 @@ public class Wall {
         return wallMiddles.get(index);
     }
 }
+/*note that placeHorizontalWall and placeVerticalWall are very similar, but they differ in a few ways that I
+can't parameterize*/

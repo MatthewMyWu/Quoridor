@@ -2,35 +2,30 @@ package model;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import ui.Game;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P1 extends Avatar {
-    private final static String UP_KEY = "w";
-    private final static String LEFT_KEY = "a";
-    private final static String DOWN_KEY = "s";
-    private final static String RIGHT_KEY = "d";
+    private static final String UP_KEY = "w";
+    private static final String LEFT_KEY = "a";
+    private static final String DOWN_KEY = "s";
+    private static final String RIGHT_KEY = "d";
 
     public P1() {
         super(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1);
     }
 
-    //MODIFIES: this and Game (board)
-    //EFFECTS : moves the player
-    protected void move(String input) throws OutOfBoundsException, WallObstructionException {
+    @Override
+    public void move(String input) throws OutOfBoundsException, WallObstructionException {
         super.moveDirection(UP_KEY, LEFT_KEY, DOWN_KEY, RIGHT_KEY, input);
         updatePosition();
     }
 
 
-
-
-
-
-
     ///////////////////////probably not broken stuff///////////////////////
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         Game.board.get(arrayIndex).setP1Here(true);
     }
 
@@ -42,22 +37,22 @@ public class P1 extends Avatar {
     }
 
     @Override
-    protected String getUpKey() {
+    public String getUpKey() {
         return UP_KEY;
     }
 
     @Override
-    protected String getLeftKey() {
+    public String getLeftKey() {
         return LEFT_KEY;
     }
 
     @Override
-    protected String getDownKey() {
+    public String getDownKey() {
         return DOWN_KEY;
     }
 
     @Override
-    protected String getRightKey() {
+    public String getRightKey() {
         return RIGHT_KEY;
     }
 }

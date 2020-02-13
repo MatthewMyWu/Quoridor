@@ -1,29 +1,31 @@
-package model;
+package ui;
 
 import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import model.*;
 
 import java.util.Scanner;
 
 import java.util.ArrayList;
 
-/*This class creates information on the board*/
+/*This class handles user input, and contains all the methods for running the game*/
 
 public class Game {
-    public final static int SIDE_LENGTH = 9;
-    public final static String DIVIDING_SPACE = "   ";
-    public final static String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
-    public final static String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
+    public static final int SIDE_LENGTH = 9;
+    public static final String DIVIDING_SPACE = "   ";
+    public static final String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
+    public static final String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
     private Scanner keyboard = new Scanner(System.in);
-    private Wall wallTool = new Wall();
+    private WallTool wallTool = new WallTool();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
-    protected static ArrayList<Cell> board = new ArrayList<>();
+    public static ArrayList<Cell> board;
 
     //MODIFIES: this
     //EFFECTS : creates an empty square board with side-length SIDE_LENGTH
     public Game() {
+        board = new ArrayList<>();//used to reset the board for @BeforeEach (tests)
         for (int row = 0; row < SIDE_LENGTH; row++) {
             for (int column = 0; column < SIDE_LENGTH; column++) {
                 board.add(new Cell(column, row));
@@ -36,7 +38,6 @@ public class Game {
     public void initialize() {
         p1.initialize();
         p2.initialize();
-        //TODO p2.initialize();
     }
 
     //EFFECTS : creates console display of board
@@ -70,9 +71,11 @@ public class Game {
         }
     }
 
+    /*EFFECTS : determines whether or not there is a wall segment at bottom right corner of each cell,
+                and prints out the appropriate wall*/
     private void printMiddleOfWall(int row, int column) {
         //checking for middle wall segments
-        MiddleOfWall wallMiddle = Wall.getWallMiddle((row + 1) * SIDE_LENGTH + (column + 1));
+        MiddleOfWall wallMiddle = WallTool.getWallMiddle((row + 1) * SIDE_LENGTH + (column + 1));
         if (wallMiddle.isWallHere()) {
             if (wallMiddle.isVertical()) {
                 System.out.print(VERTICAL_WALL_SPACE + "|" + VERTICAL_WALL_SPACE);
@@ -84,6 +87,7 @@ public class Game {
         }
     }
 
+    //EFFECTS : prints out the necessary horizontal walls directly below each cell
     private void printHorizontalWall(int row, int column) {
         //checking for horizontal wall segment
         if (board.get(row * SIDE_LENGTH + column).isWallDown()) {
@@ -93,6 +97,7 @@ public class Game {
         }
     }
 
+    //EFFECTS : prints out a row of cells, with the necessary vertical wall inbetween them
     private void printRowWithCells(int row) {
         //Aligning left end of board
         System.out.print(" " + DIVIDING_SPACE);
@@ -103,8 +108,7 @@ public class Game {
         }
     }
 
-    //MODIFIES: this and P1
-    //EFFECTS : allows a player to take a turn TODO right now, player 1 can move and that's all
+    //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)
     public void update() {
         System.out.println("Player 1 move");
         interpretInput(p1);
@@ -115,7 +119,7 @@ public class Game {
         displayBoard();
     }
 
-
+    //EFFECTS : interprets the player input and calls the appropriate method
     private void interpretInput(Avatar player) {
         String input = keyboard.nextLine();
         //if the input matches one of the keys to move the player:
