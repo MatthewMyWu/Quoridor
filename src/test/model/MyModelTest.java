@@ -671,7 +671,7 @@ class MyModelTest {
     @Test
     public void testPlayer1ValidMovement() throws WallObstructionException, OutOfBoundsException {
         //testing moving up
-        p1.move("w");
+        p1.move(p1.getUpKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 2) + (Game.SIDE_LENGTH / 2)) {
@@ -682,7 +682,7 @@ class MyModelTest {
         }
 
         //testing moving left
-        p1.move("a");
+        p1.move(p1.getLeftKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 2) + (Game.SIDE_LENGTH / 2) - 1) {
@@ -693,7 +693,7 @@ class MyModelTest {
         }
 
         //testing moving down
-        p1.move("s");
+        p1.move(p1.getDownKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1) + (Game.SIDE_LENGTH / 2) - 1) {
@@ -704,7 +704,7 @@ class MyModelTest {
         }
 
         //testing moving right
-        p1.move("d");
+        p1.move(p1.getRightKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1) + (Game.SIDE_LENGTH / 2)) {
@@ -720,7 +720,7 @@ class MyModelTest {
         p1.moveTo(0, 0);
         boolean exceptionThrown = false;
         try {
-            p1.move("w");
+            p1.move(p1.getUpKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -741,7 +741,7 @@ class MyModelTest {
         p1.moveTo(0, 0);
         boolean exceptionThrown = false;
         try {
-            p1.move("a");
+            p1.move(p1.getLeftKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -762,7 +762,7 @@ class MyModelTest {
         p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         boolean exceptionThrown = false;
         try {
-            p1.move("s");
+            p1.move(p1.getDownKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -783,7 +783,7 @@ class MyModelTest {
         p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         boolean exceptionThrown = false;
         try {
-            p1.move("d");
+            p1.move(p1.getRightKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -805,7 +805,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("B0,B2");
-            p1.move("w");
+            p1.move(p1.getUpKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -827,7 +827,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("B1,D1");
-            p1.move("a");
+            p1.move(p1.getLeftKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -849,7 +849,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("C1,C3");
-            p1.move("s");
+            p1.move(p1.getDownKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -871,7 +871,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("C2,A2");
-            p1.move("d");
+            p1.move(p1.getRightKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -886,14 +886,6 @@ class MyModelTest {
             }
         }
     }
-
-    @Test //to increase code coverage
-    public void testPlayer1Getters() {
-        assertEquals("w", p1.getUpKey());
-        assertEquals("a", p1.getLeftKey());
-        assertEquals("s", p1.getDownKey());
-        assertEquals("d", p1.getRightKey());
-    }
     ///////////////////////////////////////////player 2/////////////////////////////////////////////
 
     @Test
@@ -901,7 +893,7 @@ class MyModelTest {
         p2.moveTo(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1);
         assertTrue(game.board.get(Game.SIDE_LENGTH / 2 + Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1)).isP2Here());
         //testing moving up
-        p2.move("i");
+        p2.move(p2.getUpKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 2 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 2) + (Game.SIDE_LENGTH / 2)) {
@@ -912,7 +904,7 @@ class MyModelTest {
         }
 
         //testing moving left
-        p2.move("j");
+        p2.move(p2.getLeftKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 2) + (Game.SIDE_LENGTH / 2) - 1) {
@@ -923,7 +915,7 @@ class MyModelTest {
         }
 
         //testing moving down
-        p2.move("k");
+        p2.move(p2.getDownKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1) + (Game.SIDE_LENGTH / 2) - 1) {
@@ -934,7 +926,7 @@ class MyModelTest {
         }
 
         //testing moving right
-        p2.move("l");
+        p2.move(p2.getRightKey());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking player 1 is in right place
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1) + (Game.SIDE_LENGTH / 2)) {
@@ -950,7 +942,7 @@ class MyModelTest {
         p2.moveTo(0, 0);
         boolean exceptionThrown = false;
         try {
-            p2.move("i");
+            p2.move(p2.getUpKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -971,7 +963,7 @@ class MyModelTest {
         p2.moveTo(0, 0);
         boolean exceptionThrown = false;
         try {
-            p2.move("j");
+            p2.move(p2.getLeftKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -992,7 +984,7 @@ class MyModelTest {
         p2.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         boolean exceptionThrown = false;
         try {
-            p2.move("k");
+            p2.move(p2.getDownKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -1013,7 +1005,7 @@ class MyModelTest {
         p2.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         boolean exceptionThrown = false;
         try {
-            p2.move("l");
+            p2.move(p2.getRightKey());
         } catch (OutOfBoundsException e) {
             exceptionThrown = true;
         } finally {
@@ -1035,7 +1027,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("B0,B2");
-            p2.move("i");
+            p2.move(p2.getUpKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -1057,7 +1049,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("B1,D1");
-            p2.move("j");
+            p2.move(p2.getLeftKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -1079,7 +1071,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("C1,C3");
-            p2.move("k");
+            p2.move(p2.getDownKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -1101,7 +1093,7 @@ class MyModelTest {
         boolean exceptionThrown = false;
         try {
             wallTool.placeWall("C2,A2");
-            p2.move("l");
+            p2.move(p2.getRightKey());
         } catch (WallObstructionException e) {
             exceptionThrown = true;
         } finally {
@@ -1115,13 +1107,5 @@ class MyModelTest {
                 }
             }
         }
-    }
-
-    @Test //to increase code coverage
-    public void testPlayer2Getters() {
-        assertEquals("i", p2.getUpKey());
-        assertEquals("j", p2.getLeftKey());
-        assertEquals("k", p2.getDownKey());
-        assertEquals("l", p2.getRightKey());
     }
 }
