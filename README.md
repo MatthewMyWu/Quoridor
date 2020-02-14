@@ -15,7 +15,7 @@ Each turn, a player may:
 - move 1 step in any direction (not diagonally), or
 - place down a wall (each player has 10 walls)
 
-Walls are 2 units long — they are obstacles that prevent either player from moving through them.
+Walls are straight and 2 units long — they are obstacles that prevent either player from moving through them.
  Walls can't be placed such that they are hanging/completely off the board,
  and they can't be placed on top of another wall.
  Once placed, they can not be moved, and you can not gain more walls if you run out.

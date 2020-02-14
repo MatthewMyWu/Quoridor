@@ -38,10 +38,6 @@ public abstract class Avatar {
     }
 
 
-
-
-
-
     ///////////////////////probably not broken stuff///////////////////////
 
     //MODIFIES: Game
@@ -119,6 +115,8 @@ public abstract class Avatar {
     public abstract String getRightKey();
 
     //used for testing purposes
+    //MODIFIES: this
+    //EFFECTS : moves the player to the specified coordinates on the board
     public void moveTo(int coordx, int coordY) {
         this.coordX = coordx;
         this.coordY = coordY;
