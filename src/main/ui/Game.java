@@ -4,6 +4,13 @@ import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import model.*;
+import model.pathfinding.P1Pathfinder;
+import model.pathfinding.Pathfinder;
+import model.players.Avatar;
+import model.players.P1;
+import model.players.P2;
+import model.walls.MiddleOfWall;
+import model.walls.WallTool;
 
 import java.util.Scanner;
 
@@ -21,6 +28,8 @@ public class Game {
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
     public static ArrayList<Cell> board;
+    //TODO delete after testing
+    private Pathfinder p1Pathfinder = new P1Pathfinder(p1);
 
     //MODIFIES: this
     //EFFECTS : creates an empty square board with side-length SIDE_LENGTH
@@ -114,9 +123,23 @@ public class Game {
         interpretInput(p1);
         displayBoard();
 
+        //TODO delete after testing
+        if (p1Pathfinder.pathFound()) {
+            System.out.println("Path found");
+        } else {
+            System.out.println("Path not found");
+        }
+
         System.out.println("Player 2 move");
         interpretInput(p2);
         displayBoard();
+
+        //TODO delete after testing
+        if (p1Pathfinder.pathFound()) {
+            System.out.println("Path found");
+        } else {
+            System.out.println("Path not found");
+        }
     }
 
     //EFFECTS : interprets the player input and calls the appropriate method

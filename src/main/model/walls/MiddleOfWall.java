@@ -1,4 +1,4 @@
-package model;
+package model.walls;
 
 /*Since each wall spans across 2 cells, this object stores information about the middle segment of the wall that lies
 between the two cells. We need to keep track of this to ensure that walls are not placed on top of one another.*/

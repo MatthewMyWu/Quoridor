@@ -1,4 +1,4 @@
 package exceptions;
 
-public class OutOfBoundsException extends Exception {
+public class OutOfBoundsException extends IllegalMoveException {
 }

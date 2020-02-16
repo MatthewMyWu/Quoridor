@@ -14,6 +14,7 @@ public class Cell {
     private int arrayIndex; //keeps track of the index of the cell in the array
     private boolean p1Here;//is player 1 on this cell
     private boolean p2Here;//is player 2 on this cell
+    protected boolean visited;//used for WinnableSolver
     //the following booleans check if there is a wall on the respective side of the cell
     private boolean wallUp;
     private boolean wallLeft;
@@ -28,6 +29,7 @@ public class Cell {
         wallLeft = false;
         wallDown = false;
         wallRight = false;
+        visited = false;
     }
 
     public boolean isWallUp() {
@@ -76,6 +78,14 @@ public class Cell {
 
     public void setP2Here(boolean p2Here) {
         this.p2Here = p2Here;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     //EFFECTS : prints out a cell and the wall to the right of it (if there is a wall there)

@@ -1,6 +1,7 @@
-package model;
+package model.walls;
 
 import exceptions.InvalidWallException;
+import model.walls.MiddleOfWall;
 import ui.Game;
 
 import java.util.ArrayList;

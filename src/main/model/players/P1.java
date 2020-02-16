@@ -1,18 +1,19 @@
-package model;
+package model.players;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import model.players.Avatar;
 import ui.Game;
 
-/*Contains specific information about player 2 that differs from player 1*/
-public class P2 extends Avatar {
-    private static final String UP_KEY = "i";
-    private static final String LEFT_KEY = "j";
-    private static final String DOWN_KEY = "k";
-    private static final String RIGHT_KEY = "l";
+/*Contains specific information about player 1 that differs from player 2*/
+public class P1 extends Avatar {
+    private static final String UP_KEY = "w";
+    private static final String LEFT_KEY = "a";
+    private static final String DOWN_KEY = "s";
+    private static final String RIGHT_KEY = "d";
 
-    public P2() {
-        super(Game.SIDE_LENGTH / 2, 0);
+    public P1() {
+        super(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1);
     }
 
     @Override
@@ -26,14 +27,14 @@ public class P2 extends Avatar {
 
     @Override
     public void initialize() {
-        Game.board.get(arrayIndex).setP2Here(true);
+        Game.board.get(arrayIndex).setP1Here(true);
     }
 
     @Override
     protected void updatePosition() {
-        Game.board.get(arrayIndex).setP2Here(false);
+        Game.board.get(arrayIndex).setP1Here(false);
         updateArrayIndex();
-        Game.board.get(arrayIndex).setP2Here(true);
+        Game.board.get(arrayIndex).setP1Here(true);
     }
 
     @Override
@@ -54,5 +55,10 @@ public class P2 extends Avatar {
     @Override
     public String getRightKey() {
         return RIGHT_KEY;
+    }
+
+    @Override
+    public boolean isHere(int index) {
+        return Game.board.get(index).isP1Here();
     }
 }

@@ -5,8 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.Game;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SpecificHorizontalWallTests extends GameTests{
 
@@ -16,8 +15,12 @@ public class SpecificHorizontalWallTests extends GameTests{
     }
 
     @Test
-    public void testPlaceValidHorizontalWall() throws InvalidWallException {
-        wallTool.placeWall("B0,B2");
+    public void testPlaceValidHorizontalWall() {
+        try {
+            wallTool.placeWall("B0,B2");
+        } catch (InvalidWallException e) {
+            fail("No InvalidWallException expected");
+        }
         //cell to the top left of wall
         assertFalse(Game.board.get(0).isWallUp());
         assertFalse(Game.board.get(0).isWallLeft());

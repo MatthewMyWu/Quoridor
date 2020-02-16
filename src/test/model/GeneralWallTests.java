@@ -1,12 +1,12 @@
 package model;
 
 import exceptions.InvalidWallException;
+import model.walls.WallTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.Game;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GeneralWallTests extends GameTests {
 
@@ -14,6 +14,8 @@ public class GeneralWallTests extends GameTests {
     public void runBefore() {
         super.runBefore();
     }
+
+    //TODO add valid wall tests?
 
     @Test
     public void testInvalidWalls() {
@@ -148,13 +150,16 @@ public class GeneralWallTests extends GameTests {
         }
     }
 
-
     @Test //this is testing a getter to increase code coverage
-    public void testIsVertical() throws InvalidWallException {
-        wallTool.placeWall("A1,C1");
-        assertTrue(WallTool.getWallMiddle(Game.SIDE_LENGTH + 1).isVertical());
+    public void testIsVertical() {
+        try {
+            wallTool.placeWall("A1,C1");
+            assertTrue(WallTool.getWallMiddle(Game.SIDE_LENGTH + 1).isVertical());
 
-        wallTool.placeWall("C0,C2");
-        assertFalse(WallTool.getWallMiddle(Game.SIDE_LENGTH * 2 + 1).isVertical());
+            wallTool.placeWall("C0,C2");
+            assertFalse(WallTool.getWallMiddle(Game.SIDE_LENGTH * 2 + 1).isVertical());
+        } catch (InvalidWallException e) {
+            fail("No InvalidWallException expected");
+        }
     }
 }
