@@ -124,7 +124,7 @@ public class Game {
         displayBoard();
 
         //TODO delete after testing
-        if (p1Pathfinder.pathFound()) {
+        if (p1Pathfinder.canFindPath()) {
             System.out.println("Path found");
         } else {
             System.out.println("Path not found");
@@ -135,7 +135,7 @@ public class Game {
         displayBoard();
 
         //TODO delete after testing
-        if (p1Pathfinder.pathFound()) {
+        if (p1Pathfinder.canFindPath()) {
             System.out.println("Path found");
         } else {
             System.out.println("Path not found");

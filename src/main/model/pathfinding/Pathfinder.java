@@ -22,13 +22,22 @@ public abstract class Pathfinder extends Moveable {
     //          and path is found)
     public abstract boolean isSolved();
 
+    @Override
     protected void updatePosition() {
         updateArrayIndex();
     }
 
+    //MODIFIES: board (resets "visited" status of all cells to false)
+    //EFFECTS : returns true if path to objective (the other side) can be found. False otherwise
+    public boolean canFindPath() {
+        boolean pathFound = pathFound();
+        reset();
+        return pathFound;
+    }
+
     //MODIFIES: board (sets cells visited to true)
     //EFFECTS : Recursive method for exploring the board and seeing if a path can be found to the other side
-    public boolean pathFound() {
+    private boolean pathFound() {
         //seeing if Pathfinder has made it to the other end
         if (isSolved()) {
             return true;
@@ -47,9 +56,7 @@ public abstract class Pathfinder extends Moveable {
         }
 
         //recursive searching
-        if (recursiveSearch(tempIndex)) {
-            //note that this reset here
-            reset();
+        if (recursiveDirectionalSearch(tempIndex)) {
             return true;
         } else {
             //note we do not reset here because it would lead to infinite recursion
@@ -59,9 +66,9 @@ public abstract class Pathfinder extends Moveable {
     }
 
     //REQUIRES: tempIndex be a valid index of Game.board
-    //MODIFIES: this
-    //EFFECTS : recursive search through the board to find a path to objective (other side)
-    private boolean recursiveSearch(int tempIndex) {
+    //EFFECTS : calls methods to recursively explore board in each direction (up, left, down, right) from position
+    //          tempIndex
+    private boolean recursiveDirectionalSearch(int tempIndex) {
         //starting search with top branch, then left, down, and finally right
         if (searchUp()) {
             return true;

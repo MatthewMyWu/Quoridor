@@ -19,7 +19,8 @@ public class GameTests {
     WallTool wallTool;
     Avatar p1;
     Avatar p2;
-    //TODO fix tests so they don't throw exceptions
+    //TODO ask how we are supposed to structure tests (eg. I would like to make Player#MovementTests extend a
+    // general "PlayerMOvementTests" class)
 
     @BeforeEach
     public void runBefore() {
@@ -85,6 +86,8 @@ public class GameTests {
     }
 
     ///////////////////////////////implemented by subclasses (other test classes)////////////////////////
+
+    //////////////////////////////Movement tests////////////////////////
     public void testPlayerValidMovement(Avatar player) {
         player.moveTo(Game.SIDE_LENGTH/2, Game.SIDE_LENGTH - 1);
         //testing moving up
@@ -360,4 +363,10 @@ public class GameTests {
         testPlayerMoveIntoBottomWall(player);
         testPlayerMoveIntoRightWall(player);
     }
+
+
+
+
+
+    //////////////////////////////Pathfinder tests////////////////////////
 }
