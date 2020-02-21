@@ -1,8 +1,6 @@
 package model;
 
 import exceptions.InvalidWallException;
-import model.pathfinding.P1Pathfinder;
-import model.pathfinding.P2Pathfinder;
 import model.pathfinding.Pathfinder;
 import model.walls.PathfindingTestWallTool;
 import model.walls.WallTool;
@@ -20,8 +18,8 @@ public class PathfinderTests extends GameTests {
     @BeforeEach
     public void runBefore() {
         super.runBefore();
-        p1Pathfinder = new P1Pathfinder(p1);
-        p2Pathfinder = new P2Pathfinder(p2);
+        p1Pathfinder = new Pathfinder(p1);
+        p2Pathfinder = new Pathfinder(p2);
         game.p1Pathfinder = p1Pathfinder;
         game.p2Pathfinder = p2Pathfinder;
     }

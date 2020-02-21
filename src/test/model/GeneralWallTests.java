@@ -1,9 +1,6 @@
 package model;
 
 import exceptions.InvalidWallException;
-import model.pathfinding.P1Pathfinder;
-import model.pathfinding.P2Pathfinder;
-import model.pathfinding.Pathfinder;
 import model.walls.WallTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

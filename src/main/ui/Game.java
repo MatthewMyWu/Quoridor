@@ -4,8 +4,6 @@ import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import model.*;
-import model.pathfinding.P1Pathfinder;
-import model.pathfinding.P2Pathfinder;
 import model.pathfinding.Pathfinder;
 import model.players.Avatar;
 import model.players.P1;
@@ -24,31 +22,83 @@ public class Game {
     public static final String DIVIDING_SPACE = "   ";
     public static final String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
     public static final String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
+    private static final String SIDE_ITEM_SPACE = "       ";//space between board and "Side items" (eg. walls and score)
     private Scanner keyboard = new Scanner(System.in);
     private WallTool wallTool = new WallTool();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
-    public static Pathfinder p1Pathfinder = new P1Pathfinder(p1);
-    public static Pathfinder p2Pathfinder = new P2Pathfinder(p2);
+    public static Pathfinder p1Pathfinder = new Pathfinder(p1);
+    public static Pathfinder p2Pathfinder = new Pathfinder(p2);
+    private boolean gameOver = false;
+    private String winner; //Is the player that won the game (eg. 1 or 2)
     public static ArrayList<Cell> board;
 
 
     //MODIFIES: this
-    //EFFECTS : creates an empty square board with side-length SIDE_LENGTH
+    //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
     public Game() {
-        board = new ArrayList<>();//used to reset the board for @BeforeEach (tests)
+        //resetting the board
+        board = new ArrayList<>();
         for (int row = 0; row < SIDE_LENGTH; row++) {
             for (int column = 0; column < SIDE_LENGTH; column++) {
                 board.add(new Cell(column, row));
             }
         }
+
+        //resetting players
+        p1.initialize();
+        p2.initialize();
+    }
+
+
+    //EFFECTS : starts the game
+    public void play() {
+        while (!gameOver) {
+            update();
+        }
+        displayBoard();
+        displayGameOverScreen();
+    }
+
+    //EFFECTS : Displays the game over screen
+    private void displayGameOverScreen() {
+        System.out.println(winner + " wins!");
+        System.out.println("1. PLAY AGAIN");
+        System.out.println("2. MAIN MENU");
+        interpretGameOverInput();
+    }
+
+    //EFFECTS : Interprets player input for the game over screen
+    private void interpretGameOverInput() {
+        String input = keyboard.nextLine();
+        if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
+            restart();
+            play();
+        } else if (input.equals("2") || input.equals("2.") || input.equals("MAIN MENU")) {
+            //return;
+        } else {
+            System.out.println("That is not a valid input");
+            interpretGameOverInput();
+        }
     }
 
     //MODIFIES: this
-    //EFFECTS : initializes game by putting Avatars in starting positions
-    public void initialize() {
+    //EFFECTS : restarts the game, but does not reset the scores of each player
+    private void restart() {
+        //resetting the board
+        board = new ArrayList<>();
+        for (int row = 0; row < SIDE_LENGTH; row++) {
+            for (int column = 0; column < SIDE_LENGTH; column++) {
+                board.add(new Cell(column, row));
+            }
+        }
+
+        //resetting players
         p1.initialize();
         p2.initialize();
+
+        //resetting walls
+        wallTool = new WallTool();
     }
 
     //EFFECTS : creates console display of board
@@ -59,26 +109,53 @@ public class Game {
         for (int column = 1; column <= SIDE_LENGTH; column++) {
             System.out.print(column + DIVIDING_SPACE);
         }
+
+        System.out.print(SIDE_ITEM_SPACE.substring(0, SIDE_ITEM_SPACE.length() - 2) + "Score");
         System.out.println();
 
         //printing out actual grid
         for (int row = 0; row < SIDE_LENGTH; row++) {
             printRowWithCells(row);
+            //printing out side items
+            printSideItemsForRowWithCells(row);
+
 
             //printing out row between the rows with cells ("inter-rows")
             if (row < SIDE_LENGTH) {
                 //printing out Letter coordinates
                 System.out.print("\n" + (char) (66 + row) + DIVIDING_SPACE);
-                //printing out horizontal walls below each cell, and middle wall segments (at corners of cells)
+                //printing out horizontal walls below each cell, and middle wall segments (at bottom right
+                // corners of cells)
                 for (int column = 0; column < SIDE_LENGTH; column++) {
                     printHorizontalWall(row, column);
                     if (column < SIDE_LENGTH - 1 && row < SIDE_LENGTH - 1) {
-                        //There is not middle wall segements at the ends (right and bottom) of the board
                         printMiddleOfWall(row, column);
                     }
                 }
+                //printing out side items
+                printSideItemsForInterRows(row);
             }
             System.out.println();
+        }
+    }
+
+    //EFFECTS : Prints out the "side items" (score and walls of players) for the rows between the cells
+    private void printSideItemsForInterRows(int row) {
+        if (row == 0) {
+            System.out.print(DIVIDING_SPACE + SIDE_ITEM_SPACE + "Player 2: " + p2.getScore());
+        } else if (row == 2) {
+            System.out.print(DIVIDING_SPACE + SIDE_ITEM_SPACE + "Player 1: " + p1.getWalls());
+        }
+    }
+
+    //EFFECTS : Prints out the "side items" (score and walls of players) for the rows with cells
+    private void printSideItemsForRowWithCells(int row) {
+        if (row == 0) {
+            System.out.print(SIDE_ITEM_SPACE + "Player 1: " + p1.getScore());
+        } else if (row == 2) {
+            System.out.print(SIDE_ITEM_SPACE + "Walls");
+        } else if (row == 3) {
+            System.out.print(SIDE_ITEM_SPACE + "Player 2: " + p2.getWalls());
         }
     }
 
@@ -121,56 +198,71 @@ public class Game {
 
     //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)
     public void update() {
-        System.out.println("Player 1 move");
-        interpretInput(p1);
         displayBoard();
-
-        //TODO delete after testing
-        if (p1Pathfinder.canFindPath()) {
-            System.out.println("Path found");
-        } else {
-            System.out.println("Path not found");
+        System.out.println("Player 1 move");
+        interpretInGameInput(p1);
+        if (p1.reachedWinCondition(p1)) {
+            gameOver = true;
+            p1.incrementScore();
+            winner = "Player 1";
+            return;
         }
 
-        System.out.println("Player 2 move");
-        interpretInput(p2);
         displayBoard();
-
-        //TODO delete after testing
-        if (p1Pathfinder.canFindPath()) {
-            System.out.println("Path found");
-        } else {
-            System.out.println("Path not found");
+        System.out.println("Player 2 move");
+        interpretInGameInput(p2);
+        if (p2.reachedWinCondition(p2)) {
+            gameOver = true;
+            p2.incrementScore();
+            winner = "Player 2";
+            return;
         }
     }
 
-    //EFFECTS : interprets the player input and calls the appropriate method
-    private void interpretInput(Avatar player) {
+    //EFFECTS : interprets the player input while game is running, and calls the appropriate method
+    private void interpretInGameInput(Avatar player) {
         String input = keyboard.nextLine();
         //if the input matches one of the keys to move the player:
         if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey()) || input.equals(player.getDownKey())
                 || input.equals(player.getRightKey())) {
-            try {
-                player.move(input);
-            } catch (OutOfBoundsException e) {
-                System.out.println("You can not move off the board");
-                interpretInput(player);
-            } catch (WallObstructionException e) {
-                System.out.println("Can not move over a wall");
-                interpretInput(player);
-            }
+            handleMovementInput(player, input);
             //if the input matches the format of placing a wall
         } else if (isWallCommand(input)) {
-            try {
-                wallTool.placeWall(input);
-            } catch (InvalidWallException e) {
-                System.out.println("You can not place a wall there");
-                interpretInput(player);
-            }
-
+            handleWallPlacementInput(player, input);
+            //if the input is invalid
         } else {
             System.out.println("That is not a valid input");
-            interpretInput(player);
+            interpretInGameInput(player);
+        }
+    }
+
+    //EFFECTS : Handles player input if it is to place a wall
+    private void handleWallPlacementInput(Avatar player, String input) {
+        //first needs to check if player has any walls left
+        if (player.getWalls() <= 0) {
+            System.out.println("You do not have any more walls");
+            interpretInGameInput(player);
+        } else {
+            try {
+                wallTool.placeWall(input);
+                player.decrementWall();
+            } catch (InvalidWallException e) {
+                System.out.println("You can not place a wall there");
+                interpretInGameInput(player);
+            }
+        }
+    }
+
+    //EFFECTS : Handles player input if it is to move the player
+    private void handleMovementInput(Avatar player, String input) {
+        try {
+            player.move(input);
+        } catch (OutOfBoundsException e) {
+            System.out.println("You can not move off the board");
+            interpretInGameInput(player);
+        } catch (WallObstructionException e) {
+            System.out.println("Can not move over a wall");
+            interpretInGameInput(player);
         }
     }
 

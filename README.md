@@ -46,15 +46,18 @@ Currently, there is no mechanism for either player to win the game;
 - As a user, I want to not be able to move over walls
 - As a user, I want the game to be turn based
 - As a user, I want an indicator to show whose turn it is
+- As a user, I want the game to disallow any wall placements that would make the game unwinnable
 
 ## Unimplemented user stories
 - As a user, I want to be able to use the mouse to add walls to the board
-- As a user, I want the game to disallow any wall placements that would make the game unwinnable
 - As a user, I want the game to be visually appealing (eg. not have text-based graphics)
 - As a user, I want to be able to win the game
 - As a user, I want to have the option to restart the game at any point
 - As a user, I want to be able to "forfeit" the match at any point
 - As a user, I want to be able to play again when the game ends
 - As a user, I want the game to display the score of each player
+- As a user, I want each finished game to be recorded into the "match history" (final layout of board),
+which will store the past 10 games
+- As a user, I want to be able to view the "match history"
 - (Optional) as a user, I want there to be a "minotaur" that starts in the middle of the map and moves randomly, and
 if it reaches a player, that player loses

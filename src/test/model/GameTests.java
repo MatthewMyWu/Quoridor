@@ -28,7 +28,6 @@ public class GameTests {
         game = new Game();
         p1 = new P1();
         p2 = new P2();
-        game.initialize();
         wallTool = new WallTool();
     }
 

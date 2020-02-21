@@ -1,19 +1,9 @@
 package ui;
 
-import model.pathfinding.P1Pathfinder;
-import model.pathfinding.Pathfinder;
-
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
+        Menu menu = new Menu();
 
-        game.initialize();
-        game.displayBoard();
-
-
-
-        while (true) {
-            game.update();
-        }
+        menu.displayMenu();
     }
 }

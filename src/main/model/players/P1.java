@@ -2,6 +2,7 @@ package model.players;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import model.Moveable;
 import model.players.Avatar;
 import ui.Game;
 
@@ -22,12 +23,18 @@ public class P1 extends Avatar {
         updatePosition();
     }
 
+    @Override
+    public boolean reachedWinCondition(Moveable object) {
+        return object.getCoordY() == 0;
+    }
+
 
     ///////////////////////probably not broken stuff///////////////////////
 
     @Override
     public void initialize() {
         Game.board.get(arrayIndex).setP1Here(true);
+        walls = 10;
     }
 
     @Override

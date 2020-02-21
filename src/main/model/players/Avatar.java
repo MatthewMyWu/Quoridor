@@ -5,14 +5,23 @@ import exceptions.WallObstructionException;
 import model.Moveable;
 import ui.Game;
 
-/*Contains methods for how each avatar (player) should behave*/
+/*Contains methods for how each avatar (player) should behave. Also contains the score and number of walls each player
+* has*/
 public abstract class Avatar extends Moveable {
+    private int score;
+    protected int walls;
 
     public Avatar(int x, int y) {
         coordX = x;
         coordY = y;
         updateArrayIndex();
+        score = 0;
+        walls = 10;
     }
+
+    //EFFECTS : returns true if object has reached the win-condition (win conditions differ between P1 and P2).
+    // Object is parameterized because this method needs to be used by Pathfinder
+    public abstract boolean reachedWinCondition(Moveable object);
 
     //MODIFIES: this and Game
     /*EFFECTS : Moves the player in a direction. Abstract so up, left, down, and right input keys can be parameterized*/
@@ -55,4 +64,24 @@ public abstract class Avatar extends Moveable {
     //REQUIRES: index is a valid index on the board
     //EFFECTS : returns true if the player is at index, false otherwise (used for testing)
     public abstract boolean isHere(int index);
+
+    public int getScore() {
+        return score;
+    }
+
+    //MODIFIES: this (score)
+    //EFFECTS : increments the score of this player by 1
+    public void incrementScore() {
+        score++;
+    }
+
+    public int getWalls() {
+        return walls;
+    }
+
+    //MODIFIES: this (walls)
+    //EFFECTS : decrements the walls of this player by 1
+    public void decrementWall() {
+        walls--;
+    }
 }

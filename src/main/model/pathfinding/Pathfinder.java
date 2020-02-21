@@ -8,7 +8,7 @@ import ui.Game;
 //Used to determine if the game is still winnable after a wall placement
 // (eg. checks there is still a path to the opposite side).
 //Works in very much the same way as a maze solver (recursive)
-public abstract class Pathfinder extends Moveable {
+public class Pathfinder extends Moveable {
     private Avatar player; //keeps track of which player this pathfinder is for
 
     public Pathfinder(Avatar player) {
@@ -20,7 +20,9 @@ public abstract class Pathfinder extends Moveable {
 
     //EFFECTS : Returns true if the current position is the winning condition (player has reached their objective,
     //          and path is found)
-    public abstract boolean isSolved();
+    public boolean isSolved() {
+        return player.reachedWinCondition(this);
+    }
 
     @Override
     protected void updatePosition() {
