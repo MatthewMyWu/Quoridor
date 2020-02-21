@@ -238,4 +238,66 @@ public class SpecificVerticalWallTests extends GameTests {
             assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallRight());
         }
     }
+
+    @Test
+    public void testVerticallWall() {
+        try {
+            wallTool.placeWall("A1,C1");
+            wallTool.placeWall("C1,E1");
+            wallTool.deleteVerticalWall(1, 2, 1, 4);
+
+            //verifying first wall still exists
+            //cell to the top left of wall
+            assertFalse(Game.board.get(0).isWallUp());
+            assertFalse(Game.board.get(0).isWallLeft());
+            assertFalse(Game.board.get(0).isWallDown());
+            assertTrue(Game.board.get(0).isWallRight());
+
+            //cell to the top right of wall
+            assertFalse(Game.board.get(1).isWallUp());
+            assertTrue(Game.board.get(1).isWallLeft());
+            assertFalse(Game.board.get(1).isWallDown());
+            assertFalse(Game.board.get(1).isWallRight());
+
+            //cell to the bottom left of wall
+            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallUp());
+            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallLeft());
+            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallDown());
+            assertTrue(Game.board.get(Game.SIDE_LENGTH).isWallRight());
+
+            //cell to the bottom right of wall
+            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallUp());
+            assertTrue(Game.board.get(Game.SIDE_LENGTH + 1).isWallLeft());
+            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallDown());
+            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallRight());
+
+
+            //verifying second wall is deleted
+            //cell to the top left of wall
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH).isWallUp());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH).isWallLeft());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH).isWallDown());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH).isWallRight());
+
+            //cell to the top right of wall
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH + 1).isWallUp());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH + 1).isWallLeft());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH + 1).isWallDown());
+            assertFalse(Game.board.get(2 * Game.SIDE_LENGTH + 1).isWallRight());
+
+            //cell to the bottom left of wall
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH).isWallUp());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH).isWallLeft());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH).isWallDown());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH).isWallRight());
+
+            //cell to the bottom right of wall
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH + 1).isWallUp());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH + 1).isWallLeft());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH + 1).isWallDown());
+            assertFalse(Game.board.get(3 * Game.SIDE_LENGTH + 1).isWallRight());
+        } catch (InvalidWallException e) {
+            fail("No InvalidWallException expected");
+        }
+    }
 }

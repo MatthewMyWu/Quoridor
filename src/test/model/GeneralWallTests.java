@@ -1,6 +1,9 @@
 package model;
 
 import exceptions.InvalidWallException;
+import model.pathfinding.P1Pathfinder;
+import model.pathfinding.P2Pathfinder;
+import model.pathfinding.Pathfinder;
 import model.walls.WallTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +17,6 @@ public class GeneralWallTests extends GameTests {
     public void runBefore() {
         super.runBefore();
     }
-
-    //TODO add valid wall tests?
 
     @Test
     public void testInvalidWalls() {

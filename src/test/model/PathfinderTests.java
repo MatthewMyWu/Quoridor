@@ -2,88 +2,129 @@ package model;
 
 import exceptions.InvalidWallException;
 import model.pathfinding.P1Pathfinder;
+import model.pathfinding.P2Pathfinder;
 import model.pathfinding.Pathfinder;
+import model.walls.PathfindingTestWallTool;
+import model.walls.WallTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.Game;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PathfinderTests extends GameTests {
     Pathfinder p1Pathfinder;
+    Pathfinder p2Pathfinder;
 
     @BeforeEach
     public void runBefore() {
         super.runBefore();
         p1Pathfinder = new P1Pathfinder(p1);
+        p2Pathfinder = new P2Pathfinder(p2);
+        game.p1Pathfinder = p1Pathfinder;
+        game.p2Pathfinder = p2Pathfinder;
     }
 
-    @Test
-    public void testValidPathScenario() {
-        assertTrue(p1Pathfinder.canFindPath());
-    }
-
+    /////////////////////Pathfinding scenario tests/////////////////////////
     @Test
     public void testInvalidPathScenario() {
-        //setting up walls right above player 1 to block path
+        //need to use this special implementation of WallTool, which will allow us to completely block off
+        // the path without throwing an exception.
+        wallTool = new PathfindingTestWallTool();
+
+        //setting up walls along entire I row to block path
         try {
             wallTool.placeWall("I0,I2");
+            assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
             wallTool.placeWall("I2,I4");
+            assertTrue(p2Pathfinder.canFindPath());
+            assertTrue(p1Pathfinder.canFindPath());
             wallTool.placeWall("I4,I6");
+            assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
             wallTool.placeWall("I6,I8");
+            assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
             wallTool.placeWall("I8,G8");
             assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
 
             //blocking off path (final wall)
             wallTool.placeWall("G7,G9");
             assertFalse(p1Pathfinder.canFindPath());
+            assertFalse(p2Pathfinder.canFindPath());
         } catch (InvalidWallException e) {
             fail("No InvalidWallException expected");
         }
 
-    }
-
-    @Test
-    public void testBlockBehindScenario() {
         try {
-            //moving p1 to centre of board
-            p1.moveTo(Game.SIDE_LENGTH / 2);
+            //testing that Pathfinder implementation works in WallTool() (instead of PathfindingTestWallTool())
+            wallTool = new WallTool();
+            wallTool.deleteHorizontalWall(7, 6, 9, 6);
             assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
 
-            //setting up wall "behind" p1
-            wallTool.placeWall("I0,I2");
-            wallTool.placeWall("I2,I4");
-            wallTool.placeWall("I4,I6");
-            wallTool.placeWall("I6,I8");
-            wallTool.placeWall("I8,G8");
+            //blocking off path (final wall)
             wallTool.placeWall("G7,G9");
-            assertTrue(p1Pathfinder.canFindPath());
+            fail("InvalidWallException should have been thrown here");
         } catch (InvalidWallException e) {
-            fail("No InvalidWallException expected");
+            //this exception is expected, as a path cannot be found
         }
-
     }
 
     @Test
+    //Creating a complicated path that both players need to take in order to win
+    // (players will have to move in every direction to reach win condition;
+    // additionally, neither player will be blocked from being able to reach their starting positions;
+    // ensures Pathfinder class is working properly)
     public void testComplicatedPathScenario() {
         try {
-            //moving p1 to centre of board
-            p1.moveTo(Game.SIDE_LENGTH / 2);
-            assertTrue(p1Pathfinder.canFindPath());
+            //moving p1 near top right corner of board
+            p1.moveTo(game.SIDE_LENGTH - 1, 1);
+            //moving p2 near bottom left corner of board
+            p2.moveTo(0, game.SIDE_LENGTH - 2);
 
-            //setting up wall "behind" p1, to block path to returning position
+            //setting up walls around p2 (bottom left corner)
             wallTool.placeWall("I0,I2");
+            wallTool.placeWall("I1,G1");
+            wallTool.placeWall("F0,F2");
+            wallTool.placeWall("F2,H2");
+            wallTool.placeWall("H2,H4");
             wallTool.placeWall("I2,I4");
             wallTool.placeWall("I4,I6");
-            wallTool.placeWall("I6,I8");
-            wallTool.placeWall("I8,G8");
-            wallTool.placeWall("G7,G9");
+            wallTool.placeWall("I5,G5");
+            wallTool.placeWall("G5,E5");
+            wallTool.placeWall("E5,E3");
+            wallTool.placeWall("E3,E1");
+
+            //setting up walls around p1 (top right corner)
+            wallTool.placeWall("B9,B7");
+            wallTool.placeWall("B8,D8");
+            wallTool.placeWall("D8,F8");
+            wallTool.placeWall("F8,H8");
+            wallTool.placeWall("I9,I7");
+            wallTool.placeWall("I7,G7");
+            wallTool.placeWall("G7,E7");
+            wallTool.placeWall("E7,C7");
+            wallTool.placeWall("C7,C5");
+            wallTool.placeWall("C5,C3");
+            wallTool.placeWall("C3,C1");
+            wallTool.placeWall("B1,D1");
+            wallTool.placeWall("D0,D2");//this wall cuts off each player from starting points
+            wallTool.placeWall("B7,B5");
+            wallTool.placeWall("B5,B3");
+
+
             assertTrue(p1Pathfinder.canFindPath());
+            assertTrue(p2Pathfinder.canFindPath());
+
+            //used to visualise the board
+            game.displayBoard();
         } catch (InvalidWallException e) {
-            fail("No InvalidWallException expected");
+            fail("No InvalidWasllException expected");
         }
-
     }
-
 
 }

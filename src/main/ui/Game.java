@@ -5,6 +5,7 @@ import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import model.*;
 import model.pathfinding.P1Pathfinder;
+import model.pathfinding.P2Pathfinder;
 import model.pathfinding.Pathfinder;
 import model.players.Avatar;
 import model.players.P1;
@@ -27,9 +28,10 @@ public class Game {
     private WallTool wallTool = new WallTool();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
+    public static Pathfinder p1Pathfinder = new P1Pathfinder(p1);
+    public static Pathfinder p2Pathfinder = new P2Pathfinder(p2);
     public static ArrayList<Cell> board;
-    //TODO delete after testing
-    private Pathfinder p1Pathfinder = new P1Pathfinder(p1);
+
 
     //MODIFIES: this
     //EFFECTS : creates an empty square board with side-length SIDE_LENGTH

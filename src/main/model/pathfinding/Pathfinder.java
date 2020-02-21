@@ -12,9 +12,9 @@ public abstract class Pathfinder extends Moveable {
     private Avatar player; //keeps track of which player this pathfinder is for
 
     public Pathfinder(Avatar player) {
+        this.player = player;
         this.coordX = player.getCoordX();
         this.coordY = player.getCoordY();
-        this.player = player;
         updatePosition();
     }
 
@@ -30,6 +30,11 @@ public abstract class Pathfinder extends Moveable {
     //MODIFIES: board (resets "visited" status of all cells to false)
     //EFFECTS : returns true if path to objective (the other side) can be found. False otherwise
     public boolean canFindPath() {
+        //syncing position of pathfinder and avatar
+        this.coordX = player.getCoordX();
+        this.coordY = player.getCoordY();
+        updatePosition();
+
         boolean pathFound = pathFound();
         reset();
         return pathFound;
@@ -43,7 +48,7 @@ public abstract class Pathfinder extends Moveable {
             return true;
         }
 
-        //stores the current position, so can return to this position after each recursion
+        //stores the current position, so can return to this position after searching each branch
         int tempIndex = arrayIndex;
 
         //handling visited
@@ -56,13 +61,7 @@ public abstract class Pathfinder extends Moveable {
         }
 
         //recursive searching
-        if (recursiveDirectionalSearch(tempIndex)) {
-            return true;
-        } else {
-            //note we do not reset here because it would lead to infinite recursion
-            return false;
-        }
-
+        return recursiveDirectionalSearch(tempIndex);
     }
 
     //REQUIRES: tempIndex be a valid index of Game.board

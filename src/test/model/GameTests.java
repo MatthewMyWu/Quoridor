@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.IllegalMoveException;
 import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
@@ -25,10 +26,10 @@ public class GameTests {
     @BeforeEach
     public void runBefore() {
         game = new Game();
-        game.initialize();
-        wallTool = new WallTool();
         p1 = new P1();
         p2 = new P2();
+        game.initialize();
+        wallTool = new WallTool();
     }
 
     @Test
@@ -363,10 +364,4 @@ public class GameTests {
         testPlayerMoveIntoBottomWall(player);
         testPlayerMoveIntoRightWall(player);
     }
-
-
-
-
-
-    //////////////////////////////Pathfinder tests////////////////////////
 }
