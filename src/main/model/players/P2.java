@@ -15,6 +15,8 @@ public class P2 extends Avatar {
 
     public P2() {
         super(Game.SIDE_LENGTH / 2, 0);
+        startingCoordX = Game.SIDE_LENGTH / 2;
+        startingCoordY = 0;
     }
 
     @Override
@@ -29,12 +31,6 @@ public class P2 extends Avatar {
     }
 
     ///////////////////////probably not broken stuff///////////////////////
-
-    @Override
-    public void initialize() {
-        Game.board.get(arrayIndex).setP2Here(true);
-        walls = 10;
-    }
 
     @Override
     protected void updatePosition() {

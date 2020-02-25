@@ -1,11 +1,14 @@
 package ui;
 
+import exceptions.InvalidBoardException;
+import org.omg.CORBA.DynAnyPackage.Invalid;
+
 import java.util.Scanner;
 
 public class Menu {
     private Scanner keyboard = new Scanner(System.in);
-    private Game game = new Game();
     private boolean exit = false;
+    private Game game;
 
     public Menu() {
     }

@@ -3,8 +3,8 @@ package model.players;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import model.Moveable;
-import model.players.Avatar;
 import ui.Game;
+import model.players.Avatar;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P1 extends Avatar {
@@ -13,8 +13,11 @@ public class P1 extends Avatar {
     private static final String DOWN_KEY = "s";
     private static final String RIGHT_KEY = "d";
 
+
     public P1() {
         super(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1);
+        startingCoordX = Game.SIDE_LENGTH / 2;
+        startingCoordY = Game.SIDE_LENGTH - 1;
     }
 
     @Override
@@ -30,12 +33,6 @@ public class P1 extends Avatar {
 
 
     ///////////////////////probably not broken stuff///////////////////////
-
-    @Override
-    public void initialize() {
-        Game.board.get(arrayIndex).setP1Here(true);
-        walls = 10;
-    }
 
     @Override
     protected void updatePosition() {

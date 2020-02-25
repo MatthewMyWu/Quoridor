@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.InvalidBoardException;
 import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
@@ -19,35 +20,28 @@ import java.util.ArrayList;
 
 public class Game {
     public static final int SIDE_LENGTH = 9;
-    public static final String DIVIDING_SPACE = "   ";
-    public static final String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
-    public static final String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
-    private static final String SIDE_ITEM_SPACE = "       ";//space between board and "Side items" (eg. walls and score)
     private Scanner keyboard = new Scanner(System.in);
     private WallTool wallTool = new WallTool();
+    private DisplayTool displayTool;
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
     public static Pathfinder p1Pathfinder = new Pathfinder(p1);
     public static Pathfinder p2Pathfinder = new Pathfinder(p2);
     private boolean gameOver = false;
     private String winner; //Is the player that won the game (eg. 1 or 2)
+    private boolean forfeit = false; //The player that sets this to true will have surrendered
     public static ArrayList<Cell> board;
 
 
     //MODIFIES: this
     //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
     public Game() {
-        //resetting the board
-        board = new ArrayList<>();
-        for (int row = 0; row < SIDE_LENGTH; row++) {
-            for (int column = 0; column < SIDE_LENGTH; column++) {
-                board.add(new Cell(column, row));
-            }
-        }
-
         //resetting players
-        p1.initialize();
-        p2.initialize();
+        p1 = new P1();
+        p2 = new P2();
+
+        //(re)setting board, walls, and displayTool
+        restart();
     }
 
 
@@ -57,7 +51,17 @@ public class Game {
             update();
         }
         displayBoard();
+        saveToMatchHistory();
         displayGameOverScreen();
+    }
+
+    private void saveToMatchHistory() {
+        //TODO
+    }
+
+    //EFFECTS : displays the board to the console
+    private void displayBoard() {
+        displayTool.displayBoard();
     }
 
     //EFFECTS : Displays the game over screen
@@ -72,6 +76,7 @@ public class Game {
     private void interpretGameOverInput() {
         String input = keyboard.nextLine();
         if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
+            System.out.println("working");
             restart();
             play();
         } else if (input.equals("2") || input.equals("2.") || input.equals("MAIN MENU")) {
@@ -85,6 +90,11 @@ public class Game {
     //MODIFIES: this
     //EFFECTS : restarts the game, but does not reset the scores of each player
     private void restart() {
+        //resetting variables
+        gameOver = false;
+        forfeit = false;
+        winner = "";
+
         //resetting the board
         board = new ArrayList<>();
         for (int row = 0; row < SIDE_LENGTH; row++) {
@@ -99,100 +109,12 @@ public class Game {
 
         //resetting walls
         wallTool = new WallTool();
-    }
 
-    //EFFECTS : creates console display of board
-    public void displayBoard() {
-        //printing out top row of coordinates
-        //first character needs to represent both A and 0, so needs special case
-        System.out.print("A/0" + DIVIDING_SPACE);
-        for (int column = 1; column <= SIDE_LENGTH; column++) {
-            System.out.print(column + DIVIDING_SPACE);
-        }
-
-        System.out.print(SIDE_ITEM_SPACE.substring(0, SIDE_ITEM_SPACE.length() - 2) + "Score");
-        System.out.println();
-
-        //printing out actual grid
-        for (int row = 0; row < SIDE_LENGTH; row++) {
-            printRowWithCells(row);
-            //printing out side items
-            printSideItemsForRowWithCells(row);
-
-
-            //printing out row between the rows with cells ("inter-rows")
-            if (row < SIDE_LENGTH) {
-                //printing out Letter coordinates
-                System.out.print("\n" + (char) (66 + row) + DIVIDING_SPACE);
-                //printing out horizontal walls below each cell, and middle wall segments (at bottom right
-                // corners of cells)
-                for (int column = 0; column < SIDE_LENGTH; column++) {
-                    printHorizontalWall(row, column);
-                    if (column < SIDE_LENGTH - 1 && row < SIDE_LENGTH - 1) {
-                        printMiddleOfWall(row, column);
-                    }
-                }
-                //printing out side items
-                printSideItemsForInterRows(row);
-            }
-            System.out.println();
-        }
-    }
-
-    //EFFECTS : Prints out the "side items" (score and walls of players) for the rows between the cells
-    private void printSideItemsForInterRows(int row) {
-        if (row == 0) {
-            System.out.print(DIVIDING_SPACE + SIDE_ITEM_SPACE + "Player 2: " + p2.getScore());
-        } else if (row == 2) {
-            System.out.print(DIVIDING_SPACE + SIDE_ITEM_SPACE + "Player 1: " + p1.getWalls());
-        }
-    }
-
-    //EFFECTS : Prints out the "side items" (score and walls of players) for the rows with cells
-    private void printSideItemsForRowWithCells(int row) {
-        if (row == 0) {
-            System.out.print(SIDE_ITEM_SPACE + "Player 1: " + p1.getScore());
-        } else if (row == 2) {
-            System.out.print(SIDE_ITEM_SPACE + "Walls");
-        } else if (row == 3) {
-            System.out.print(SIDE_ITEM_SPACE + "Player 2: " + p2.getWalls());
-        }
-    }
-
-    /*EFFECTS : determines whether or not there is a wall segment at bottom right corner of each cell,
-                and prints out the appropriate wall*/
-    private void printMiddleOfWall(int row, int column) {
-        //checking for middle wall segments
-        MiddleOfWall wallMiddle = WallTool.getWallMiddle((row + 1) * SIDE_LENGTH + (column + 1));
-        if (wallMiddle.isWallHere()) {
-            if (wallMiddle.isVertical()) {
-                System.out.print(VERTICAL_WALL_SPACE + "|" + VERTICAL_WALL_SPACE);
-            } else {
-                System.out.print(HORIZONTAL_WALL_SEGMENT);
-            }
-        } else {
-            System.out.print(DIVIDING_SPACE);
-        }
-    }
-
-    //EFFECTS : prints out the necessary horizontal walls directly below each cell
-    private void printHorizontalWall(int row, int column) {
-        //checking for horizontal wall segment
-        if (board.get(row * SIDE_LENGTH + column).isWallDown()) {
-            System.out.print("—");
-        } else {
-            System.out.print(" ");
-        }
-    }
-
-    //EFFECTS : prints out a row of cells, with the necessary vertical wall inbetween them
-    private void printRowWithCells(int row) {
-        //Aligning left end of board
-        System.out.print(" " + DIVIDING_SPACE);
-        //printing out actual board
-        for (int column = 0; column < SIDE_LENGTH; column++) {
-            //printing out cell and walls to the right of each cell
-            System.out.print(board.get(row * SIDE_LENGTH + column).displayCell());
+        //resetting displayTool
+        try {
+            displayTool = new DisplayTool(p1, p2, board);
+        } catch (InvalidBoardException e) {
+            e.printStackTrace();
         }
     }
 
@@ -202,9 +124,10 @@ public class Game {
         System.out.println("Player 1 move");
         interpretInGameInput(p1);
         if (p1.reachedWinCondition(p1)) {
-            gameOver = true;
-            p1.incrementScore();
-            winner = "Player 1";
+            p1Win();
+            return;
+        } else if (forfeit) {
+            p2Win();
             return;
         }
 
@@ -212,11 +135,28 @@ public class Game {
         System.out.println("Player 2 move");
         interpretInGameInput(p2);
         if (p2.reachedWinCondition(p2)) {
-            gameOver = true;
-            p2.incrementScore();
-            winner = "Player 2";
+            p2Win();
+            return;
+        } else if (forfeit) {
+            p1Win();
             return;
         }
+    }
+
+    //MODIFIES: this (gameOver and winner) and P2 (increments score)
+    //EFFECTS : increments player 2 score if they win
+    private void p2Win() {
+        gameOver = true;
+        p2.incrementScore();
+        winner = "Player 2";
+    }
+
+    //MODIFIES: this (gameOver and winner) and P1 (increments score)
+    //EFFECTS : increments player 1 score if they win
+    private void p1Win() {
+        gameOver = true;
+        p1.incrementScore();
+        winner = "Player 1";
     }
 
     //EFFECTS : interprets the player input while game is running, and calls the appropriate method
@@ -230,6 +170,8 @@ public class Game {
         } else if (isWallCommand(input)) {
             handleWallPlacementInput(player, input);
             //if the input is invalid
+        } else if (input.equals("/ff") || input.equals("/FF")) {
+            forfeit = true;
         } else {
             System.out.println("That is not a valid input");
             interpretInGameInput(player);

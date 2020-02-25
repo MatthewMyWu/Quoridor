@@ -17,6 +17,21 @@ public class Cell {
     protected boolean visited;//used for WinnableSolver
     //the following booleans check if there is a wall on the respective side of the cell
     private boolean wallUp;
+
+    public Cell(int coordX, int coordY,
+                boolean p1Here, boolean p2Here,
+                boolean wallUp, boolean wallLeft, boolean wallDown, boolean wallRight) {
+        this.coordX = coordX;
+        this.coordY = coordY;
+        arrayIndex = Game.SIDE_LENGTH * coordY + coordX;
+        this.p1Here = p1Here;
+        this.p2Here = p2Here;
+        this.wallUp = wallUp;
+        this.wallLeft = wallLeft;
+        this.wallDown = wallDown;
+        this.wallRight = wallRight;
+    }
+
     private boolean wallLeft;
     private boolean wallDown;
     private boolean wallRight;
@@ -102,9 +117,9 @@ public class Cell {
 
         //figuring out if we need to display a wall to the right of the cell
         if (wallRight) {
-            returnString += Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE;
+            returnString += DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE;
         } else {
-            returnString += Game.DIVIDING_SPACE;
+            returnString += DisplayTool.DIVIDING_SPACE;
         }
         return returnString;
 

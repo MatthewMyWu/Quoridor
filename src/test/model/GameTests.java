@@ -58,12 +58,12 @@ public class GameTests {
 
     @Test
     public void testDisplayCellNoWalls() {
-        assertEquals("0" + Game.DIVIDING_SPACE, game.board.get(0).displayCell());
+        assertEquals("0" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
         p1.moveTo(0, 0);
-        assertEquals("1" + Game.DIVIDING_SPACE, game.board.get(0).displayCell());
+        assertEquals("1" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
         p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         p2.moveTo(0,0);
-        assertEquals("2" + Game.DIVIDING_SPACE, game.board.get(0).displayCell());
+        assertEquals("2" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
     }
 
     @Test
@@ -74,14 +74,14 @@ public class GameTests {
             fail("No InvalidWallException expected");
         }
 
-        assertEquals("0" + Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE,
+        assertEquals("0" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
                 game.board.get(0).displayCell());
         p1.moveTo(0, 0);
-        assertEquals("1" + Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE,
+        assertEquals("1" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
                 game.board.get(0).displayCell());
         p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
         p2.moveTo(0,0);
-        assertEquals("2" + Game.VERTICAL_WALL_SPACE + "|" + Game.VERTICAL_WALL_SPACE,
+        assertEquals("2" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
                 game.board.get(0).displayCell());
     }
 

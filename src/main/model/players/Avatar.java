@@ -6,10 +6,12 @@ import model.Moveable;
 import ui.Game;
 
 /*Contains methods for how each avatar (player) should behave. Also contains the score and number of walls each player
-* has*/
+ * has*/
 public abstract class Avatar extends Moveable {
     private int score;
     protected int walls;
+    protected int startingCoordX;
+    protected int startingCoordY;
 
     public Avatar(int x, int y) {
         coordX = x;
@@ -47,7 +49,12 @@ public abstract class Avatar extends Moveable {
 
     //MODIFIES: Game
     //EFFECTS : places player on the board
-    public abstract void initialize();
+    public void initialize() {
+        coordX = startingCoordX;
+        coordY = startingCoordY;
+        updatePosition();
+        walls = 10;
+    }
 
     //EFFECTS : return the key that needs to be entered to move Avatar up
     public abstract String getUpKey();

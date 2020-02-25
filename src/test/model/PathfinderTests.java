@@ -1,11 +1,13 @@
 package model;
 
+import exceptions.InvalidBoardException;
 import exceptions.InvalidWallException;
 import model.pathfinding.Pathfinder;
 import model.walls.PathfindingTestWallTool;
 import model.walls.WallTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ui.Game;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -119,7 +121,12 @@ public class PathfinderTests extends GameTests {
             assertTrue(p2Pathfinder.canFindPath());
 
             //used to visualise the board
-            game.displayBoard();
+            try {
+                DisplayTool displayTool = new DisplayTool(p1, p2, Game.board);
+                displayTool.displayBoard();
+            } catch (InvalidBoardException e) {
+                e.printStackTrace();
+            }
         } catch (InvalidWallException e) {
             fail("No InvalidWasllException expected");
         }
