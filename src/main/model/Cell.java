@@ -9,21 +9,14 @@ package model;
 import ui.Game;
 
 public class Cell {
-    private int coordX;
-    private int coordY;
-    private int arrayIndex; //keeps track of the index of the cell in the array
     private boolean p1Here;//is player 1 on this cell
     private boolean p2Here;//is player 2 on this cell
     protected boolean visited;//used for WinnableSolver
     //the following booleans check if there is a wall on the respective side of the cell
     private boolean wallUp;
 
-    public Cell(int coordX, int coordY,
-                boolean p1Here, boolean p2Here,
+    public Cell(boolean p1Here, boolean p2Here,
                 boolean wallUp, boolean wallLeft, boolean wallDown, boolean wallRight) {
-        this.coordX = coordX;
-        this.coordY = coordY;
-        arrayIndex = Game.SIDE_LENGTH * coordY + coordX;
         this.p1Here = p1Here;
         this.p2Here = p2Here;
         this.wallUp = wallUp;
@@ -36,10 +29,7 @@ public class Cell {
     private boolean wallDown;
     private boolean wallRight;
 
-    public Cell(int coordX, int coordY) {
-        this.coordX = coordX;
-        this.coordY = coordY;
-        arrayIndex = Game.SIDE_LENGTH * coordY + coordX;
+    public Cell() {
         wallUp = false;
         wallLeft = false;
         wallDown = false;

@@ -1,4 +1,4 @@
 package exceptions;
 
-public class InvalidBoardException extends Exception {
+public class InvalidBoardException extends DisplayToolException {
 }

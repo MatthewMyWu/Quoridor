@@ -99,7 +99,7 @@ public class Game {
         board = new ArrayList<>();
         for (int row = 0; row < SIDE_LENGTH; row++) {
             for (int column = 0; column < SIDE_LENGTH; column++) {
-                board.add(new Cell(column, row));
+                board.add(new Cell());
             }
         }
 
