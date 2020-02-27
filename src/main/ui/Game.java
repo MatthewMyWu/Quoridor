@@ -23,6 +23,7 @@ public class Game {
     private Scanner keyboard = new Scanner(System.in);
     private WallTool wallTool = new WallTool();
     private DisplayTool displayTool;
+    private MatchHistory matchHistory = new MatchHistory();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
     public static Pathfinder p1Pathfinder = new Pathfinder(p1);
@@ -57,7 +58,7 @@ public class Game {
 
     private void saveToMatchHistory() {
         //TODO
-        MatchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
+        matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
     }
 
     //EFFECTS : displays the board to the console

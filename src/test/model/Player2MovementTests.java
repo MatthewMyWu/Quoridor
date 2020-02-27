@@ -10,7 +10,7 @@ import ui.Game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Player2MovementTests extends GameTests {
+class Player2MovementTests extends Player1MovementTests {
 
     @BeforeEach
     public void runBefore() {

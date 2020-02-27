@@ -99,4 +99,9 @@ public abstract class Avatar extends Moveable {
     public void setWalls(int walls) {
         this.walls = walls;
     }
+
+    //EFFECTS : returns the array index of the Avatar's starting position
+    public int getStartingArrayIndex() {
+        return startingCoordY * Game.SIDE_LENGTH + startingCoordX;
+    }
 }

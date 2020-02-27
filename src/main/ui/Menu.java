@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Menu {
     private Scanner keyboard = new Scanner(System.in);
     private boolean exit = false;
+    public MatchHistory matchHistory = new MatchHistory();
     private Game game;
 
     public Menu() {
@@ -32,7 +33,7 @@ public class Menu {
             game = new Game();
             game.play();
         } else if (input.equals("2") || input.equals("2.") || input.equalsIgnoreCase("match history")) {
-            MatchHistory.display();
+            matchHistory.display();
         } else if (input.equals("0") || input.equals("0.") || input.equalsIgnoreCase("exit")) {
             exit = true;
         } else {

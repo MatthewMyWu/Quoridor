@@ -3,8 +3,7 @@ package model.persistence;
 import model.Cell;
 import model.DisplayTool;
 import model.players.Avatar;
-import model.players.P1;
-import model.players.P2;
+import model.players.GenericAvatar;
 import model.walls.MiddleOfWall;
 import ui.Game;
 
@@ -22,8 +21,8 @@ public class HistoricMatch {
     private static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
     private static final String NEXT_LINE_DELIMITER = "\n";//used to separate information on different objects
     private int winner = 0;//player # that won this match
-    private Avatar p1 = new P1();
-    private Avatar p2 = new P2();
+    private Avatar p1 = new GenericAvatar();
+    private Avatar p2 = new GenericAvatar();
     private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
     private String fileName;
@@ -34,6 +33,11 @@ public class HistoricMatch {
     // the game is unknown (eg. for reading the final state of the game from a file)
     public HistoricMatch(String fileName) {
         this.fileName = fileName;
+        try {
+            readMatch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // EFFECTS: constructs a writer with associated players, wallMiddles, board, and file.
@@ -111,7 +115,7 @@ public class HistoricMatch {
     }
 
     //EFFECTS : reads information for this match's associated file (and assigns the information to fields)
-    public void readMatch() throws IOException {
+    private void readMatch() throws IOException {
         //reading from file
         File targetFile = new File(fileName);
         List<String> fileText = Files.readAllLines(targetFile.toPath());
@@ -219,5 +223,29 @@ public class HistoricMatch {
     ...
     cell81.p1Here,cell81.p2Here,cell81.wallUp,cell81.wallLeft,cell81.wallDown,cell81.wallRight
      */
+
+
+    ////////////////////////////////////getters (for testing)///////////////////////////////////////
+
+    public Avatar getP1() {
+        return p1;
+    }
+
+    public Avatar getP2() {
+        return p2;
+    }
+
+    public int getWinner() {
+        return winner;
+    }
+
+    public ArrayList<MiddleOfWall> getWallMiddles() {
+        return wallMiddles;
+    }
+
+    public ArrayList<Cell> getBoard() {
+        return board;
+    }
+
 
 }

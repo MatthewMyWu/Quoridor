@@ -11,21 +11,20 @@ import java.util.ArrayList;
 public class MatchHistory {
     public static final int MAX_MATCHES = 10;
     private static ArrayList<HistoricMatch> matches = new ArrayList<>();
-    private static String filename = "./data/lastGamePlayed";
+    private static String lastGamePlayed = "./data/lastGamePlayed";
 
-    public static void display() {
-        HistoricMatch lastGamePlayed = new HistoricMatch(filename);
-        try {
-            lastGamePlayed.readMatch();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public MatchHistory() {
+    }
+
+    public void display() {
+        HistoricMatch lastGamePlayed = new HistoricMatch(this.lastGamePlayed);
         lastGamePlayed.displayMatch();
     }
 
-    public static void saveNewMatch(Avatar p1, Avatar p2, int winner, ArrayList<MiddleOfWall> wallMiddles,
+    public void saveNewMatch(Avatar p1, Avatar p2, int winner, ArrayList<MiddleOfWall> wallMiddles,
                              ArrayList<Cell> board) {
-        HistoricMatch lastGamePlayed = new HistoricMatch(p1, p2, winner, wallMiddles, board, filename);
+        HistoricMatch lastGamePlayed = new HistoricMatch(p1, p2, winner, wallMiddles, board,
+                getLastGamePlayed());
         try {
             lastGamePlayed.recordMatch();
         } catch (IOException e) {
@@ -33,7 +32,10 @@ public class MatchHistory {
         }
     }
 
-    public static void readMatch(String filename) {
-        HistoricMatch lastGamePlayed = new HistoricMatch(filename);
+
+
+    //////////////////////getters (for testing)//////////////////////////////////
+    public String getLastGamePlayed() {
+        return lastGamePlayed;
     }
 }
