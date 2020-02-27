@@ -1,5 +1,7 @@
 package ui;
 
+import model.persistence.MatchHistory;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -26,10 +28,12 @@ public class Menu {
     //EFFECTS : Interprets player input and puts it into effect
     private void interpretInput() {
         String input = keyboard.nextLine();
-        if (input.equals("1") || input.equals("1.") || input.equals("play game") || input.equals("PLAY GAME")) {
+        if (input.equals("1") || input.equals("1.") || input.equalsIgnoreCase("play game")) {
             game = new Game();
             game.play();
-        } else if (input.equals("0") || input.equals("0.") || input.equals("exit") || input.equals("EXIT")) {
+        } else if (input.equals("2") || input.equals("2.") || input.equalsIgnoreCase("match history")) {
+            MatchHistory.display();
+        } else if (input.equals("0") || input.equals("0.") || input.equalsIgnoreCase("exit")) {
             exit = true;
         } else {
             System.out.println("That is not a valid input");
@@ -37,3 +41,4 @@ public class Menu {
         }
     }
 }
+//./data/lastGamePlayed

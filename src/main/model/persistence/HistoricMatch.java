@@ -21,13 +21,12 @@ public class HistoricMatch {
     private static final String FIELD_DELIMITER = ",";//used to separate fields of an object
     private static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
     private static final String NEXT_LINE_DELIMITER = "\n";//used to separate information on different objects
-    private int winner;//player # that won this match
+    private int winner = 0;//player # that won this match
     private Avatar p1 = new P1();
     private Avatar p2 = new P2();
     private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
     private String fileName;
-    private File file = new File(fileName);
     private DisplayTool displaytool;
     private FileWriter writer;
 
@@ -41,7 +40,6 @@ public class HistoricMatch {
     // This constructor is generally used when the final state of the game is known (eg. for recording a finished game)
     public HistoricMatch(Avatar p1, Avatar p2, int winner, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board,
                          String filename) {
-
         this.p1 = p1;
         this.p2 = p2;
         this.winner = winner;
@@ -77,6 +75,7 @@ public class HistoricMatch {
         recordWallMiddlesInfo();
         writer.write(NEXT_LINE_DELIMITER);
         recordBoardInfo();
+        writer.close();
     }
 
     //MODIFIES: file
@@ -89,7 +88,8 @@ public class HistoricMatch {
     //MODIFIES: file
     //EFFECTS : records winner into file
     private void recordWinnerInfo() throws IOException {
-        writer.write(winner);
+        String winnerString = "" + this.winner;
+        writer.write(winnerString);
     }
 
     //MODIFIES: file
@@ -110,9 +110,15 @@ public class HistoricMatch {
         }
     }
 
+    //EFFECTS : reads information for this match's associated file (and assigns the information to fields)
     public void readMatch() throws IOException {
-        List<String> fileText = Files.readAllLines(file.toPath());
-        assert (fileText.size() == 5); //ensuring the correct number of objects have been read from file
+        //reading from file
+        File targetFile = new File(fileName);
+        List<String> fileText = Files.readAllLines(targetFile.toPath());
+        //ensuring the correct number of objects have been read from file
+        assert (fileText.size() == 5);
+
+        //assigning information to fields
         readPlayerInfo(this.p1, fileText.get(0));
         readPlayerInfo(this.p2, fileText.get(1));
         readWinnerInfo(fileText.get(2));

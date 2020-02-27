@@ -111,7 +111,7 @@ public class DisplayTool {
         }
     }
 
-    //EFFECTS : prints out a row of cells, with the necessary vertical wall inbetween them
+    //EFFECTS : prints out a row of cells, with the necessary vertical wall in-between them
     private void printRowWithCells(int row) {
         //Aligning left end of board
         System.out.print(" " + DIVIDING_SPACE);

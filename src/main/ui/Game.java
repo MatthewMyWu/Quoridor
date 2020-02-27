@@ -5,6 +5,7 @@ import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import model.*;
 import model.pathfinding.Pathfinder;
+import model.persistence.MatchHistory;
 import model.players.Avatar;
 import model.players.P1;
 import model.players.P2;
@@ -27,7 +28,7 @@ public class Game {
     public static Pathfinder p1Pathfinder = new Pathfinder(p1);
     public static Pathfinder p2Pathfinder = new Pathfinder(p2);
     private boolean gameOver = false;
-    private String winner; //Is the player that won the game (eg. 1 or 2)
+    private int winner; //Is the player that won the game (eg. 1 or 2)
     private boolean forfeit = false; //The player that sets this to true will have surrendered
     public static ArrayList<Cell> board;
 
@@ -56,6 +57,7 @@ public class Game {
 
     private void saveToMatchHistory() {
         //TODO
+        MatchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
     }
 
     //EFFECTS : displays the board to the console
@@ -65,7 +67,7 @@ public class Game {
 
     //EFFECTS : Displays the game over screen
     private void displayGameOverScreen() {
-        System.out.println(winner + " wins!");
+        System.out.println("Player " + winner + " wins!");
         System.out.println("1. PLAY AGAIN");
         System.out.println("2. MAIN MENU");
         interpretGameOverInput();
@@ -92,7 +94,7 @@ public class Game {
         //resetting variables
         gameOver = false;
         forfeit = false;
-        winner = "";
+        winner = 0;
 
         //resetting the board
         board = new ArrayList<>();
@@ -143,7 +145,7 @@ public class Game {
     private void p2Win() {
         gameOver = true;
         p2.incrementScore();
-        winner = "Player 2";
+        winner = 2;
     }
 
     //MODIFIES: this (gameOver and winner) and P1 (increments score)
@@ -151,7 +153,7 @@ public class Game {
     private void p1Win() {
         gameOver = true;
         p1.incrementScore();
-        winner = "Player 1";
+        winner = 1;
     }
 
     //EFFECTS : interprets the player input while game is running, and calls the appropriate method
