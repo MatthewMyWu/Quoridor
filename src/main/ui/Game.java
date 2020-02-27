@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.InvalidBoardException;
 import exceptions.InvalidWallException;
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
@@ -111,11 +110,7 @@ public class Game {
         wallTool = new WallTool();
 
         //resetting displayTool
-        try {
-            displayTool = new DisplayTool(p1, p2, board);
-        } catch (InvalidBoardException e) {
-            e.printStackTrace();
-        }
+        displayTool = new DisplayTool(p1, p2, WallTool.getWallMiddles(), board);
     }
 
     //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)

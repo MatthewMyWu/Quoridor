@@ -1,6 +1,5 @@
 package model;
 
-import exceptions.InvalidBoardException;
 import model.players.Avatar;
 import model.walls.MiddleOfWall;
 import model.walls.WallTool;
@@ -16,17 +15,16 @@ public class DisplayTool {
     private static final String SIDE_ITEM_SPACE = "       ";//space between board and "Side items" (eg. walls and score)
     private Avatar p1;
     private Avatar p2;
+    private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
 
-    public DisplayTool(Avatar p1, Avatar p2, ArrayList<Cell> board) throws InvalidBoardException {
-        if (board.size() != Game.SIDE_LENGTH * Game.SIDE_LENGTH) {
-            System.out.println("passed a board of invalid size");
-            throw new InvalidBoardException();
-        } else {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.board = board;
-        }
+    public DisplayTool(Avatar p1, Avatar p2, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board) {
+        assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        assert (wallMiddles.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        this.p1 = p1;
+        this.p2 = p2;
+        this.wallMiddles = wallMiddles;
+        this.board = board;
     }
 
     //EFFECTS : creates console display of board
@@ -91,7 +89,7 @@ public class DisplayTool {
                 and prints out the appropriate wall*/
     private void printMiddleOfWall(int row, int column) {
         //checking for middle wall segments
-        MiddleOfWall wallMiddle = WallTool.getWallMiddle((row + 1) * Game.SIDE_LENGTH + (column + 1));
+        MiddleOfWall wallMiddle = wallMiddles.get((row + 1) * Game.SIDE_LENGTH + (column + 1));
         if (wallMiddle.isWallHere()) {
             if (wallMiddle.isVertical()) {
                 System.out.print(VERTICAL_WALL_SPACE + "|" + VERTICAL_WALL_SPACE);

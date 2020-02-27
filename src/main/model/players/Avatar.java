@@ -72,6 +72,10 @@ public abstract class Avatar extends Moveable {
     //EFFECTS : returns true if the player is at index, false otherwise (used for testing)
     public abstract boolean isHere(int index);
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public int getScore() {
         return score;
     }
@@ -90,5 +94,9 @@ public abstract class Avatar extends Moveable {
     //EFFECTS : decrements the walls of this player by 1
     public void decrementWall() {
         walls--;
+    }
+
+    public void setWalls(int walls) {
+        this.walls = walls;
     }
 }

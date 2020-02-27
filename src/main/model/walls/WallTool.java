@@ -15,7 +15,7 @@ public class WallTool {
         wallMiddles = new ArrayList<>();
         for (int row = 0; row < Game.SIDE_LENGTH; row++) {
             for (int column = 0; column < Game.SIDE_LENGTH; column++) {
-                wallMiddles.add(new MiddleOfWall(row, column));
+                wallMiddles.add(new MiddleOfWall());
             }
         }
 
@@ -224,6 +224,10 @@ public class WallTool {
 
     public static MiddleOfWall getWallMiddle(int index) {
         return wallMiddles.get(index);
+    }
+
+    public static ArrayList<MiddleOfWall> getWallMiddles() {
+        return wallMiddles;
     }
 }
 /*note that placeHorizontalWall and placeVerticalWall are very similar, but they differ in a few ways that I

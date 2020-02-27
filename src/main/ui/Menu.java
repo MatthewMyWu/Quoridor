@@ -1,8 +1,5 @@
 package ui;
 
-import exceptions.InvalidBoardException;
-import org.omg.CORBA.DynAnyPackage.Invalid;
-
 import java.util.Scanner;
 
 public class Menu {

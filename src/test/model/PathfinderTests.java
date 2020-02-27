@@ -1,6 +1,5 @@
 package model;
 
-import exceptions.InvalidBoardException;
 import exceptions.InvalidWallException;
 import model.pathfinding.Pathfinder;
 import model.walls.PathfindingTestWallTool;
@@ -121,12 +120,8 @@ public class PathfinderTests extends GameTests {
             assertTrue(p2Pathfinder.canFindPath());
 
             //used to visualise the board
-            try {
-                DisplayTool displayTool = new DisplayTool(p1, p2, Game.board);
-                displayTool.displayBoard();
-            } catch (InvalidBoardException e) {
-                e.printStackTrace();
-            }
+            DisplayTool displayTool = new DisplayTool(p1, p2, wallTool.getWallMiddles(), Game.board);
+            displayTool.displayBoard();
         } catch (InvalidWallException e) {
             fail("No InvalidWasllException expected");
         }
