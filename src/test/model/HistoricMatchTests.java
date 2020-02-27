@@ -1,7 +1,9 @@
 package model;
 
 import model.persistence.HistoricMatch;
+import model.persistence.MatchHistory;
 import model.players.Avatar;
+import model.players.GenericAvatar;
 import model.walls.MiddleOfWall;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class HistoricMatchTests extends GameTests{
     public static String controlStartingP2Win = "./data/testStartingConditionsP2Win";
@@ -48,7 +51,6 @@ public class HistoricMatchTests extends GameTests{
         //used to view testMatch
         //testMatch.displayMatch();
         testMatchesControlStartingP2Win(testMatch);
-
     }
 
     //sees if testMatch matches with information in controlStartingP2Win file
@@ -90,6 +92,23 @@ public class HistoricMatchTests extends GameTests{
                 assertFalse(x.isP1Here());
                 assertFalse(x.isP2Here());
             }
+            arrayIndex++;
+        }
+    }
+
+    @Test
+    public void testGenericAvatarConstructor() {
+        Avatar testAvatar = new GenericAvatar();
+
+        assertFalse(testAvatar.reachedWinCondition(testAvatar));
+
+        assertNull(testAvatar.getUpKey());
+        assertNull(testAvatar.getLeftKey());
+        assertNull(testAvatar.getDownKey());
+        assertNull(testAvatar.getRightKey());
+        int arrayIndex = 0;
+        for (Cell x : game.board) {
+            assertFalse(testAvatar.isHere(arrayIndex));
             arrayIndex++;
         }
     }

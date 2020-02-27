@@ -65,7 +65,7 @@ public class GameTests {
     }
 
     @Test
-    public void testDisplayCellWithWalls()  {
+    public void testDisplayCellWithWalls() {
         try {
             wallTool.placeWall("A1,C1");
         } catch (InvalidWallException e) {
@@ -82,6 +82,4 @@ public class GameTests {
         assertEquals("2" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
                 game.board.get(0).displayCell());
     }
-
-    ///////////////////////////////implemented by subclasses (other test classes)////////////////////////
 }

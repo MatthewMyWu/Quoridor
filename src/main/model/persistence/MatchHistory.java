@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 //contains all the matches in the match history
 public class MatchHistory {
-    public static final int MAX_MATCHES = 10;
-    private static ArrayList<HistoricMatch> matches = new ArrayList<>();
-    private static String lastGamePlayed = "./data/lastGamePlayed";
+    //public static final int MAX_MATCHES = 10;
+    //private static ArrayList<HistoricMatch> matches = new ArrayList<>();
+    private String lastGamePlayed = "./data/lastGamePlayed";
 
     public MatchHistory() {
     }
@@ -31,7 +31,6 @@ public class MatchHistory {
             e.printStackTrace();
         }
     }
-
 
 
     //////////////////////getters (for testing)//////////////////////////////////
