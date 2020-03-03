@@ -101,7 +101,6 @@ public class HistoricMatchTests extends GameTests{
         Avatar testAvatar = new GenericAvatar();
 
         assertFalse(testAvatar.reachedWinCondition(testAvatar));
-
         assertNull(testAvatar.getUpKey());
         assertNull(testAvatar.getLeftKey());
         assertNull(testAvatar.getDownKey());
