@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//contains the information that needs to be stored for 1 game in "match history"
+//contains the information that needs to be stored for 1 game in "match history", as well as methods to store it.
 public class HistoricMatch {
     private static final String FIELD_DELIMITER = ",";//used to separate fields of an object
     private static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
@@ -31,13 +31,9 @@ public class HistoricMatch {
 
     // EFFECTS: constructs a writer with associated file.This constructor is generally used when the final state of
     // the game is unknown (eg. for reading the final state of the game from a file)
-    public HistoricMatch(String fileName) {
+    public HistoricMatch(String fileName) throws IOException {
         this.fileName = fileName;
-        try {
-            readMatch();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        readMatch();
     }
 
     // EFFECTS: constructs a writer with associated players, wallMiddles, board, and file.
@@ -80,6 +76,18 @@ public class HistoricMatch {
         writer.write(NEXT_LINE_DELIMITER);
         recordBoardInfo();
         writer.close();
+    }
+
+    //MODIFIES: this
+    //EFFECTS : Moves this so that it is recorded in fileName
+    protected void shiftTo(String fileName) throws IOException {
+        this.fileName = fileName;
+        try {
+            writer = new FileWriter(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        recordMatch();
     }
 
     //MODIFIES: file
@@ -246,6 +254,4 @@ public class HistoricMatch {
     public ArrayList<Cell> getBoard() {
         return board;
     }
-
-
 }
