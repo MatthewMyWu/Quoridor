@@ -1,4 +1,4 @@
 package exceptions;
 
-public class InvalidWallException extends Exception {
+public class InvalidWallException extends WallException {
 }

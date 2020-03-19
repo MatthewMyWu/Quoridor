@@ -24,7 +24,8 @@ public class WallTool {
     //REQUIRES: input be of the correct format, and coordinates are on the board. This should be checked by the caller
     //EFFECTS : Adds a wall that spans the specified locations
     public void placeWall(String input) throws InvalidWallException {
-        //this variable is used for the "pathfinding check" (bottom section of this method)
+        //this variable is used for the "pathfinding check" (bottom section of this method) (if pathfinding check fails,
+        // need to use this variable to determine if we need to delete a vertical or horizontal wall)
         boolean horizontalWallPlaced = false;
 
         //x and y coordinates of initial and latter ends of wall respectively. Indexing starts at 0 for all coordinates

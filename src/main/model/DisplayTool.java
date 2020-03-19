@@ -1,5 +1,6 @@
 package model;
 
+import model.Cell;
 import model.players.Avatar;
 import model.walls.MiddleOfWall;
 import model.walls.WallTool;
@@ -9,14 +10,14 @@ import java.util.ArrayList;
 
 //contains methods necessary to print out the board to the screen
 public class DisplayTool {
-    public static final String DIVIDING_SPACE = "   ";
-    public static final String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
+    private static final String DIVIDING_SPACE = "   ";
+    private static final String VERTICAL_WALL_SPACE = " "; // space between a cell and a vertical wall next to it
     private static final String HORIZONTAL_WALL_SEGMENT = "---"; // what to print out for a horizontal wall segment
     private static final String SIDE_ITEM_SPACE = "       ";//space between board and "Side items" (eg. walls and score)
-    private Avatar p1;
-    private Avatar p2;
-    private ArrayList<MiddleOfWall> wallMiddles;
-    private ArrayList<Cell> board;
+    protected Avatar p1;
+    protected Avatar p2;
+    protected ArrayList<MiddleOfWall> wallMiddles;
+    protected ArrayList<Cell> board;
 
     public DisplayTool(Avatar p1, Avatar p2, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board) {
         assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
@@ -118,7 +119,7 @@ public class DisplayTool {
         //printing out actual board
         for (int column = 0; column < Game.SIDE_LENGTH; column++) {
             //printing out cell and walls to the right of each cell
-            System.out.print(board.get(row * Game.SIDE_LENGTH + column).displayCell());
+            //System.out.print(board.get(row * Game.SIDE_LENGTH + column).displayCell());
         }
     }
 }

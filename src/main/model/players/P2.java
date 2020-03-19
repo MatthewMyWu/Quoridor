@@ -8,10 +8,10 @@ import ui.Game;
 
 /*Contains specific information about player 2 that differs from player 1*/
 public class P2 extends Avatar {
-    private static final String UP_KEY = "i";
-    private static final String LEFT_KEY = "j";
-    private static final String DOWN_KEY = "k";
-    private static final String RIGHT_KEY = "l";
+    public static final String UP_KEY = "i";
+    public static final String LEFT_KEY = "j";
+    public static final String DOWN_KEY = "k";
+    public static final String RIGHT_KEY = "l";
 
     public P2() {
         super(Game.SIDE_LENGTH / 2, 0);

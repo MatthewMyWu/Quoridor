@@ -1,16 +1,14 @@
 package ui;
 
-import exceptions.InvalidWallException;
-import exceptions.OutOfBoundsException;
-import exceptions.WallObstructionException;
+import exceptions.*;
 import model.*;
 import model.pathfinding.Pathfinder;
 import model.persistence.MatchHistory;
 import model.players.Avatar;
 import model.players.P1;
 import model.players.P2;
-import model.walls.MiddleOfWall;
 import model.walls.WallTool;
+import ui.gui.GuiTool;
 
 import java.util.Scanner;
 
@@ -22,12 +20,13 @@ public class Game {
     public static final int SIDE_LENGTH = 9;
     private Scanner keyboard = new Scanner(System.in);
     private WallTool wallTool = new WallTool();
-    private DisplayTool displayTool;
+    public GuiTool guiTool;//TODO
     private MatchHistory matchHistory = new MatchHistory();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
     public static Pathfinder p1Pathfinder = new Pathfinder(p1);
     public static Pathfinder p2Pathfinder = new Pathfinder(p2);
+    private boolean isP1Turn = true;//true when it is p1 turn, false if p2 turn
     private boolean gameOver = false;
     private int winner; //Is the player that won the game (eg. 1 or 2)
     private boolean forfeit = false; //The player that sets this to true will have surrendered
@@ -49,7 +48,7 @@ public class Game {
     //EFFECTS : starts the game
     public void play() {
         while (!gameOver) {
-            update();
+            //update();//TODO
         }
         displayBoard();
         saveToMatchHistory();
@@ -57,13 +56,12 @@ public class Game {
     }
 
     private void saveToMatchHistory() {
-        //TODO
         matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
     }
 
     //EFFECTS : displays the board to the console
     private void displayBoard() {
-        displayTool.displayBoard();
+        guiTool.displayBoard();
     }
 
     //EFFECTS : Displays the game over screen
@@ -99,9 +97,9 @@ public class Game {
 
         //resetting the board
         board = new ArrayList<>();
-        for (int row = 0; row < SIDE_LENGTH; row++) {
-            for (int column = 0; column < SIDE_LENGTH; column++) {
-                board.add(new Cell());
+        for (int y = 0; y < SIDE_LENGTH; y++) {
+            for (int x = 0; x < SIDE_LENGTH; x++) {
+                board.add(new Cell(x, y));
             }
         }
 
@@ -113,31 +111,29 @@ public class Game {
         wallTool = new WallTool();
 
         //resetting displayTool
-        displayTool = new DisplayTool(p1, p2, WallTool.getWallMiddles(), board);
+        guiTool = new GuiTool(this);
     }
 
     //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)
-    public void update() {
-        displayBoard();
-        System.out.println("Player 1 move");
-        interpretInGameInput(p1);
-        if (p1.reachedWinCondition(p1)) {
-            p1Win();
-            return;
-        } else if (forfeit) {
-            p2Win();
-            return;
-        }
-
-        displayBoard();
-        System.out.println("Player 2 move");
-        interpretInGameInput(p2);
-        if (p2.reachedWinCondition(p2)) {
-            p2Win();
-            return;
-        } else if (forfeit) {
-            p1Win();
-            return;
+    public void update(String input) {
+        if (isP1Turn) {
+            interpretInGameInput(p1, input);
+            if (p1.reachedWinCondition(p1)) {
+                p1Win();
+                return;
+            } else if (forfeit) {
+                p2Win();
+                return;
+            }
+        } else {
+            interpretInGameInput(p2, input);
+            if (p2.reachedWinCondition(p2)) {
+                p2Win();
+                return;
+            } else if (forfeit) {
+                p1Win();
+                return;
+            }
         }
     }
 
@@ -158,52 +154,59 @@ public class Game {
     }
 
     //EFFECTS : interprets the player input while game is running, and calls the appropriate method
-    private void interpretInGameInput(Avatar player) {
-        String input = keyboard.nextLine();
-        //if the input matches one of the keys to move the player:
-        if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey()) || input.equals(player.getDownKey())
-                || input.equals(player.getRightKey())) {
-            handleMovementInput(player, input);
-            //if the input matches the format of placing a wall
-        } else if (isWallCommand(input)) {
-            handleWallPlacementInput(player, input);
-            //if the input is invalid
-        } else if (input.equals("/ff") || input.equals("/FF")) {
-            forfeit = true;
-        } else {
+    //TODO
+    public void interpretInGameInput(Avatar player, String input) {
+        try {
+            //if the input matches one of the keys to move the player:
+            if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey())
+                    || input.equals(player.getDownKey()) || input.equals(player.getRightKey())) {
+                handleMovementInput(player, input);
+                //if the input matches the format of placing a wall
+            } else if (isWallCommand(input)) {
+                handleWallPlacementInput(player, input);
+                //if input is to forfeit
+            } else if (input.equals("/ff") || input.equals("/FF")) {
+                forfeit = true;
+                //if input is invalid
+            } else {
+                throw new BadInputException();
+            }
+
+            //switching the players turn (can only be reached if no exception is thrown)
+            isP1Turn = (isP1Turn == false);
+            System.out.println(isP1Turn);
+
+        } catch (InvalidWallException e) {
+            System.out.println("You can not place a wall there");
+        } catch (NoMoreWallsException e) {
+            System.out.println("You have no more walls");
+        }  catch (OutOfBoundsException e) {
+            System.out.println("You can not move off the board");
+        } catch (WallObstructionException e) {
+            System.out.println("Can not move over a wall");
+        } catch (BadInputException e) {
             System.out.println("That is not a valid input");
-            interpretInGameInput(player);
         }
+
     }
 
     //EFFECTS : Handles player input if it is to place a wall
-    private void handleWallPlacementInput(Avatar player, String input) {
+    private void handleWallPlacementInput(Avatar player, String input) throws InvalidWallException,
+            NoMoreWallsException {
         //first needs to check if player has any walls left
         if (player.getWalls() <= 0) {
             System.out.println("You do not have any more walls");
-            interpretInGameInput(player);
+            throw new NoMoreWallsException();
         } else {
-            try {
-                wallTool.placeWall(input);
-                player.decrementWall();
-            } catch (InvalidWallException e) {
-                System.out.println("You can not place a wall there");
-                interpretInGameInput(player);
-            }
+            wallTool.placeWall(input);
+            player.decrementWall();
         }
     }
 
     //EFFECTS : Handles player input if it is to move the player
-    private void handleMovementInput(Avatar player, String input) {
-        try {
-            player.move(input);
-        } catch (OutOfBoundsException e) {
-            System.out.println("You can not move off the board");
-            interpretInGameInput(player);
-        } catch (WallObstructionException e) {
-            System.out.println("Can not move over a wall");
-            interpretInGameInput(player);
-        }
+    private void handleMovementInput(Avatar player, String input) throws WallObstructionException,
+            OutOfBoundsException {
+        player.move(input);
     }
 
     //EFFECTS : determines if input is in the proper format for a command to place a wall
@@ -220,5 +223,24 @@ public class Game {
                 //checking fifth character is a proper number coordinate
                 && input.charAt(4) >= 48 && input.charAt(4) <= 48 + SIDE_LENGTH;
 
+    }
+
+
+
+    //getters
+    public static Avatar getP1() {
+        return p1;
+    }
+
+    public static Avatar getP2() {
+        return p2;
+    }
+
+    public WallTool getWallTool() {
+        return wallTool;
+    }
+
+    public static ArrayList<Cell> getBoard() {
+        return board;
     }
 }

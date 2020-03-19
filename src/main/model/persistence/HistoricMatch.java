@@ -193,17 +193,20 @@ public class HistoricMatch {
 
         //creating board
         board = new ArrayList<Cell>();
-        for (String element : parsedElements) {
-            List<String> parsedFields = parseFields(element);
-            assert (parsedFields.size() == 6);
-            boolean p1Here = Boolean.parseBoolean(parsedFields.get(0));
-            boolean p2Here = Boolean.parseBoolean(parsedFields.get(1));
-            boolean wallUp = Boolean.parseBoolean(parsedFields.get(2));
-            boolean wallLeft = Boolean.parseBoolean(parsedFields.get(3));
-            boolean wallDown = Boolean.parseBoolean(parsedFields.get(4));
-            boolean wallRight = Boolean.parseBoolean(parsedFields.get(5));
+        for (int y = 0; y < Game.SIDE_LENGTH; y++) {
+            for (int x = 0; x < Game.SIDE_LENGTH; x++) {
+                String element = parsedElements.get(y * Game.SIDE_LENGTH + x);
+                List<String> parsedFields = parseFields(element);
+                assert (parsedFields.size() == 6);
+                boolean p1Here = Boolean.parseBoolean(parsedFields.get(0));
+                boolean p2Here = Boolean.parseBoolean(parsedFields.get(1));
+                boolean wallUp = Boolean.parseBoolean(parsedFields.get(2));
+                boolean wallLeft = Boolean.parseBoolean(parsedFields.get(3));
+                boolean wallDown = Boolean.parseBoolean(parsedFields.get(4));
+                boolean wallRight = Boolean.parseBoolean(parsedFields.get(5));
 
-            board.add(new Cell(p1Here, p2Here, wallUp, wallLeft, wallDown, wallRight));
+                board.add(new Cell(x, y, p1Here, p2Here, wallUp, wallLeft, wallDown, wallRight));
+            }
         }
     }
 

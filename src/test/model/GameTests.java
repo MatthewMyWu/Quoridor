@@ -1,9 +1,6 @@
 package model;
 
-import exceptions.IllegalMoveException;
 import exceptions.InvalidWallException;
-import exceptions.OutOfBoundsException;
-import exceptions.WallObstructionException;
 import model.players.Avatar;
 import model.players.P1;
 import model.players.P2;
@@ -54,32 +51,32 @@ public class GameTests {
         }
     }
 
-    @Test
-    public void testDisplayCellNoWalls() {
-        assertEquals("0" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
-        p1.moveTo(0, 0);
-        assertEquals("1" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
-        p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
-        p2.moveTo(0,0);
-        assertEquals("2" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
-    }
-
-    @Test
-    public void testDisplayCellWithWalls() {
-        try {
-            wallTool.placeWall("A1,C1");
-        } catch (InvalidWallException e) {
-            fail("No InvalidWallException expected");
-        }
-
-        assertEquals("0" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
-                game.board.get(0).displayCell());
-        p1.moveTo(0, 0);
-        assertEquals("1" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
-                game.board.get(0).displayCell());
-        p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
-        p2.moveTo(0,0);
-        assertEquals("2" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
-                game.board.get(0).displayCell());
-    }
+//    @Test
+//    public void testDisplayCellNoWalls() {
+//        assertEquals("0" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
+//        p1.moveTo(0, 0);
+//        assertEquals("1" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
+//        p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
+//        p2.moveTo(0,0);
+//        assertEquals("2" + DisplayTool.DIVIDING_SPACE, game.board.get(0).displayCell());
+//    }
+//
+//    @Test
+//    public void testDisplayCellWithWalls() {
+//        try {
+//            wallTool.placeWall("A1,C1");
+//        } catch (InvalidWallException e) {
+//            fail("No InvalidWallException expected");
+//        }
+//
+//        assertEquals("0" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
+//                game.board.get(0).displayCell());
+//        p1.moveTo(0, 0);
+//        assertEquals("1" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
+//                game.board.get(0).displayCell());
+//        p1.moveTo(Game.SIDE_LENGTH - 1, Game.SIDE_LENGTH - 1);
+//        p2.moveTo(0,0);
+//        assertEquals("2" + DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE,
+//                game.board.get(0).displayCell());
+//    }
 }

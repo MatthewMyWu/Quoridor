@@ -38,21 +38,23 @@ public class MatchHistory {
     }
 
     //MODIFIES: this
-    //EFFECTS : Fills in the rest of matches with "blank" matches (only called if MAX_MATCHES is bigger than amount
-    //          of matches currently stored in match history)
-    private void fillWithEmptyMatches(int x) {
+    //EFFECTS : Fills in the rest of matches (all matches past threshold) with "blank" matches
+    // (only called if MAX_MATCHES is bigger than amount of matches currently stored in match history)
+    private void fillWithEmptyMatches(int threshold) {
         //making generic match info
         GenericAvatar p1 = new GenericAvatar();
         GenericAvatar p2 = new GenericAvatar();
         int winner = 0;
         ArrayList<MiddleOfWall> emptyWallMiddles = new WallTool().getWallMiddles();
         ArrayList<Cell> emptyBoard = new ArrayList<>();
-        for (int z = 0; z < Game.SIDE_LENGTH * Game.SIDE_LENGTH; z++) {
-            emptyBoard.add(new Cell());
+        for (int y = 0; y < Game.SIDE_LENGTH; y++) {
+            for (int x = 0; x < Game.SIDE_LENGTH; x++) {
+                emptyBoard.add(new Cell(x, y));
+            }
         }
 
         //adding matches to ./data
-        for (int y = x; y < MAX_MATCHES; y++) {
+        for (int y = threshold; y < MAX_MATCHES; y++) {
             String fileName = getFileName(y);
             HistoricMatch newMatch = new HistoricMatch(p1, p2, winner, emptyWallMiddles, emptyBoard, fileName);
             //recording match to ./data

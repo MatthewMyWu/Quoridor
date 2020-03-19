@@ -8,10 +8,10 @@ import model.players.Avatar;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P1 extends Avatar {
-    private static final String UP_KEY = "w";
-    private static final String LEFT_KEY = "a";
-    private static final String DOWN_KEY = "s";
-    private static final String RIGHT_KEY = "d";
+    public static final String UP_KEY = "w";
+    public static final String LEFT_KEY = "a";
+    public static final String DOWN_KEY = "s";
+    public static final String RIGHT_KEY = "d";
 
 
     public P1() {

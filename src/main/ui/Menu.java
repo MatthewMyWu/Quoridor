@@ -18,8 +18,6 @@ public class Menu {
         do {
             System.out.println("1. PLAY GAME");
             System.out.println("2. MATCH HISTORY");
-            //TODO implement match history
-            //TODO quick save game and "3. resume game"?
             System.out.println("0. EXIT");
 
             interpretInput();
