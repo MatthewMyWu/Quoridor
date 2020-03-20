@@ -4,12 +4,30 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Corner extends Rectangle {
-    private static final int SIDE_LENGTH = GuiCell.SHORT_LENGTH;
+    //following coordinates keeps track of the top left corner of this rectangle
+    private double coordX;
+    private double coordY;
 
-    protected Corner(int x, int y) {
-        setWidth(SIDE_LENGTH - GuiCell.SEPERATING_SPACE);
-        setHeight(SIDE_LENGTH - GuiCell.SEPERATING_SPACE);
-        setFill(Color.valueOf("F5D760"));
-        relocate(x, y);
+    public Corner(int x, int y) {
+        this.coordX = getCoord(x);
+        this.coordY = getCoord(y);
+
+        setWidth(GuiCell.SHORT_LENGTH);
+        setHeight(GuiCell.SHORT_LENGTH);
+        //setFill(Color.valueOf("F5D760"));
+        setFill(Color.valueOf(GuiCell.WALL_COLOR));
+        setVisible(false);
+        relocate(coordX, coordY);
+    }
+
+    public static double getCoord(int coord) {
+        return coord * GuiCell.SIDE_LENGTH;
+    }
+
+    public void setWallHere(boolean wallHere) {
+        setVisible(wallHere);
+    }
+
+    public void setVertical(boolean vertical) {
     }
 }

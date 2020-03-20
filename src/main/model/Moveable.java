@@ -4,17 +4,20 @@ import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
 import ui.Game;
 
+import java.util.ArrayList;
+
 public abstract class Moveable {
     protected int coordX;
     protected int coordY;
     protected int arrayIndex; //keeps track of the index of the cell in the array
+    protected ArrayList<Cell> board;
 
     //MODIFIES: this
     //EFFECTS : moves the object up
     protected void moveUp() throws OutOfBoundsException, WallObstructionException {
         if (coordY == 0) {
             throw new OutOfBoundsException();
-        } else if (Game.board.get(arrayIndex).isWallUp()) {
+        } else if (board.get(arrayIndex).isWallUp()) {
             throw new WallObstructionException();
         } else {
             coordY--;
@@ -27,7 +30,7 @@ public abstract class Moveable {
     protected void moveLeft() throws OutOfBoundsException, WallObstructionException {
         if (coordX == 0) {
             throw new OutOfBoundsException();
-        } else if (Game.board.get(arrayIndex).isWallLeft()) {
+        } else if (board.get(arrayIndex).isWallLeft()) {
             throw new WallObstructionException();
         } else {
             coordX--;
@@ -40,7 +43,7 @@ public abstract class Moveable {
     protected void moveDown() throws OutOfBoundsException, WallObstructionException {
         if (coordY == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
-        } else if (Game.board.get(arrayIndex).isWallDown()) {
+        } else if (board.get(arrayIndex).isWallDown()) {
             throw new WallObstructionException();
         } else {
             coordY++;
@@ -53,7 +56,7 @@ public abstract class Moveable {
     protected void moveRight() throws OutOfBoundsException, WallObstructionException {
         if (coordX == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
-        } else if (Game.board.get(arrayIndex).isWallRight()) {
+        } else if (board.get(arrayIndex).isWallRight()) {
             throw new WallObstructionException();
         } else {
             coordX++;

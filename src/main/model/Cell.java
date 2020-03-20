@@ -7,12 +7,14 @@ package model;
  * It also contains information pertaining to where an Avatar can move if it is on this cell.*/
 
 import ui.gui.cell.GuiCell;
+import ui.gui.cell.HorizontalWall;
+import ui.gui.cell.VerticalWall;
 
 public class Cell {
     private boolean p1Here;//is player 1 on this cell
     private boolean p2Here;//is player 2 on this cell
     protected boolean visited;//used for WinnableSolver
-    private GuiCell guiCell;//coupled with gui display element for htis cell
+    private GuiCell guiCell;//coupled with gui display element for this cell
     //the following booleans check if there is a wall on the respective side of the cell
     private boolean wallUp;
     private boolean wallLeft;
@@ -45,14 +47,18 @@ public class Cell {
 
     public void setWallUp(boolean wallUp) {
         this.wallUp = wallUp;
+        guiCell.setWallUp(wallUp);
     }
 
     public boolean isWallLeft() {
         return wallLeft;
     }
 
+    //these setters are coupled with the gui element, so need to update those as well
+
     public void setWallLeft(boolean wallLeft) {
         this.wallLeft = wallLeft;
+        guiCell.setWallLeft(wallLeft);
     }
 
     public boolean isWallDown() {
@@ -106,6 +112,23 @@ public class Cell {
     public GuiCell getGuiCell() {
         return guiCell;
     }
+
+    public void setUpperGuiWall(HorizontalWall horizontalWall) {
+        guiCell.setUpperWallGui(horizontalWall);
+    }
+
+    public void setLeftGuiWall(VerticalWall verticalWall) {
+        guiCell.setLeftWallGui(verticalWall);
+    }
+
+    public void setLowerGuiWall(HorizontalWall horizontalWall) {
+        guiCell.setLowerWallGui(horizontalWall);
+    }
+
+    public void setRightGuiWall(VerticalWall verticalWall) {
+        guiCell.setRightWallGui(verticalWall);
+    }
+
 
 //    //EFFECTS : prints out a cell and the wall to the right of it (if there is a wall there)
 //    public void displayCell() {

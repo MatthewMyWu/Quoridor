@@ -9,6 +9,8 @@ import model.players.P1;
 import model.players.P2;
 import model.walls.WallTool;
 import ui.gui.GuiTool;
+import ui.gui.cell.HorizontalWall;
+import ui.gui.cell.VerticalWall;
 
 import java.util.Scanner;
 
@@ -24,13 +26,13 @@ public class Game {
     private MatchHistory matchHistory = new MatchHistory();
     private static Avatar p1 = new P1();
     private static Avatar p2 = new P2();
-    public static Pathfinder p1Pathfinder = new Pathfinder(p1);
-    public static Pathfinder p2Pathfinder = new Pathfinder(p2);
+    public Pathfinder p1Pathfinder = new Pathfinder(p1, this);
+    public Pathfinder p2Pathfinder = new Pathfinder(p2, this);
     private boolean isP1Turn = true;//true when it is p1 turn, false if p2 turn
     private boolean gameOver = false;
     private int winner; //Is the player that won the game (eg. 1 or 2)
     private boolean forfeit = false; //The player that sets this to true will have surrendered
-    public static ArrayList<Cell> board;
+    public ArrayList<Cell> board;
 
 
     //MODIFIES: this
@@ -96,12 +98,7 @@ public class Game {
         winner = 0;
 
         //resetting the board
-        board = new ArrayList<>();
-        for (int y = 0; y < SIDE_LENGTH; y++) {
-            for (int x = 0; x < SIDE_LENGTH; x++) {
-                board.add(new Cell(x, y));
-            }
-        }
+        resetBoard();
 
         //resetting players
         p1.initialize();
@@ -112,6 +109,37 @@ public class Game {
 
         //resetting displayTool
         guiTool = new GuiTool(this);
+    }
+
+    private void resetBoard() {
+        board = new ArrayList<>();
+
+        //resetting tiles
+        for (int y = 0; y < SIDE_LENGTH; y++) {
+            for (int x = 0; x < SIDE_LENGTH; x++) {
+                board.add(new Cell(x, y));
+            }
+        }
+
+        //resetting horizontal walls
+        for (int y = 1; y < SIDE_LENGTH; y++) {
+            for (int x = 0; x < SIDE_LENGTH; x++) {
+                HorizontalWall horizontalWall = new HorizontalWall();
+
+                board.get((y - 1) * SIDE_LENGTH + x).setLowerGuiWall(horizontalWall);
+                board.get(y * SIDE_LENGTH + x).setUpperGuiWall(horizontalWall);
+            }
+        }
+
+        //resetting vertical walls
+        for (int y = 0; y < SIDE_LENGTH; y++) {
+            for (int x = 1; x < SIDE_LENGTH; x++) {
+                VerticalWall verticalWall = new VerticalWall(x, y);
+
+                board.get(y * SIDE_LENGTH + x - 1).setRightGuiWall(verticalWall);
+                board.get(y * SIDE_LENGTH + x).setLeftGuiWall(verticalWall);
+            }
+        }
     }
 
     //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)
@@ -174,7 +202,6 @@ public class Game {
 
             //switching the players turn (can only be reached if no exception is thrown)
             isP1Turn = (isP1Turn == false);
-            System.out.println(isP1Turn);
 
         } catch (InvalidWallException e) {
             System.out.println("You can not place a wall there");
@@ -187,7 +214,6 @@ public class Game {
         } catch (BadInputException e) {
             System.out.println("That is not a valid input");
         }
-
     }
 
     //EFFECTS : Handles player input if it is to place a wall
@@ -195,7 +221,6 @@ public class Game {
             NoMoreWallsException {
         //first needs to check if player has any walls left
         if (player.getWalls() <= 0) {
-            System.out.println("You do not have any more walls");
             throw new NoMoreWallsException();
         } else {
             wallTool.placeWall(input);
@@ -209,19 +234,22 @@ public class Game {
         player.move(input);
     }
 
-    //EFFECTS : determines if input is in the proper format for a command to place a wall
+    //EFFECTS : determines if input is in the proper format for a command to place a wall (x1,y1,x2,y2)
     protected boolean isWallCommand(String input) {
-        return (input.length() == 5)
-                //checking first character is a proper letter coordinate
-                && (int) input.charAt(0) >= 65 && (int) input.charAt(0) <= 65 + SIDE_LENGTH
-                //checking second character is a proper number coordinate
-                && input.charAt(1) >= 48 && input.charAt(1) <= 48 + SIDE_LENGTH
-                //checking third character is a comma
-                && (input.charAt(2) == ',')
-                //checking fourth character is a proper letter coordinate
-                && (int) input.charAt(3) >= 65 && (int) input.charAt(3) <= 65 + SIDE_LENGTH
+        //checking proper placements of commas
+        assert (input.charAt(1) == ',');
+        assert (input.charAt(3) == ',');
+        assert (input.charAt(5) == ',');
+
+        return (input.length() == 7)
+                //checking first coordinate is valid (x1)
+                && (int) input.charAt(0) >= 48 && (int) input.charAt(0) <= 48 + SIDE_LENGTH
+                //checking second coordinate is valid (y2)
+                && (int) input.charAt(2) >= 48 && (int) input.charAt(2) <= 48 + SIDE_LENGTH
+                //checking fourth coordinate is valid (x2)
+                && (int) input.charAt(4) >= 48 && (int) input.charAt(4) <= 48 + SIDE_LENGTH
                 //checking fifth character is a proper number coordinate
-                && input.charAt(4) >= 48 && input.charAt(4) <= 48 + SIDE_LENGTH;
+                && (int) input.charAt(6) >= 48 && (int) input.charAt(6) <= 48 + SIDE_LENGTH;
 
     }
 
@@ -240,7 +268,7 @@ public class Game {
         return wallTool;
     }
 
-    public static ArrayList<Cell> getBoard() {
+    public ArrayList<Cell> getBoard() {
         return board;
     }
 }

@@ -4,14 +4,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Tile extends Rectangle {
-    private static final int SIDE_LENGTH = GuiCell.LONG_LENGTH;
 
-    protected Tile(int x, int y) {
-        setWidth(SIDE_LENGTH - GuiCell.SEPERATING_SPACE);
-        setHeight(SIDE_LENGTH - GuiCell.SEPERATING_SPACE);
+    protected Tile(int coordX, int coordY) {
+        setWidth(GuiCell.LONG_LENGTH - 2 * GuiCell.INSET);
+        setHeight(GuiCell.LONG_LENGTH - 2 * GuiCell.INSET);
         setPlayer1Here(false);
         setPlayer2Here(false);
-        relocate(x, y);
+        relocate(coordX, coordY);
     }
 
     protected void setPlayer1Here(boolean p1Here) {

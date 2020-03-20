@@ -4,13 +4,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class VerticalWall extends Rectangle {
-    private static final int WIDTH = GuiCell.SHORT_LENGTH;
-    private static final int HEIGHT = GuiCell.LONG_LENGTH;
-
-    protected VerticalWall(int x, int y) {
-        setWidth(WIDTH - GuiCell.SEPERATING_SPACE);
-        setHeight(HEIGHT - GuiCell.SEPERATING_SPACE);
-        setFill(Color.valueOf("F5D760"));
+    public VerticalWall(int x, int y) {
+        setWidth(GuiCell.SHORT_LENGTH);
+        setHeight(GuiCell.LONG_LENGTH);
+        setFill(Color.valueOf(GuiCell.WALL_COLOR));
         relocate(x, y);
         setVisible(false);
     }

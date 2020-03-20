@@ -5,17 +5,24 @@ import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import model.DisplayTool;
 import model.players.P1;
 import model.players.P2;
+import model.walls.MiddleOfWall;
+import model.walls.WallTool;
 import ui.Game;
+import ui.gui.cell.Corner;
 import ui.gui.cell.GuiCell;
+
+import java.util.ArrayList;
 
 public class GuiTool extends DisplayTool {
     private Group cellGroup;
+    private Group cornerGroup;
     private Group lineGroup;
     private Line line;
     private Game game;
@@ -32,21 +39,31 @@ public class GuiTool extends DisplayTool {
         super(game.getP1(), game.getP2(), game.getWallTool().getWallMiddles(), game.getBoard());
         this.game = game;
         cellGroup = new Group();
+        cornerGroup = new Group();
         lineGroup = new Group();
+        ArrayList<MiddleOfWall> wallMiddles = game.getWallTool().getWallMiddles();
 
+        //adding tiles
         for (int y = 0; y < Game.SIDE_LENGTH; y++) {
             for (int x = 0; x < Game.SIDE_LENGTH; x++) {
                 GuiCell guiCell = board.get(y * Game.SIDE_LENGTH + x).getGuiCell();
                 cellGroup.getChildren().add(guiCell);
             }
         }
+
+        //adding corners
+        for (int y = 0; y < WallTool.WALL_MIDDLES_LENGTH; y++) {
+            for (int x = 0; x < WallTool.WALL_MIDDLES_LENGTH; x++) {
+                cornerGroup.getChildren().add(wallMiddles.get(y * WallTool.WALL_MIDDLES_LENGTH + x).getGuiCorner());
+            }
+        }
     }
 
     public Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH,
-                Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH);
-        root.getChildren().addAll(cellGroup, lineGroup);
+        root.setPrefSize(WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH,
+                WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH);
+        root.getChildren().addAll(cellGroup, cornerGroup, lineGroup);
 
         return root;
     }
@@ -89,65 +106,36 @@ public class GuiTool extends DisplayTool {
     public void handleMouseReleased(MouseEvent release) {
         endX = release.getSceneX();
         endY = release.getSceneY();
-        lineGroup.getChildren().remove(line);
-        addWall();
+        line.setVisible(false);
+        lineGroup.getChildren().removeAll(line);
+        updateWalls();
     }
 
     //EFFECTS : After player finished dragging mouse, will interpret the line that was drawn and convert it to
     //          a form that WallTool can understand, then pass it to WallTool
-    private void addWall() {
+    private void updateWalls() {
         //keeps track of the corner coordinates of the wall
-        int initialCornerX;
-        int initialCornerY;
-        int endCornerX;
-        int endCornerY;
+        int initialCornerX = getCornerNumber(initialX);
+        int initialCornerY = getCornerNumber(initialY);
+        int endCornerX = getCornerNumber(endX);
+        int endCornerY = getCornerNumber(endY);
 
-        //checking to see if coordinates are in acceptable range of a corner
-        checkWallCoordinates();
+        //creating input String for WallTool to handle
+        String input = initialCornerX + "," + initialCornerY + "," + endCornerX + "," + endCornerY;
 
-        //x and y coordinates of initial and latter ends of wall respectively. Indexing starts at 0 for all coordinates
-        int x1 = (int) input.charAt(1) - 48;
-        int y1 = (int) input.charAt(0) - 65;
-        int x2 = (int) input.charAt(4) - 48;
-        int y2 = (int) input.charAt(3) - 65;
+        //passing input to game
+        game.update(input);
     }
 
-    private boolean checkWallCoordinates() {
-        int initialCornerX;
-        int initialCornerY;
-        int endCornerX;
-        int endCornerY;
-
-        //checking initialX
-        for (int x = 0; x < Game.SIDE_LENGTH; x++) {
-            if (initialX > GuiCell.getCornerX(x) - WALL_LENIENCY && initialX < GuiCell.getCornerX(x) + WALL_LENIENCY) {
-                initialCornerX = x;
-                break;
+    //EFFECTS : Returns the row/column of the corner that this coordinate is closest to, or -1 if not close to a corner
+    private int getCornerNumber(double coordinate) {
+        for (int a = 0; a < WallTool.WALL_MIDDLES_LENGTH; a++) {
+            if (coordinate > Corner.getCoord(a) - WALL_LENIENCY
+                    && coordinate < Corner.getCoord(a) + WALL_LENIENCY) {
+                return a;
             }
         }
 
-        //checking initialY
-        for (int y = 0; y < Game.SIDE_LENGTH; y++) {
-            if (initialY > GuiCell.getCornerY(y) - WALL_LENIENCY && initialY < GuiCell.getCornerY(y) + WALL_LENIENCY) {
-                initialCornerY = y;
-                break;
-            }
-        }
-
-        //checking endX
-        for (int x = 0; x < Game.SIDE_LENGTH; x++) {
-            if (endX > GuiCell.getCornerX(x) - WALL_LENIENCY && endX < GuiCell.getCornerX(x) + WALL_LENIENCY) {
-                endCornerX = x;
-                break;
-            }
-        }
-
-        //checking endY
-        for (int y = 0; y < Game.SIDE_LENGTH; y++) {
-            if (endY > GuiCell.getCornerY(y) - WALL_LENIENCY && endY < GuiCell.getCornerY(y) + WALL_LENIENCY) {
-                endCornerY = y;
-                break;
-            }
-        }
+        return -1;
     }
 }

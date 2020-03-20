@@ -4,14 +4,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class HorizontalWall extends Rectangle {
-    private static final int WIDTH = GuiCell.LONG_LENGTH;
-    private static final int HEIGHT = GuiCell.SHORT_LENGTH;
+    public HorizontalWall() {
+        setWidth(GuiCell.LONG_LENGTH);
+        setHeight(GuiCell.SHORT_LENGTH);
+        setVisible(false);
+        setFill(Color.valueOf(GuiCell.WALL_COLOR));
+    }
 
-    protected HorizontalWall(int x, int y) {
-        setWidth(WIDTH - GuiCell.SEPERATING_SPACE);
-        setHeight(HEIGHT - GuiCell.SEPERATING_SPACE);
-        setFill(Color.valueOf("F5D760"));
-        relocate(x, y);
-
+    //EFFECTS : relocates this cell to the given coordinates
+    public void moveTo(double coordX, double coordY) {
+        relocate(coordX, coordY);
     }
 }

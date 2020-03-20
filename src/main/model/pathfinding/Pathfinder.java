@@ -1,20 +1,27 @@
 package model.pathfinding;
 
 import exceptions.IllegalMoveException;
+import model.Cell;
 import model.Moveable;
 import model.players.Avatar;
 import ui.Game;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 //Used to determine if the game is still winnable after a wall placement
 // (eg. checks there is still a path to the opposite side).
 //Works in very much the same way as a maze solver (recursive)
 public class Pathfinder extends Moveable {
     private Avatar player; //keeps track of which player this pathfinder is for
+    ArrayList<Cell> board;
 
-    public Pathfinder(Avatar player) {
+    public Pathfinder(Avatar player, Game game) {
         this.player = player;
         this.coordX = player.getCoordX();
         this.coordY = player.getCoordY();
+
+        this.board = game.getBoard();
         updatePosition();
     }
 
@@ -39,6 +46,7 @@ public class Pathfinder extends Moveable {
 
         boolean pathFound = pathFound();
         reset();
+        System.out.println("x: " + coordX + ", y:" + coordY);//TODO debugging
         return pathFound;
     }
 
@@ -54,12 +62,12 @@ public class Pathfinder extends Moveable {
         int tempIndex = arrayIndex;
 
         //handling visited
-        if (Game.board.get(tempIndex).isVisited()) {
+        if (board.get(tempIndex).isVisited()) {
             //this branch has already been visited and thus we don't need to search it
             return false;
         } else {
             //otherwise store that this cell has been visited
-            Game.board.get(tempIndex).setVisited(true);
+            board.get(tempIndex).setVisited(true);
         }
 
         //recursive searching
@@ -161,7 +169,7 @@ public class Pathfinder extends Moveable {
 
         //resetting "visited" status of cells on board
         for (int index = 0; index < Game.SIDE_LENGTH * Game.SIDE_LENGTH; index++) {
-            Game.board.get(index).setVisited(false);
+            board.get(index).setVisited(false);
         }
     }
 }

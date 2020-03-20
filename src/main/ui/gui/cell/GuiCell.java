@@ -3,52 +3,33 @@ package ui.gui.cell;
 import javafx.scene.Group;
 import model.Cell;
 
+//contains information about a gui component of a cell, including the tile (piece where players stand on)
+// and all surrounding wall segments (excluding corner pieces)
 public class GuiCell extends Group {
     protected static final int LONG_LENGTH = 30;
     protected static final int SHORT_LENGTH = 10;
-    protected static final int SEPERATING_SPACE = 3;
-    public static final int SIDE_LENGTH = LONG_LENGTH + SHORT_LENGTH;
+    protected static final int INSET = 3;//only applies to tile
+    public static final int SIDE_LENGTH = SHORT_LENGTH + LONG_LENGTH;
+    public static final String BG_COLOR = "F3CBA3";
+    public static final String WALL_COLOR = "F5D760";
     //protected Cell cell;
 
+    //keeps track of top left corner of this cell
+    protected int coordX;
+    protected int coordY;
+
     Tile tile;
-    VerticalWall verticalWall;
-    HorizontalWall horizontalWall;
-    Corner corner;
+    HorizontalWall upperWall;
+    HorizontalWall lowerWall;
+    VerticalWall rightWall;
+    VerticalWall leftWall;
 
     public GuiCell(int x, int y, Cell cell) {
-        //this.cell = cell;
-        int coordX = x * SIDE_LENGTH;
-        int coordY = y * SIDE_LENGTH;
-        tile = new Tile(coordX, coordY);
-        verticalWall = new VerticalWall(coordX + LONG_LENGTH, coordY);
-        horizontalWall = new HorizontalWall(coordX, coordY + LONG_LENGTH);
-        corner = new Corner(getCornerX(x), getCornerY(coordY));
+        this.coordX = x * SIDE_LENGTH;
+        this.coordY = y * SIDE_LENGTH;
+        tile = new Tile(coordX + SHORT_LENGTH + INSET, coordY + SHORT_LENGTH + INSET);
 
-        getChildren().addAll(tile, verticalWall, horizontalWall, corner);
-    }
-
-    public static int getCornerX(int x) {
-        return x + LONG_LENGTH;
-    }
-
-    public static int getCornerY(int y) {
-        return y + LONG_LENGTH;
-    }
-
-    //EFFECTS : Updates this cell to display/not display wall below this cell
-    public void setWallDown(boolean wallDown) {
-        horizontalWall.setVisible(wallDown);
-    }
-
-    //EFFECTS : Updates this cell to display p1 if p1 is on this cell (or not display if p1 is not)
-    public void setWallRight(boolean wallRight) {
-        verticalWall.setVisible(wallRight);
-    }
-
-    //EFFECTS : Updates this cell to display/not display the corner (vertical if isVertical, horizontal if not)
-    public void setCorner(boolean cornerHere, boolean isVertical) {
-        corner.setVisible(cornerHere);
-        //TODO stub
+        getChildren().addAll(tile);
     }
 
     //EFFECTS : Updates this cell to display p1 if p1 is on this cell (or not display if p1 is not)
@@ -62,4 +43,52 @@ public class GuiCell extends Group {
         tile.setPlayer2Here(p2Here);
         //TODO stub
     }
+
+    public void setWallUp(boolean wallUp) {
+        upperWall.setVisible(wallUp);
+    }
+
+    public void setWallLeft(boolean wallLeft) {
+        leftWall.setVisible(wallLeft);
+    }
+
+    public void setWallDown(boolean wallDown) {
+        lowerWall.setVisible(wallDown);
+    }
+
+    public void setWallRight(boolean wallRight) {
+        rightWall.setVisible(wallRight);
+    }
+
+
+    //the following setters sets their respective walls and moves them to the correct location
+    public void setUpperWallGui(HorizontalWall upperWall) {
+        this.upperWall = upperWall;
+        upperWall.moveTo(coordX + SHORT_LENGTH, coordY);
+        getChildren().addAll(upperWall);
+    }
+
+    public void setLeftWallGui(VerticalWall leftWall) {
+        this.leftWall = leftWall;
+        leftWall.relocate(coordX, coordY + SHORT_LENGTH);
+        getChildren().addAll(leftWall);
+    }
+
+    public void setLowerWallGui(HorizontalWall lowerWall) {
+        this.lowerWall = lowerWall;
+        lowerWall.moveTo(coordX + SHORT_LENGTH, coordY + SHORT_LENGTH + LONG_LENGTH);
+        getChildren().addAll(lowerWall);
+    }
+
+    public void setRightWallGui(VerticalWall rightWall) {
+        this.rightWall = rightWall;
+        rightWall.relocate(coordX + SHORT_LENGTH + LONG_LENGTH, coordY + SHORT_LENGTH);
+        getChildren().addAll(rightWall);
+    }
+
+//    //EFFECTS : Updates this cell to display/not display the corner (vertical if isVertical, horizontal if not)
+//    public void setCorner(boolean cornerHere, boolean isVertical) {
+//        corner.setVisible(cornerHere);
+//        //TODO stub
+//    }
 }

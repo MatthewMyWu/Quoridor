@@ -1,3 +1,4 @@
+
 package model;
 
 import exceptions.InvalidWallException;
@@ -128,3 +129,4 @@ public class PathfinderTests extends GameTests {
     }
 
 }
+

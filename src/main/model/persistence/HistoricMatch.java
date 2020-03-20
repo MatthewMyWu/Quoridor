@@ -173,13 +173,16 @@ public class HistoricMatch {
 
         //creating wallMiddles
         wallMiddles = new ArrayList<MiddleOfWall>();
-        for (String element : parsedElements) {
-            List<String> parsedFields = parseFields(element);
-            assert (parsedFields.size() == 2);
-            boolean wallHere = Boolean.parseBoolean(parsedFields.get(0));
-            boolean isVertical = Boolean.parseBoolean(parsedFields.get(1));
+        for (int y = 1; y < Game.SIDE_LENGTH; y++) {
+            for (int x = 1; x < Game.SIDE_LENGTH; x++) {
+                String element = parsedElements.get((y - 1) * Game.SIDE_LENGTH + x);
+                List<String> parsedFields = parseFields(element);
+                assert (parsedFields.size() == 2);
+                boolean wallHere = Boolean.parseBoolean(parsedFields.get(0));
+                boolean isVertical = Boolean.parseBoolean(parsedFields.get(1));
 
-            wallMiddles.add(new MiddleOfWall(wallHere, isVertical));
+                wallMiddles.add(new MiddleOfWall(x, y, wallHere, isVertical));
+            }
         }
     }
 
