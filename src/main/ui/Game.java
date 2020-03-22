@@ -46,24 +46,8 @@ public class Game {
         restart();
     }
 
-
-    //EFFECTS : starts the game
-    public void play() {
-        while (!gameOver) {
-            //update();//TODO
-        }
-        displayBoard();
-        saveToMatchHistory();
-        displayGameOverScreen();
-    }
-
     private void saveToMatchHistory() {
         matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
-    }
-
-    //EFFECTS : displays the board to the console
-    private void displayBoard() {
-        guiTool.displayBoard();
     }
 
     //EFFECTS : Displays the game over screen
@@ -80,7 +64,6 @@ public class Game {
         if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
             System.out.println("working");
             restart();
-            play();
         } else if (input.equals("2") || input.equals("2.") || input.equals("MAIN MENU")) {
             //return;
         } else {
@@ -159,21 +142,26 @@ public class Game {
             interpretInGameInput(p1, input);
             if (p1.reachedWinCondition(p1)) {
                 p1Win();
-                return;
             } else if (forfeit) {
                 p2Win();
-                return;
             }
         } else {
             interpretInGameInput(p2, input);
             if (p2.reachedWinCondition(p2)) {
                 p2Win();
-                return;
             } else if (forfeit) {
                 p1Win();
-                return;
             }
         }
+
+        if (gameOver) {
+            endGame();
+        }
+    }
+
+    private void endGame() {
+        //saveToMatchHistory();
+        displayGameOverScreen();
     }
 
     //MODIFIES: this (gameOver and winner) and P2 (increments score)
@@ -194,7 +182,7 @@ public class Game {
 
     //EFFECTS : interprets the player input while game is running, and calls the appropriate method
     //TODO
-    public void interpretInGameInput(Avatar player, String input) {
+    private void interpretInGameInput(Avatar player, String input) {
         try {
             //if the input matches one of the keys to move the player:
             if (input.equals(player.getUpKey()) || input.equals(player.getLeftKey())
@@ -289,6 +277,10 @@ public class Game {
 
     public Pathfinder getP2Pathfinder() {
         return p2Pathfinder;
+    }
+
+    public boolean isP1Turn() {
+        return isP1Turn;
     }
 
     //these setters used mainly for testing

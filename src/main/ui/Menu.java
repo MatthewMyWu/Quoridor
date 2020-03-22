@@ -29,7 +29,7 @@ public class Menu {
         String input = keyboard.nextLine();
         if (input.equals("1") || input.equals("1.") || input.equalsIgnoreCase("play game")) {
             game = new Game();
-            game.play();
+            //TODO game.play();
         } else if (input.equals("2") || input.equals("2.") || input.equalsIgnoreCase("match history")) {
             matchHistory.display();
         } else if (input.equals("0") || input.equals("0.") || input.equalsIgnoreCase("exit")) {

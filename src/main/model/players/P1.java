@@ -66,7 +66,7 @@ public class P1 extends Avatar {
 
     @Override
     public String getPlayerNumber() {
-        return"1";
+        return "1";
     }
 
     @Override

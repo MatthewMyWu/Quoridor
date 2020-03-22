@@ -101,7 +101,7 @@ public class WallTool {
             //can't have middle of wall intersecting the middle of another wall
             throw new InvalidWallException();
         } else if (board.get(middleWallY * Game.SIDE_LENGTH + middleWallX).isWallUp()
-                || board.get(middleWallY * Game.SIDE_LENGTH + middleWallX + 1).isWallUp()) {
+                || board.get(middleWallY * Game.SIDE_LENGTH + middleWallX - 1).isWallUp()) {
             //can't have middle of wall intersecting the end of another HORIZONTAL wall
             throw new InvalidWallException();
         }
