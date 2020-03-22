@@ -98,7 +98,7 @@ public class HistoricMatchTests extends GameTests{
 
     @Test
     public void testGenericAvatarConstructor() {
-        Avatar testAvatar = new GenericAvatar();
+        Avatar testAvatar = new GenericAvatar(Game.generateBoard());
 
         assertFalse(testAvatar.reachedWinCondition(testAvatar));
         assertNull(testAvatar.getUpKey());

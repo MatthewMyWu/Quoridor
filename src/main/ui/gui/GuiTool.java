@@ -5,25 +5,22 @@ import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import model.DisplayTool;
 import model.players.P1;
 import model.players.P2;
-import model.walls.MiddleOfWall;
 import model.walls.WallTool;
 import ui.Game;
 import ui.gui.cell.Corner;
 import ui.gui.cell.GuiCell;
 
-import java.util.ArrayList;
-
 public class GuiTool extends DisplayTool {
     private Group cellGroup;
     private Group cornerGroup;
     private Group lineGroup;
+    private BottomPanel bottomPanel;
     private Line line;
     private Game game;
 
@@ -32,7 +29,7 @@ public class GuiTool extends DisplayTool {
     private double endY;
     private double initialX;
     private double initialY;
-    private static final double WALL_LENIENCY = 10.0;//number of pixels around a corner that a valid wall can be drawn
+    private static final double WALL_LENIENCY = 20.0;//number of pixels around a corner that a valid wall can be drawn
 
     //creates a GUI for the corresponding Game
     public GuiTool(Game game) {
@@ -41,20 +38,35 @@ public class GuiTool extends DisplayTool {
         cellGroup = new Group();
         cornerGroup = new Group();
         lineGroup = new Group();
-        ArrayList<MiddleOfWall> wallMiddles = game.getWallTool().getWallMiddles();
+        bottomPanel = new BottomPanel(game.getP1(), game.getP2());
 
         //adding tiles
+        initializeCellGroup();
+
+        //adding corners
+        initializeCornerGroup();
+
+        //adding bottom panel
+        initializeBottomPanel();
+    }
+
+    private void initializeBottomPanel() {
+        //TODO stub
+    }
+
+    private void initializeCornerGroup() {
+        for (int y = 0; y < WallTool.WALL_MIDDLES_LENGTH; y++) {
+            for (int x = 0; x < WallTool.WALL_MIDDLES_LENGTH; x++) {
+                cornerGroup.getChildren().add(wallMiddles.get(y * WallTool.WALL_MIDDLES_LENGTH + x).getGuiCorner());
+            }
+        }
+    }
+
+    private void initializeCellGroup() {
         for (int y = 0; y < Game.SIDE_LENGTH; y++) {
             for (int x = 0; x < Game.SIDE_LENGTH; x++) {
                 GuiCell guiCell = board.get(y * Game.SIDE_LENGTH + x).getGuiCell();
                 cellGroup.getChildren().add(guiCell);
-            }
-        }
-
-        //adding corners
-        for (int y = 0; y < WallTool.WALL_MIDDLES_LENGTH; y++) {
-            for (int x = 0; x < WallTool.WALL_MIDDLES_LENGTH; x++) {
-                cornerGroup.getChildren().add(wallMiddles.get(y * WallTool.WALL_MIDDLES_LENGTH + x).getGuiCorner());
             }
         }
     }
@@ -63,7 +75,7 @@ public class GuiTool extends DisplayTool {
         Pane root = new Pane();
         root.setPrefSize(WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH,
                 WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH);
-        root.getChildren().addAll(cellGroup, cornerGroup, lineGroup);
+        root.getChildren().addAll(cellGroup, cornerGroup, lineGroup, bottomPanel);
 
         return root;
     }

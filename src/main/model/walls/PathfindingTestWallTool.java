@@ -1,13 +1,19 @@
 package model.walls;
 
+import model.Cell;
+import model.pathfinding.Pathfinder;
+import model.players.GenericAvatar;
+import ui.Game;
+
+import java.util.ArrayList;
+
 //This special instance of the WallTool is used exclusively for "test.PathfinderTests". It allows me to place walls
 // that would block off players from reaching their objective - if I used the normal WallTool, an exception would be
 // thrown and I would not be able to clearly test the Pathfinder
 public class PathfindingTestWallTool extends WallTool {
 
-
-    public PathfindingTestWallTool() {
-        super();
+    public PathfindingTestWallTool(Pathfinder p1Pathfinder, Pathfinder p2Pathfinder, ArrayList<Cell> board) {
+        super(p1Pathfinder, p2Pathfinder, board);
     }
 
     @Override

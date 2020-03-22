@@ -21,8 +21,8 @@ public class HistoricMatch {
     private static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
     private static final String NEXT_LINE_DELIMITER = "\n";//used to separate information on different objects
     private int winner = 0;//player # that won this match
-    private Avatar p1 = new GenericAvatar();
-    private Avatar p2 = new GenericAvatar();
+    private Avatar p1;
+    private Avatar p2;
     private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
     private String fileName;

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.Game;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,13 +19,15 @@ public class GameTests {
     WallTool wallTool;
     Avatar p1;
     Avatar p2;
+    ArrayList<Cell> board;
 
     @BeforeEach
     public void runBefore() {
         game = new Game();
-        p1 = new P1();
-        p2 = new P2();
-        wallTool = new WallTool();
+        board = game.getBoard();
+        p1 = new P1(board);
+        p2 = new P2(board);
+        wallTool = new WallTool(game.getP1Pathfinder(), game.getP2Pathfinder(), game.getBoard());
     }
 
     @Test

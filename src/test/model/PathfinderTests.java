@@ -20,10 +20,10 @@ public class PathfinderTests extends GameTests {
     @BeforeEach
     public void runBefore() {
         super.runBefore();
-        p1Pathfinder = new Pathfinder(p1);
-        p2Pathfinder = new Pathfinder(p2);
-        game.p1Pathfinder = p1Pathfinder;
-        game.p2Pathfinder = p2Pathfinder;
+        p1Pathfinder = new Pathfinder(p1, board);
+        p2Pathfinder = new Pathfinder(p2, board);
+        game.setP1Pathfinder(p1Pathfinder);
+        game.setP2Pathfinder(p2Pathfinder);
     }
 
     /////////////////////Pathfinding scenario tests/////////////////////////
@@ -31,7 +31,7 @@ public class PathfinderTests extends GameTests {
     public void testInvalidPathScenario() {
         //need to use this special implementation of WallTool, which will allow us to completely block off
         // the path without throwing an exception.
-        wallTool = new PathfindingTestWallTool();
+        wallTool = new PathfindingTestWallTool(p1Pathfinder, p2Pathfinder, board);
 
         //setting up walls along entire I row to block path
         try {
@@ -61,7 +61,7 @@ public class PathfinderTests extends GameTests {
 
         try {
             //testing that Pathfinder implementation works in WallTool() (instead of PathfindingTestWallTool())
-            wallTool = new WallTool();
+            wallTool = new WallTool(p1Pathfinder, p2Pathfinder, board);
             wallTool.deleteHorizontalWall(7, 6, 9, 6);
             assertTrue(p1Pathfinder.canFindPath());
             assertTrue(p2Pathfinder.canFindPath());

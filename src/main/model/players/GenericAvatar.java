@@ -1,21 +1,24 @@
 package model.players;
 
+import model.Cell;
 import model.Moveable;
+
+import java.util.ArrayList;
 
 //this Avatar is not meant to be used in game. It is more of a "placeholder" Avatar used for HistoricMatch
 public class GenericAvatar extends Avatar {
 
-    public GenericAvatar(int x, int y) {
-        super(x, y);
+    public GenericAvatar(int x, int y, ArrayList<Cell> board) {
+        super(x, y, board);
     }
 
-    public GenericAvatar() {
-        super(0, 0);
+    public GenericAvatar(ArrayList<Cell> board) {
+        super(0, 0, board);
     }
 
     @Override
     public boolean reachedWinCondition(Moveable object) {
-        return false;
+        return true;
     }
 
     @Override
@@ -40,6 +43,11 @@ public class GenericAvatar extends Avatar {
     @Override
     public String getRightKey() {
         return null;
+    }
+
+    @Override
+    public String getPlayerNumber() {
+        return "0";
     }
 
     @Override

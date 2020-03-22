@@ -2,8 +2,11 @@ package model.players;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import model.Cell;
 import model.Moveable;
 import ui.Game;
+
+import java.util.ArrayList;
 
 /*Contains methods for how each avatar (player) should behave. Also contains the score and number of walls each player
  * has*/
@@ -13,7 +16,8 @@ public abstract class Avatar extends Moveable {
     protected int startingCoordX;
     protected int startingCoordY;
 
-    public Avatar(int x, int y) {
+    public Avatar(int x, int y, ArrayList<Cell> board) {
+        super(board);
         coordX = x;
         coordY = y;
         updateArrayIndex();
@@ -67,6 +71,9 @@ public abstract class Avatar extends Moveable {
 
     //EFFECTS : return the key that needs to be entered to move Avatar right
     public abstract String getRightKey();
+
+    //EFFECTS : returns this player number (ex. player will will return "1")
+    public abstract String getPlayerNumber();
 
     //REQUIRES: index is a valid index on the board
     //EFFECTS : returns true if the player is at index, false otherwise (used for testing)

@@ -21,26 +21,26 @@ import java.util.ArrayList;
 public class Game {
     public static final int SIDE_LENGTH = 9;
     private Scanner keyboard = new Scanner(System.in);
-    private WallTool wallTool = new WallTool();
+
+    private WallTool wallTool;
     public GuiTool guiTool;//TODO
-    private MatchHistory matchHistory = new MatchHistory();
-    private static Avatar p1 = new P1();
-    private static Avatar p2 = new P2();
-    public Pathfinder p1Pathfinder = new Pathfinder(p1, this);
-    public Pathfinder p2Pathfinder = new Pathfinder(p2, this);
+    private MatchHistory matchHistory;
+    private static Avatar p1;
+    private static Avatar p2;
+    private Pathfinder p1Pathfinder;
+    private Pathfinder p2Pathfinder;
     private boolean isP1Turn = true;//true when it is p1 turn, false if p2 turn
     private boolean gameOver = false;
     private int winner; //Is the player that won the game (eg. 1 or 2)
     private boolean forfeit = false; //The player that sets this to true will have surrendered
-    public ArrayList<Cell> board;
-
+    public static ArrayList<Cell> board;
 
     //MODIFIES: this
     //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
     public Game() {
         //resetting players
-        p1 = new P1();
-        p2 = new P2();
+        p1 = new P1(board);
+        p2 = new P2(board);
 
         //(re)setting board, walls, and displayTool
         restart();
@@ -97,22 +97,31 @@ public class Game {
         forfeit = false;
         winner = 0;
 
-        //resetting the board
+        //resetting the board and elements dependent on board (Walltool, pathfinders, players)
         resetBoard();
 
         //resetting players
         p1.initialize();
         p2.initialize();
 
-        //resetting walls
-        wallTool = new WallTool();
-
         //resetting displayTool
         guiTool = new GuiTool(this);
     }
 
     private void resetBoard() {
-        board = new ArrayList<>();
+        board = generateBoard();
+
+        p1.setBoard(board);
+        p2.setBoard(board);
+        p1Pathfinder = new Pathfinder(p1, board);
+        p2Pathfinder = new Pathfinder(p2, board);
+        wallTool = new WallTool(p1Pathfinder, p2Pathfinder, board);
+
+    }
+
+    //EFFECTS : Returns a "blank 'board (no walls)
+    public static ArrayList<Cell> generateBoard() {
+        ArrayList<Cell> board = new ArrayList<>();
 
         //resetting tiles
         for (int y = 0; y < SIDE_LENGTH; y++) {
@@ -140,6 +149,8 @@ public class Game {
                 board.get(y * SIDE_LENGTH + x).setLeftGuiWall(verticalWall);
             }
         }
+
+        return board;
     }
 
     //EFFECTS : plays one "move" of the game (gives player 1 and 2 a turn)
@@ -270,5 +281,22 @@ public class Game {
 
     public ArrayList<Cell> getBoard() {
         return board;
+    }
+
+    public Pathfinder getP1Pathfinder() {
+        return p1Pathfinder;
+    }
+
+    public Pathfinder getP2Pathfinder() {
+        return p2Pathfinder;
+    }
+
+    //these setters used mainly for testing
+    public void setP1Pathfinder(Pathfinder p1Pathfinder) {
+        this.p1Pathfinder = p1Pathfinder;
+    }
+
+    public void setP2Pathfinder(Pathfinder p2Pathfinder) {
+        this.p2Pathfinder = p2Pathfinder;
     }
 }

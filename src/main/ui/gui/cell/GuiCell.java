@@ -9,7 +9,7 @@ public class GuiCell extends Group {
     protected static final int LONG_LENGTH = 30;
     protected static final int SHORT_LENGTH = 10;
     protected static final int INSET = 3;//only applies to tile
-    public static final int SIDE_LENGTH = SHORT_LENGTH + LONG_LENGTH;
+    public static final int SIDE_LENGTH = 2 * SHORT_LENGTH + LONG_LENGTH;
     public static final String BG_COLOR = "F3CBA3";
     public static final String WALL_COLOR = "F5D760";
     //protected Cell cell;

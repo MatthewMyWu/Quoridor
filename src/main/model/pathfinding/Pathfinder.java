@@ -14,14 +14,12 @@ import java.util.ArrayList;
 //Works in very much the same way as a maze solver (recursive)
 public class Pathfinder extends Moveable {
     private Avatar player; //keeps track of which player this pathfinder is for
-    ArrayList<Cell> board;
 
-    public Pathfinder(Avatar player, Game game) {
+    public Pathfinder(Avatar player, ArrayList<Cell> board) {
+        super(board);
         this.player = player;
         this.coordX = player.getCoordX();
         this.coordY = player.getCoordY();
-
-        this.board = game.getBoard();
         updatePosition();
     }
 

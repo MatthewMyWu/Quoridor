@@ -42,16 +42,17 @@ public class MatchHistory {
     // (only called if MAX_MATCHES is bigger than amount of matches currently stored in match history)
     private void fillWithEmptyMatches(int threshold) {
         //making generic match info
-        GenericAvatar p1 = new GenericAvatar();
-        GenericAvatar p2 = new GenericAvatar();
         int winner = 0;
-        ArrayList<MiddleOfWall> emptyWallMiddles = new WallTool().getWallMiddles();
+        ArrayList<MiddleOfWall> emptyWallMiddles = WallTool.generateWallMiddles();
         ArrayList<Cell> emptyBoard = new ArrayList<>();
         for (int y = 0; y < Game.SIDE_LENGTH; y++) {
             for (int x = 0; x < Game.SIDE_LENGTH; x++) {
                 emptyBoard.add(new Cell(x, y));
             }
         }
+
+        GenericAvatar p1 = new GenericAvatar(emptyBoard);
+        GenericAvatar p2 = new GenericAvatar(emptyBoard);
 
         //adding matches to ./data
         for (int y = threshold; y < MAX_MATCHES; y++) {

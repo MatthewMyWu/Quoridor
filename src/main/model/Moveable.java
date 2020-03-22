@@ -12,6 +12,11 @@ public abstract class Moveable {
     protected int arrayIndex; //keeps track of the index of the cell in the array
     protected ArrayList<Cell> board;
 
+    public Moveable(ArrayList<Cell> board) {
+        assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        this.board = board;
+    }
+
     //MODIFIES: this
     //EFFECTS : moves the object up
     protected void moveUp() throws OutOfBoundsException, WallObstructionException {
@@ -96,5 +101,10 @@ public abstract class Moveable {
 
     public int getCoordY() {
         return coordY;
+    }
+
+    public void setBoard(ArrayList<Cell> board) {
+        assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        this.board = board;
     }
 }

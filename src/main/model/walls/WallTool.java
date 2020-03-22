@@ -1,6 +1,8 @@
 package model.walls;
 
 import exceptions.InvalidWallException;
+import model.Cell;
+import model.pathfinding.Pathfinder;
 import ui.Game;
 
 import java.util.ArrayList;
@@ -10,15 +12,30 @@ import java.util.ArrayList;
 public class WallTool {
     private static ArrayList<MiddleOfWall> wallMiddles;
     public static final int WALL_MIDDLES_LENGTH = Game.SIDE_LENGTH + 1;
+    private Pathfinder p1Pathfinder;
+    private Pathfinder p2Pathfinder;
+    private ArrayList<Cell> board;
 
     //creates a new ArrayList of middle of Wall segments. Indexing starts at 0, starts at coordinate B1
-    public WallTool() {
-        wallMiddles = new ArrayList<>();
+    public WallTool(Pathfinder p1Pathfinder, Pathfinder p2Pathfinder, ArrayList<Cell> board) {
+        assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        this.p1Pathfinder = p1Pathfinder;
+        this.p2Pathfinder = p2Pathfinder;
+        this.board = board;
+
+        wallMiddles = generateWallMiddles();
+    }
+
+    //EFFECTS : Generates and returns an array of blank WallMiddles
+    public static ArrayList<MiddleOfWall> generateWallMiddles() {
+        ArrayList<MiddleOfWall> wallMiddles = new ArrayList<>();
         for (int row = 0; row < WALL_MIDDLES_LENGTH; row++) {
             for (int column = 0; column < WALL_MIDDLES_LENGTH; column++) {
                 wallMiddles.add(new MiddleOfWall(column, row));
             }
         }
+
+        return wallMiddles;
     }
 
     //REQUIRES: input be of the correct format, and coordinates are on the board. This should be checked by the caller
@@ -56,12 +73,13 @@ public class WallTool {
     //          If for either player, no path is found, then throws InvalidWallException and deletes the wall
     protected void pathfindingCheck(boolean horizontalWallPlaced, int x1, int y1, int x2, int y2)
             throws InvalidWallException {
-        if (!Game.p1Pathfinder.canFindPath() || !Game.p2Pathfinder.canFindPath()) {
+        if (!p1Pathfinder.canFindPath() || !p2Pathfinder.canFindPath()) {
             if (horizontalWallPlaced) {
                 deleteHorizontalWall(x1, y1, x2, y2);
             } else {
                 deleteVerticalWall(x1, y1, x2, y2);
             }
+            System.out.println("Pathfinder can't find path");
             throw new InvalidWallException();
         }
     }
@@ -82,8 +100,8 @@ public class WallTool {
         } else if (wallMiddles.get(middleWallIndex).isWallHere()) {
             //can't have middle of wall intersecting the middle of another wall
             throw new InvalidWallException();
-        } else if (Game.board.get(middleWallY * Game.SIDE_LENGTH + middleWallX).isWallUp()
-                || Game.board.get(middleWallY * Game.SIDE_LENGTH + middleWallX + 1).isWallUp()) {
+        } else if (board.get(middleWallY * Game.SIDE_LENGTH + middleWallX).isWallUp()
+                || board.get(middleWallY * Game.SIDE_LENGTH + middleWallX + 1).isWallUp()) {
             //can't have middle of wall intersecting the end of another HORIZONTAL wall
             throw new InvalidWallException();
         }
@@ -96,10 +114,10 @@ public class WallTool {
         int bottomRightCell = calculateBottomRightCell(middleWallX, middleWallY);
 
         //adding wall to board
-        Game.board.get(topLeftCell).setWallDown(true);
-        Game.board.get(topRightCell).setWallDown(true);
-        Game.board.get(bottomLeftCell).setWallUp(true);
-        Game.board.get(bottomRightCell).setWallUp(true);
+        board.get(topLeftCell).setWallDown(true);
+        board.get(topRightCell).setWallDown(true);
+        board.get(bottomLeftCell).setWallUp(true);
+        board.get(bottomRightCell).setWallUp(true);
 
         //adding wall middle to wallMiddles
         wallMiddles.get(middleWallIndex).setWallHere(true);
@@ -121,8 +139,8 @@ public class WallTool {
         } else if (wallMiddles.get(middleWallIndex).isWallHere()) {
             //can't have middle of wall intersecting the middle of another wall
             throw new InvalidWallException();
-        } else if (Game.board.get(middleWallY * Game.SIDE_LENGTH + middleWallX).isWallLeft()
-                || Game.board.get((middleWallY - 1) * Game.SIDE_LENGTH + middleWallX).isWallLeft()) {
+        } else if (board.get(middleWallY * Game.SIDE_LENGTH + middleWallX).isWallLeft()
+                || board.get((middleWallY - 1) * Game.SIDE_LENGTH + middleWallX).isWallLeft()) {
             //can't have middle of wall intersecting the end of another VERTICAL wall
             throw new InvalidWallException();
         }
@@ -135,10 +153,10 @@ public class WallTool {
         int bottomRightCell = calculateBottomRightCell(middleWallX, middleWallY);
 
         //adding wall to board
-        Game.board.get(topLeftCell).setWallRight(true);
-        Game.board.get(topRightCell).setWallLeft(true);
-        Game.board.get(bottomLeftCell).setWallRight(true);
-        Game.board.get(bottomRightCell).setWallLeft(true);
+        board.get(topLeftCell).setWallRight(true);
+        board.get(topRightCell).setWallLeft(true);
+        board.get(bottomLeftCell).setWallRight(true);
+        board.get(bottomRightCell).setWallLeft(true);
 
         //adding wall middle to wallMiddles
         wallMiddles.get(middleWallIndex).setWallHere(true);
@@ -161,10 +179,10 @@ public class WallTool {
         int bottomRightCell = calculateBottomRightCell(middleWallX, middleWallY);
 
         //deleting wall from board
-        Game.board.get(topLeftCell).setWallRight(false);
-        Game.board.get(topRightCell).setWallLeft(false);
-        Game.board.get(bottomLeftCell).setWallRight(false);
-        Game.board.get(bottomRightCell).setWallLeft(false);
+        board.get(topLeftCell).setWallRight(false);
+        board.get(topRightCell).setWallLeft(false);
+        board.get(bottomLeftCell).setWallRight(false);
+        board.get(bottomRightCell).setWallLeft(false);
 
         //deleting wall middle from wallMiddles
         wallMiddles.get(middleWallIndex).setWallHere(false);
@@ -186,10 +204,10 @@ public class WallTool {
         int bottomRightCell = calculateBottomRightCell(middleWallX, middleWallY);
 
         //deleting wall from board
-        Game.board.get(topLeftCell).setWallDown(false);
-        Game.board.get(topRightCell).setWallDown(false);
-        Game.board.get(bottomLeftCell).setWallUp(false);
-        Game.board.get(bottomRightCell).setWallUp(false);
+        board.get(topLeftCell).setWallDown(false);
+        board.get(topRightCell).setWallDown(false);
+        board.get(bottomLeftCell).setWallUp(false);
+        board.get(bottomRightCell).setWallUp(false);
 
         //deleting wall middle from wallMiddles
         wallMiddles.get(middleWallIndex).setWallHere(false);

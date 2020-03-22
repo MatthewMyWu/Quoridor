@@ -1,4 +1,9 @@
 package ui.gui;
 
-public class InGameInputHandler {
+import ui.Game;
+
+public class InGameInputHandler extends GuiTool {
+    public InGameInputHandler(Game game) {
+        super(game);
+    }
 }

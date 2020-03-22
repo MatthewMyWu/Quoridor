@@ -2,9 +2,12 @@ package model.players;
 
 import exceptions.OutOfBoundsException;
 import exceptions.WallObstructionException;
+import model.Cell;
 import model.Moveable;
 import model.players.Avatar;
 import ui.Game;
+
+import java.util.ArrayList;
 
 /*Contains specific information about player 2 that differs from player 1*/
 public class P2 extends Avatar {
@@ -13,8 +16,8 @@ public class P2 extends Avatar {
     public static final String DOWN_KEY = "k";
     public static final String RIGHT_KEY = "l";
 
-    public P2() {
-        super(Game.SIDE_LENGTH / 2, 0);
+    public P2(ArrayList<Cell> board) {
+        super(Game.SIDE_LENGTH / 2, 0, board);
         startingCoordX = Game.SIDE_LENGTH / 2;
         startingCoordY = 0;
     }
@@ -57,6 +60,11 @@ public class P2 extends Avatar {
     @Override
     public String getRightKey() {
         return RIGHT_KEY;
+    }
+
+    @Override
+    public String getPlayerNumber() {
+        return "2";
     }
 
     @Override
