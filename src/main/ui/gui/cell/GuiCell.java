@@ -1,6 +1,8 @@
 package ui.gui.cell;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import model.Cell;
 
 //contains information about a gui component of a cell, including the tile (piece where players stand on)
@@ -8,10 +10,10 @@ import model.Cell;
 public class GuiCell extends Group {
     protected static final int LONG_LENGTH = 30;
     protected static final int SHORT_LENGTH = 10;
-    protected static final int INSET = 3;//only applies to tile
+    protected static final int INSET = 4;//only applies to tile
     public static final int SIDE_LENGTH = SHORT_LENGTH + LONG_LENGTH;
     public static final String BG_COLOR = "F3CBA3";
-    public static final String WALL_COLOR = "F5D760";
+    public static final String WALL_COLOR = "#ed8f13";
     //protected Cell cell;
 
     //keeps track of top left corner of this cell
@@ -23,13 +25,16 @@ public class GuiCell extends Group {
     HorizontalWall lowerWall;
     VerticalWall rightWall;
     VerticalWall leftWall;
+    Rectangle background;
 
     public GuiCell(int x, int y, Cell cell) {
         this.coordX = x * SIDE_LENGTH;
         this.coordY = y * SIDE_LENGTH;
         tile = new Tile(coordX + SHORT_LENGTH + INSET, coordY + SHORT_LENGTH + INSET);
+        background = new Rectangle(SIDE_LENGTH, SIDE_LENGTH, Color.valueOf(BG_COLOR));
+        background.relocate(coordX, coordY);
 
-        getChildren().addAll(tile);
+        getChildren().addAll(background, tile);
     }
 
     //EFFECTS : Updates this cell to display p1 if p1 is on this cell (or not display if p1 is not)
@@ -85,10 +90,4 @@ public class GuiCell extends Group {
         rightWall.relocate(coordX + SHORT_LENGTH + LONG_LENGTH, coordY + SHORT_LENGTH);
         getChildren().addAll(rightWall);
     }
-
-//    //EFFECTS : Updates this cell to display/not display the corner (vertical if isVertical, horizontal if not)
-//    public void setCorner(boolean cornerHere, boolean isVertical) {
-//        corner.setVisible(cornerHere);
-//        //TODO stub
-//    }
 }

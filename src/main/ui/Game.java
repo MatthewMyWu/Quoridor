@@ -23,7 +23,7 @@ public class Game {
     private Scanner keyboard = new Scanner(System.in);
 
     private WallTool wallTool;
-    public GuiTool guiTool;//TODO
+    public GuiTool guiTool;
     private MatchHistory matchHistory;
     private static Avatar p1;
     private static Avatar p2;
@@ -53,12 +53,6 @@ public class Game {
         matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
     }
 
-    //EFFECTS : Displays the game over screen
-    private void displayGameOverScreen() {
-        guiTool.displayGameOverScreen();
-        restart();
-    }
-
     //EFFECTS : Interprets player input for the game over screen
     public void interpretBottomPanelInput(String input) {
         if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
@@ -73,11 +67,12 @@ public class Game {
 
     //MODIFIES: this
     //EFFECTS : restarts the game, but does not reset the scores of each player
-    private void restart() {
+    public void restart() {
         //resetting variables
         gameOver = false;
         forfeit = false;
         winner = 0;
+        isP1Turn = true;
 
         //resetting the board and elements dependent on board (Walltool, pathfinders, players)
         resetBoard();
@@ -87,7 +82,8 @@ public class Game {
         p2.initialize();
 
         //resetting displayTool
-        guiTool.reset(this);
+        guiTool.reset();
+        guiTool.updateSidePanel();
     }
 
     private void resetBoard() {
@@ -98,7 +94,6 @@ public class Game {
         p1Pathfinder = new Pathfinder(p1, board);
         p2Pathfinder = new Pathfinder(p2, board);
         wallTool = new WallTool(p1Pathfinder, p2Pathfinder, board);
-
     }
 
     //EFFECTS : Returns a "blank 'board (no walls)
@@ -163,7 +158,7 @@ public class Game {
 
     private void endGame() {
         //saveToMatchHistory();
-        displayGameOverScreen();
+        guiTool.displayGameOverScreen();
     }
 
     //MODIFIES: this (gameOver and winner) and P2 (increments score)
@@ -237,11 +232,6 @@ public class Game {
 
     //EFFECTS : determines if input is in the proper format for a command to place a wall (x1,y1,x2,y2)
     protected boolean isWallCommand(String input) {
-        //checking proper placements of commas
-        assert (input.charAt(1) == ',');
-        assert (input.charAt(3) == ',');
-        assert (input.charAt(5) == ',');
-
         return (input.length() == 7)
                 //checking first coordinate is valid (x1)
                 && (int) input.charAt(0) >= 48 && (int) input.charAt(0) <= 48 + SIDE_LENGTH
@@ -250,7 +240,9 @@ public class Game {
                 //checking fourth coordinate is valid (x2)
                 && (int) input.charAt(4) >= 48 && (int) input.charAt(4) <= 48 + SIDE_LENGTH
                 //checking fifth character is a proper number coordinate
-                && (int) input.charAt(6) >= 48 && (int) input.charAt(6) <= 48 + SIDE_LENGTH;
+                && (int) input.charAt(6) >= 48 && (int) input.charAt(6) <= 48 + SIDE_LENGTH
+                //checking proper placements of commas
+                && input.charAt(1) == ',' && (input.charAt(3) == ',' && (input.charAt(5) == ','));
 
     }
 

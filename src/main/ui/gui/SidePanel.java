@@ -11,6 +11,8 @@ import model.players.P1;
 import ui.Game;
 import ui.gui.cell.GuiCell;
 
+import java.awt.event.ActionEvent;
+
 //this class is responsible for the "panel" at the side of the board (displays player's turn, score, walls, ff)
 public class SidePanel extends Group {
     private GuiTool guiTool;
@@ -41,7 +43,9 @@ public class SidePanel extends Group {
         forfeitButton.setPrefHeight(15);
         forfeitButton.setPrefWidth(55);
         forfeitButton.setFont(new Font(12));
-        forfeitButton.setOnAction(guiTool.getInputHandler());
+        forfeitButton.setOnAction(event -> {
+            game.update("/ff");
+        });
         forfeitButton.relocate(forfeitButtonCoordX, forfeitButtonCoordY);
 
         update();

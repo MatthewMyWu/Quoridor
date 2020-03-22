@@ -52,6 +52,10 @@ public class BottomPanel extends Group {
         gameOverLabel.relocate(gameOverLabelCoordX, gameOverLabelCoordY);
         restartButton.relocate(restartButtonCoordX, restartButtonCoordY);
         mainMenuButton.relocate(mainMenuButtonCoordX, mainMenuButtonCoordY);
+
+        restartButton.setOnAction(event -> {
+            game.restart();
+        });
     }
 
     public void displayGameOverLabel(boolean display) {

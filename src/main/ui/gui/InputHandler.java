@@ -16,7 +16,7 @@ import ui.gui.cell.Corner;
 
 import java.awt.event.ActionListener;
 
-public class InGameInputHandler implements EventHandler<ActionEvent> {
+public class InputHandler implements EventHandler<ActionEvent> {
     private GuiTool guiTool;
     private Line line;
     private Group lineGroup;
@@ -28,7 +28,7 @@ public class InGameInputHandler implements EventHandler<ActionEvent> {
     private double initialY;
     private static final double WALL_LENIENCY = 20.0;//number of pixels around a corner that a valid wall can be drawn
 
-    public InGameInputHandler(GuiTool guiTool) {
+    public InputHandler(GuiTool guiTool) {
         this.guiTool = guiTool;
         this.game = guiTool.getGame();
         lineGroup = new Group();

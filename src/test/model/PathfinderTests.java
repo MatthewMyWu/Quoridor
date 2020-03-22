@@ -119,10 +119,6 @@ public class PathfinderTests extends GameTests {
 
             assertTrue(p1Pathfinder.canFindPath());
             assertTrue(p2Pathfinder.canFindPath());
-
-            //used to visualise the board
-            DisplayTool displayTool = new DisplayTool(p1, p2, wallTool.getWallMiddles(), Game.board);
-            displayTool.displayBoard();
         } catch (InvalidWallException e) {
             fail("No InvalidWasllException expected");
         }

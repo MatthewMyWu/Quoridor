@@ -1,11 +1,10 @@
 package model.persistence;
 
 import model.Cell;
-import model.DisplayTool;
 import model.players.Avatar;
-import model.players.GenericAvatar;
 import model.walls.MiddleOfWall;
 import ui.Game;
+import ui.gui.GuiTool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,7 +25,7 @@ public class HistoricMatch {
     private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
     private String fileName;
-    private DisplayTool displaytool;
+    private GuiTool guiTool;
     private FileWriter writer;
 
     // EFFECTS: constructs a writer with associated file.This constructor is generally used when the final state of
@@ -57,8 +56,9 @@ public class HistoricMatch {
     //REQUIRES: players, wallMiddles, and board all be assigned
     //EFFECTS : creates a console display of this match
     public void displayMatch() {
-        displaytool = new DisplayTool(p1, p2, wallMiddles, board);
-        displaytool.displayBoard();
+        //TODO stub
+//        guiTool = new DisplayTool(p1, p2, wallMiddles, board);
+//        guiTool.displayBoard();
         System.out.println("Player " + winner + " wins!");
     }
 
