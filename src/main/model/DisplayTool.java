@@ -20,6 +20,7 @@ public class DisplayTool {
     protected ArrayList<Cell> board;
 
     public DisplayTool(Avatar p1, Avatar p2, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board) {
+        System.out.println(board.size());
         assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
         assert (wallMiddles.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
         this.p1 = p1;

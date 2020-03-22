@@ -76,7 +76,6 @@ public class PlayerPanel extends Group {
         playerLabel.setText("Player " + player.getPlayerNumber());
         playerWallsLabel.setText("Walls : " + player.getWalls());
         playerScoreLabel.setText(("Score: " + player.getScore()));
-        playerTurnIndicator.setVisible(true);
     }
 
     protected void setTurnIndicator(boolean turnIndicatorStatus) {

@@ -22,18 +22,32 @@ public class GuiTool extends DisplayTool {
     private Group cornerGroup;
     private Group lineGroup;
     private SidePanel sidePanel;
+    private BottomPanel bottomPanel;
 
     private InGameInputHandler inputHandler;
 
     //creates a GUI for the corresponding Game
     public GuiTool(Game game) {
         super(game.getP1(), game.getP2(), game.getWallTool().getWallMiddles(), game.getBoard());
+        reset(game);
+    }
+
+    //resets the gui for when there is a new game
+    public void reset(Game game) {
+        assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+        assert (wallMiddles.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
         this.game = game;
+        this.p1 = game.getP1();
+        this.p2 = game.getP2();
+        this.wallMiddles = game.getWallTool().getWallMiddles();
+        this.board = game.getBoard();
+
         inputHandler = new InGameInputHandler(this);
         cellGroup = new Group();
         cornerGroup = new Group();
         lineGroup = inputHandler.getLineGroup();
         sidePanel = new SidePanel(this);
+        bottomPanel = new BottomPanel(this);
 
         //adding tiles
         initializeCellGroup();
@@ -62,26 +76,38 @@ public class GuiTool extends DisplayTool {
     public Parent createContent() {
         Pane root = new Pane();
         root.setPrefSize(WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 100,
-                WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH);
-        root.getChildren().addAll(cellGroup, cornerGroup, lineGroup, sidePanel);
+                WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 50);
+        root.getChildren().addAll(cellGroup, cornerGroup, lineGroup, sidePanel, bottomPanel);
 
         return root;
     }
 
+    public void displayGameOverScreen() {
+        bottomPanel.displayGameOverLabel(true);
+    }
+
     public void handleKeyboard(KeyEvent key) {
-        inputHandler.handleKeyboard(key);
+        if (!game.isGameOver()) {
+            inputHandler.handleKeyboard(key);
+        }
     }
 
     public void handleMousePressed(MouseEvent click) {
-        inputHandler.handleMousePressed(click);
+        if (!game.isGameOver()) {
+            inputHandler.handleMousePressed(click);
+        }
     }
 
     public void handleMouseDragged(MouseEvent drag) {
-        inputHandler.handleMouseDragged(drag);
+        if (!game.isGameOver()) {
+            inputHandler.handleMouseDragged(drag);
+        }
     }
 
     public void handleMouseReleased(MouseEvent release) {
-        inputHandler.handleMouseReleased(release);
+        if (!game.isGameOver()) {
+            inputHandler.handleMouseReleased(release);
+        }
     }
 
     public Game getGame() {

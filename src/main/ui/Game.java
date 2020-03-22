@@ -39,8 +39,11 @@ public class Game {
     //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
     public Game() {
         //resetting players
-        p1 = new P1(board);
-        p2 = new P2(board);
+        p1 = new P1(generateBoard());
+        p2 = new P2(generateBoard());
+
+        //creating guiTool
+        guiTool = new GuiTool(this);
 
         //(re)setting board, walls, and displayTool
         restart();
@@ -52,23 +55,19 @@ public class Game {
 
     //EFFECTS : Displays the game over screen
     private void displayGameOverScreen() {
-        System.out.println("Player " + winner + " wins!");
-        System.out.println("1. PLAY AGAIN");
-        System.out.println("2. MAIN MENU");
-        interpretGameOverInput();
+        guiTool.displayGameOverScreen();
+        restart();
     }
 
     //EFFECTS : Interprets player input for the game over screen
-    private void interpretGameOverInput() {
-        String input = keyboard.nextLine();
+    public void interpretBottomPanelInput(String input) {
         if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
-            System.out.println("working");
             restart();
         } else if (input.equals("2") || input.equals("2.") || input.equals("MAIN MENU")) {
             //return;
         } else {
             System.out.println("That is not a valid input");
-            interpretGameOverInput();
+            interpretBottomPanelInput(input);
         }
     }
 
@@ -88,7 +87,7 @@ public class Game {
         p2.initialize();
 
         //resetting displayTool
-        guiTool = new GuiTool(this);
+        guiTool.reset(this);
     }
 
     private void resetBoard() {
@@ -155,6 +154,9 @@ public class Game {
         }
 
         if (gameOver) {
+            System.out.println("p1: " + p1.getScore());
+            System.out.println("p2: " + p2.getScore());
+            guiTool.updateSidePanel();
             endGame();
         }
     }
@@ -290,5 +292,13 @@ public class Game {
 
     public void setP2Pathfinder(Pathfinder p2Pathfinder) {
         this.p2Pathfinder = p2Pathfinder;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public int getWinner() {
+        return winner;
     }
 }
