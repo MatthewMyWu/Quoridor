@@ -12,8 +12,11 @@ import java.util.ArrayList;
  * has*/
 public abstract class Avatar extends Moveable {
     private int score;
+    //number of walls this player has
     protected int walls;
+    //starting x coordinate of this player
     protected int startingCoordX;
+    //starting y coordinate of this player
     protected int startingCoordY;
 
     public Avatar(int x, int y, ArrayList<Cell> board) {

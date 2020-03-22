@@ -10,13 +10,17 @@ import java.util.ArrayList;
 //This tool is used for dealing with walls (eg. adding walls)
 
 public class WallTool {
+    //keeps track of all the "middle" segments of walls
     private static ArrayList<MiddleOfWall> wallMiddles;
+    //keeps track of the number of wall middles present on one "side" (row) of the board
     public static final int WALL_MIDDLES_LENGTH = Game.SIDE_LENGTH + 1;
+    //pathfinders for players 1 and 2 respectively
     private Pathfinder p1Pathfinder;
     private Pathfinder p2Pathfinder;
+    //board of the game
     private ArrayList<Cell> board;
 
-    //creates a new ArrayList of middle of Wall segments. Indexing starts at 0, starts at coordinate B1
+    //creates new ArrayList of middle of Wall segments. Indexing starts at 0, at the top left corner of the first "tile"
     public WallTool(Pathfinder p1Pathfinder, Pathfinder p2Pathfinder, ArrayList<Cell> board) {
         assert (board.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
         this.p1Pathfinder = p1Pathfinder;
@@ -213,18 +217,28 @@ public class WallTool {
         wallMiddles.get(middleWallIndex).setWallHere(false);
     }
 
+    //////////////////////////////////////////////////new stuff//////////////////////////////////////////////////
+
+    //REQUIRES: The coordinates must be valid coordinates of a MiddleOfWall
+    //EFFECTS : Given the coordinates of a MiddleOfWall, will return arrayIndex of the cell to the top left of it
     private int calculateTopLeftCell(int middleX, int middleY) {
         return (middleY - 1) * Game.SIDE_LENGTH + (middleX - 1);
     }
 
+    //REQUIRES: The coordinates must be valid coordinates of a MiddleOfWall
+    //EFFECTS : Given the coordinates of a MiddleOfWall, will return arrayIndex of the cell to the top right of it
     private int getTopRightCell(int middleX, int middleY) {
         return (middleY - 1) * Game.SIDE_LENGTH + middleX;
     }
 
+    //REQUIRES: The coordinates must be valid coordinates of a MiddleOfWall
+    //EFFECTS : Given the coordinates of a MiddleOfWall, will return arrayIndex of the cell to the bottom left of it
     private int calculateBottomLeftCell(int middleX, int middleY) {
         return middleY * Game.SIDE_LENGTH + middleX - 1;
     }
 
+    //REQUIRES: The coordinates must be valid coordinates of a MiddleOfWall
+    //EFFECTS : Given the coordinates of a MiddleOfWall, will return arrayIndex of the cell to the bottom right of it
     private int calculateBottomRightCell(int middleX, int middleY) {
         return middleY * Game.SIDE_LENGTH + middleX;
     }

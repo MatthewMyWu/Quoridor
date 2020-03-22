@@ -2,7 +2,6 @@ package ui.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -14,12 +13,9 @@ import model.walls.WallTool;
 import ui.Game;
 import ui.gui.cell.Corner;
 
-import java.awt.event.ActionListener;
-
 public class InputHandler implements EventHandler<ActionEvent> {
-    private GuiTool guiTool;
+    private GameGuiTool gameGuiTool;
     private Line line;
-    private Group lineGroup;
     private Game game;
     //used for handling mouse events (wall placement)
     private double endX;
@@ -28,10 +24,9 @@ public class InputHandler implements EventHandler<ActionEvent> {
     private double initialY;
     private static final double WALL_LENIENCY = 20.0;//number of pixels around a corner that a valid wall can be drawn
 
-    public InputHandler(GuiTool guiTool) {
-        this.guiTool = guiTool;
-        this.game = guiTool.getGame();
-        lineGroup = new Group();
+    public InputHandler(GameGuiTool gameGuiTool) {
+        this.gameGuiTool = gameGuiTool;
+        this.game = gameGuiTool.getGame();
     }
 
     public void handleKeyboard(KeyEvent key) {
@@ -52,7 +47,7 @@ public class InputHandler implements EventHandler<ActionEvent> {
         } else if (key.getCode() == KeyCode.RIGHT) {
             game.update(P2.RIGHT_KEY);
         }
-        guiTool.updateSidePanel();
+        gameGuiTool.updateSidePanel();
     }
 
     public void handleMousePressed(MouseEvent press) {
@@ -62,7 +57,7 @@ public class InputHandler implements EventHandler<ActionEvent> {
         line.setStroke(Color.BROWN);
         line.setVisible(true);
         line.setStrokeWidth(5);
-        lineGroup.getChildren().add(line);
+        gameGuiTool.getRoot().getChildren().add(line);
     }
 
     public void handleMouseDragged(MouseEvent drag) {
@@ -74,7 +69,7 @@ public class InputHandler implements EventHandler<ActionEvent> {
         endX = release.getSceneX();
         endY = release.getSceneY();
         line.setVisible(false);
-        lineGroup.getChildren().removeAll(line);
+        gameGuiTool.getRoot().getChildren().remove(line);
         updateWalls();
     }
 
@@ -92,7 +87,7 @@ public class InputHandler implements EventHandler<ActionEvent> {
 
         //passing input to game
         game.update(input);
-        guiTool.updateSidePanel();
+        gameGuiTool.updateSidePanel();
     }
 
     //EFFECTS : Returns the row/column of the corner that this coordinate is closest to, or -1 if not close to a corner
@@ -105,10 +100,6 @@ public class InputHandler implements EventHandler<ActionEvent> {
         }
 
         return -1;
-    }
-
-    public Group getLineGroup() {
-        return lineGroup;
     }
 
     public Game getGame() {

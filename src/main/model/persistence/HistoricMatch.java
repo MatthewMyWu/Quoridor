@@ -4,7 +4,7 @@ import model.Cell;
 import model.players.Avatar;
 import model.walls.MiddleOfWall;
 import ui.Game;
-import ui.gui.GuiTool;
+import ui.gui.GameGuiTool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,7 +25,7 @@ public class HistoricMatch {
     private ArrayList<MiddleOfWall> wallMiddles;
     private ArrayList<Cell> board;
     private String fileName;
-    private GuiTool guiTool;
+    private GameGuiTool gameGuiTool;
     private FileWriter writer;
 
     // EFFECTS: constructs a writer with associated file.This constructor is generally used when the final state of

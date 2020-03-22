@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 //This special instance of the WallTool is used exclusively for "test.PathfinderTests". It allows me to place walls
 // that would block off players from reaching their objective - if I used the normal WallTool, an exception would be
-// thrown and I would not be able to clearly test the Pathfinder
+// thrown and I would not be able to clearly test the Pathfinder. This is why the overriden method(s) are left as stubs
 public class PathfindingTestWallTool extends WallTool {
 
     public PathfindingTestWallTool(Pathfinder p1Pathfinder, Pathfinder p2Pathfinder, ArrayList<Cell> board) {

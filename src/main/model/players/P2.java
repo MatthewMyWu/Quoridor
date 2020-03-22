@@ -11,10 +11,12 @@ import java.util.ArrayList;
 
 /*Contains specific information about player 2 that differs from player 1*/
 public class P2 extends Avatar {
-    public static final String UP_KEY = "i";
-    public static final String LEFT_KEY = "j";
-    public static final String DOWN_KEY = "k";
-    public static final String RIGHT_KEY = "l";
+    //keys to move player 2. While in the GUI, these keys are updated, what I've done is mapped the new GUI keys to
+    // these keys (so I don't have to recode movement)
+    public static final String UP_KEY = "i";//is actually the UP key using the GUI
+    public static final String LEFT_KEY = "j";//is actually the LEFT key using the GUI
+    public static final String DOWN_KEY = "k";//is actually the DOWN key using the GUI
+    public static final String RIGHT_KEY = "l";//is actually the RIGHT key using the GUI
 
     public P2(ArrayList<Cell> board) {
         super(Game.SIDE_LENGTH / 2, 0, board);

@@ -8,11 +8,10 @@ import model.Cell;
 //contains information about a gui component of a cell, including the tile (piece where players stand on)
 // and all surrounding wall segments (excluding corner pieces)
 public class GuiCell extends Group {
-    protected static final int LONG_LENGTH = 30;
-    protected static final int SHORT_LENGTH = 10;
-    protected static final int INSET = 4;//only applies to tile
+    public static final int LONG_LENGTH = 30;
+    public static final int SHORT_LENGTH = 10;
+    public static final int INSET = 4;//only applies to tile
     public static final int SIDE_LENGTH = SHORT_LENGTH + LONG_LENGTH;
-    public static final String BG_COLOR = "F3CBA3";
     public static final String WALL_COLOR = "#ed8f13";
     //protected Cell cell;
 
@@ -25,16 +24,13 @@ public class GuiCell extends Group {
     HorizontalWall lowerWall;
     VerticalWall rightWall;
     VerticalWall leftWall;
-    Rectangle background;
 
     public GuiCell(int x, int y, Cell cell) {
         this.coordX = x * SIDE_LENGTH;
         this.coordY = y * SIDE_LENGTH;
         tile = new Tile(coordX + SHORT_LENGTH + INSET, coordY + SHORT_LENGTH + INSET);
-        background = new Rectangle(SIDE_LENGTH, SIDE_LENGTH, Color.valueOf(BG_COLOR));
-        background.relocate(coordX, coordY);
 
-        getChildren().addAll(background, tile);
+        getChildren().addAll(tile);
     }
 
     //EFFECTS : Updates this cell to display p1 if p1 is on this cell (or not display if p1 is not)

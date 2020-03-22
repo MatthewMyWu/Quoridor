@@ -21,6 +21,8 @@ public class Cell {
     private boolean wallDown;
     private boolean wallRight;
 
+    //EFFECTS : This constructor is used for HistoricMatch.
+    //          It constructs a cell where the final state of the cell is known (because the game is finished)
     public Cell(int x, int y, boolean p1Here, boolean p2Here,
                 boolean wallUp, boolean wallLeft, boolean wallDown, boolean wallRight) {
         this.p1Here = p1Here;
@@ -45,6 +47,8 @@ public class Cell {
         return wallUp;
     }
 
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for WallUp and updates the GUI component
     public void setWallUp(boolean wallUp) {
         this.wallUp = wallUp;
         guiCell.setWallUp(wallUp);
@@ -54,8 +58,8 @@ public class Cell {
         return wallLeft;
     }
 
-    //these setters are coupled with the gui element, so need to update those as well
-
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for wallLeft and updates the GUI component
     public void setWallLeft(boolean wallLeft) {
         this.wallLeft = wallLeft;
         guiCell.setWallLeft(wallLeft);
@@ -65,7 +69,8 @@ public class Cell {
         return wallDown;
     }
 
-    //sets it so that there is a wall under this cell, but also updates guiCell component
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for wallDown and updates the GUI component
     public void setWallDown(boolean wallDown) {
         this.wallDown = wallDown;
         guiCell.setWallDown(wallDown);
@@ -75,7 +80,8 @@ public class Cell {
         return wallRight;
     }
 
-    //sets it so that there is a wall to the right of this cell, but also updates guiCell component
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for wallRight and updates the GUI component
     public void setWallRight(boolean wallRight) {
         this.wallRight = wallRight;
         guiCell.setWallRight(wallRight);
@@ -85,7 +91,8 @@ public class Cell {
         return p1Here;
     }
 
-    //sets it so that p1 is on this cell, but also updates guiCell component
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for p1Here and updates the GUI component
     public void setP1Here(boolean p1Here) {
         this.p1Here = p1Here;
         guiCell.setP1Here(p1Here);
@@ -95,7 +102,8 @@ public class Cell {
         return p2Here;
     }
 
-    //sets it so that p1 is on this cell, but also updates guiCell component
+    //MODIFIES: This and guiCell
+    //EFFECTS : Setter for p2Here and updates the GUI component
     public void setP2Here(boolean p2Here) {
         this.p2Here = p2Here;
         guiCell.setP2Here(p2Here);
@@ -130,26 +138,6 @@ public class Cell {
     }
 
 
-//    //EFFECTS : prints out a cell and the wall to the right of it (if there is a wall there)
-//    public void displayCell() {
-//        String returnString = "";
-//        //figuring out what to display in cell
-//        if (p1Here) {
-//            returnString = "1";
-//        } else if (p2Here) {
-//            returnString = "2";
-//        } else {
-//            returnString = "0";
-//        }
-//
-//        //figuring out if we need to display a wall to the right of the cell
-//        if (wallRight) {
-//            returnString += DisplayTool.VERTICAL_WALL_SPACE + "|" + DisplayTool.VERTICAL_WALL_SPACE;
-//        } else {
-//            returnString += DisplayTool.DIVIDING_SPACE;
-//        }
-//        return returnString;
-//
-//        //TODO error trap so that player 1 and 2 can't be on the same square
+    //TODO error trap so that player 1 and 2 can't be on the same square
 //    }
 }

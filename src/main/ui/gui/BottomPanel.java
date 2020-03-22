@@ -4,10 +4,11 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import ui.Game;
+import ui.Menu;
 import ui.gui.cell.GuiCell;
 
 public class BottomPanel extends Group {
-    GuiTool guiTool;
+    GameGuiTool gameGuiTool;
     Game game;
 
     //keeps track of the top left coordinates of this panel
@@ -25,15 +26,15 @@ public class BottomPanel extends Group {
     private Button restartButton;
     private Button mainMenuButton;
 
-    public BottomPanel(GuiTool guiTool) {
-        this.guiTool = guiTool;
-        this.game = guiTool.getGame();
+    public BottomPanel(GameGuiTool gameGuiTool) {
+        this.gameGuiTool = gameGuiTool;
+        this.game = gameGuiTool.getGame();
         gameOverLabel = new Label("Player - wins!");
         restartButton = new Button("Restart");
         mainMenuButton = new Button("Main Menu");
 
         coordX = 0;
-        coordY = Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH + 30;
+        coordY = Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH + 33;
 
         gameOverLabelCoordX = coordX + 20;
         gameOverLabelCoordY = coordY - 20;
@@ -55,6 +56,10 @@ public class BottomPanel extends Group {
 
         restartButton.setOnAction(event -> {
             game.restart();
+        });
+
+        mainMenuButton.setOnAction(event -> {
+            Menu.returnToMainMenu();
         });
     }
 

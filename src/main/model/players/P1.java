@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P1 extends Avatar {
+    //input keys to move this player
     public static final String UP_KEY = "w";
     public static final String LEFT_KEY = "a";
     public static final String DOWN_KEY = "s";

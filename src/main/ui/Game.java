@@ -8,7 +8,7 @@ import model.players.Avatar;
 import model.players.P1;
 import model.players.P2;
 import model.walls.WallTool;
-import ui.gui.GuiTool;
+import ui.gui.GameGuiTool;
 import ui.gui.cell.HorizontalWall;
 import ui.gui.cell.VerticalWall;
 
@@ -23,7 +23,7 @@ public class Game {
     private Scanner keyboard = new Scanner(System.in);
 
     private WallTool wallTool;
-    public GuiTool guiTool;
+    public GameGuiTool gameGuiTool;
     private MatchHistory matchHistory;
     private static Avatar p1;
     private static Avatar p2;
@@ -43,7 +43,7 @@ public class Game {
         p2 = new P2(generateBoard());
 
         //creating guiTool
-        guiTool = new GuiTool(this);
+        gameGuiTool = new GameGuiTool(this);
 
         //(re)setting board, walls, and displayTool
         restart();
@@ -82,8 +82,8 @@ public class Game {
         p2.initialize();
 
         //resetting displayTool
-        guiTool.reset();
-        guiTool.updateSidePanel();
+        gameGuiTool.reset();
+        gameGuiTool.updateSidePanel();
     }
 
     private void resetBoard() {
@@ -151,14 +151,14 @@ public class Game {
         if (gameOver) {
             System.out.println("p1: " + p1.getScore());
             System.out.println("p2: " + p2.getScore());
-            guiTool.updateSidePanel();
+            gameGuiTool.updateSidePanel();
             endGame();
         }
     }
 
     private void endGame() {
         //saveToMatchHistory();
-        guiTool.displayGameOverScreen();
+        gameGuiTool.displayGameOverScreen();
     }
 
     //MODIFIES: this (gameOver and winner) and P2 (increments score)

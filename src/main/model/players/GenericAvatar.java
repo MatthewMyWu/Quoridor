@@ -6,6 +6,9 @@ import model.Moveable;
 import java.util.ArrayList;
 
 //this Avatar is not meant to be used in game. It is more of a "placeholder" Avatar used for HistoricMatch
+//This Avatar isn't meant to be moved; it's used to store information about an Avatar in a finished game
+// (eg. walls, score, end position coordinates).
+// As a result, many of the implemented methods in this class are stubs.
 public class GenericAvatar extends Avatar {
 
     public GenericAvatar(int x, int y, ArrayList<Cell> board) {

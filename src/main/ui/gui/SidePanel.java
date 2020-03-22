@@ -2,20 +2,13 @@ package ui.gui;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import model.players.Avatar;
-import model.players.P1;
 import ui.Game;
 import ui.gui.cell.GuiCell;
 
-import java.awt.event.ActionEvent;
-
 //this class is responsible for the "panel" at the side of the board (displays player's turn, score, walls, ff)
 public class SidePanel extends Group {
-    private GuiTool guiTool;
+    private GameGuiTool gameGuiTool;
     private Game game;
 
     private int coordX;
@@ -28,10 +21,10 @@ public class SidePanel extends Group {
     private PlayerPanel p2Panel;
     private Button forfeitButton;
 
-    public SidePanel(GuiTool guiTool) {
-        this.guiTool = guiTool;
-        this.game = guiTool.getGame();
-        coordX = Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH;
+    public SidePanel(GameGuiTool gameGuiTool) {
+        this.gameGuiTool = gameGuiTool;
+        this.game = gameGuiTool.getGame();
+        coordX = Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH + 10;
         coordY = 0;
         forfeitButtonCoordX = coordX + 10;
         forfeitButtonCoordY = coordY + 180;
@@ -66,7 +59,7 @@ public class SidePanel extends Group {
         return game;
     }
 
-    public GuiTool getGuiTool() {
-        return guiTool;
+    public GameGuiTool getGameGuiTool() {
+        return gameGuiTool;
     }
 }
