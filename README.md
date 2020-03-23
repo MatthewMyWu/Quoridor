@@ -22,21 +22,34 @@ Walls are straight and 2 units long — they are obstacles that prevent either p
  However, walls can not be placed in such a way that it is impossible to
  reach the other side (it must always be possible to get to the other side).
 
-## First deliverable: how to use the program
-So far this is a very rudimentary version of the game.
-- The graphics are text-based, with each block on the board being represented by an "0".
-- If player 1 is standing on a block, then that block is displayed as a "1", and "2" if player 2 is standing on it.
-- When it is player 1's turn, he can move up, left, down, or right, by using the "w", "a", "s", and "d" keys respectively.
-The same applies for player two, except his controls are "i", "j", "k", and "l" (respectively).
-- In order to place a wall, you must enter the coordinates of the endpoints of the wall in the form "A1,A3"
-([letter coordinate][number coordinate],[letter coordinate][number coordinate]).
+## Phase 3: how to use the program
+At this stage I have implemented a fairly complete version of the game. When the program starts, you will be shown the
+main menu. Press the "play" button to start the game.
 
-Currently, there is no mechanism for either player to win the game;
- it is possible to trap the other player in a box of walls (making the game unwinnable);
- it is possible for players to be on top of each other (player 1 will be displayed if this is the case);
- and both players have unlimited walls. I hope to fix all of these issues by the final deliverable.
- 
-**To run the program, simply run the "Main" class in the ui package**
+Once in the game, you will see the board, with player 1 being represented by the cyan square, and player 2 by the red
+square. To the right of the board, you will see information about the 2 players (eg. how many walls each player has
+remaining, and their score). The green circle beside the player name indicates whose turn it is. Whichever player
+presses the "Forfeit" button on their turn will forfeit the match. The "Restart" button restarts the match, and the
+"Main Menu" button will return you to the main menu.
+
+In order to move player 1, use the 'w', 'a', 's', and 'd' keys, to move up, left, down, and right, respectively.
+Similarly, these controls are the up, left, down, and right arrow keys for player 2. Note that players can't move
+off the board, over walls, or when it is not their turn. In order to place a wall, click the mouse at the corner where
+you want the first end of the wall to be, and drag and release it at the corner where you want the other end of the wall
+to be. (Make sure you are placing valid walls, and specified in the "How To Play Quorridor" section of this README).
+
+Note that at this time, I was unable to finish the "Match History" (persistence) requirement for this project. 
+Also note that I have had to made changes to how input and visual display are implemented, in order to implement the
+GUI. I have not yet refactored the tests to account for these changes.
+
+## Instructions for Grader
+- You can generate the first required event by placing a wall on the board
+(as specified in the "Phase 3: how to use the program" section of this README)
+- You can generate the first required event by placing a wall on the board
+  (as specified in the "Phase 3: how to use the program" section of this README)
+- You can locate my visual component by looking on the board (where your wall will have been placed)
+- You can save the state of my application by... (unimplemented at this time)
+- You can reload the state of my application by... (unimplemented at this time)
 
 ## Implemented user stories
 - As a user, I want to be able to see both avatars on the board
@@ -47,8 +60,6 @@ Currently, there is no mechanism for either player to win the game;
 - As a user, I want the game to be turn based
 - As a user, I want an indicator to show whose turn it is
 - As a user, I want the game to disallow any wall placements that would make the game unwinnable
-
-## Unimplemented user stories
 - As a user, I want to be able to use the mouse to add walls to the board
 - As a user, I want the game to be visually appealing (eg. not have text-based graphics)
 - As a user, I want to be able to win the game
@@ -56,6 +67,8 @@ Currently, there is no mechanism for either player to win the game;
 - As a user, I want to be able to "forfeit" the match at any point
 - As a user, I want to be able to play again when the game ends
 - As a user, I want the game to display the score of each player
+
+## Unimplemented user stories
 - As a user, I want each finished game to be recorded into the "match history" (final layout of board),
 which will store the past 10 games
 - As a user, I want to be able to view the "match history"

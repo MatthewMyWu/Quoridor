@@ -8,19 +8,23 @@ import ui.gui.cell.GuiCell;
 
 //this class is responsible for the "panel" at the side of the board (displays player's turn, score, walls, ff)
 public class SidePanel extends Group {
-    private GameGuiTool gameGuiTool;
-    private Game game;
+    private GameGuiTool gameGuiTool;// The GameGuiTool this is coupled with
+    private Game game;// The Game this is coupled with
 
+    // These are the x and y coordinates for the top left corner of the panel
     private int coordX;
     private int coordY;
 
-    private final int forfeitButtonCoordX;
-    private final int forfeitButtonCoordY;
-
+    // These are the components of the side panel
     private PlayerPanel p1Panel;
     private PlayerPanel p2Panel;
     private Button forfeitButton;
 
+    // These are the x and y coordinates for the forfeit button
+    private final int forfeitButtonCoordX;
+    private final int forfeitButtonCoordY;
+
+    //EFFECTS : Constructor that initializes (and positions) all components
     public SidePanel(GameGuiTool gameGuiTool) {
         this.gameGuiTool = gameGuiTool;
         this.game = gameGuiTool.getGame();
@@ -46,6 +50,8 @@ public class SidePanel extends Group {
         this.getChildren().addAll(p1Panel, p2Panel, forfeitButton);
     }
 
+    //MODIFIES: this
+    //EFFECTS : updates this information
     public void update() {
         p1Panel.updatePlayerInfo();
         p2Panel.updatePlayerInfo();

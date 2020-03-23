@@ -15,19 +15,20 @@ import model.walls.WallTool;
 import ui.gui.GameGuiTool;
 import ui.gui.cell.GuiCell;
 
+//This class contains code on how the Main Menu functions
 public class Menu {
-    public static final int PREF_WIDTH = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 100;
-    public static final int PREF_HEIGHT = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 50;
+    public static final int PREF_WIDTH = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 100;// width of main menu
+    public static final int PREF_HEIGHT = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 50;// height of main menu
 
     private static final double playButtonWidth = 250.0;
     private static final double matchHistoryButtonWidth = 250;
 
-    private static Main main;
+    private static Main main;// The main program this is coupled with
     private Game game;
     private GameGuiTool gameGuiTool;
-    private Scene gameScene;
-    private static Scene menuScene;
-    private static Scene activeScene;
+    private Scene gameScene;// The scene that will be displayed if the game is running
+    private static Scene menuScene;// The scene that will be displayed for the main menu
+    private static Scene activeScene;// The active scene (currently being displayed)
     //public MatchHistory matchHistory = new MatchHistory();
 
     public Menu(Main main) {
@@ -36,11 +37,15 @@ public class Menu {
         activeScene = menuScene;
     }
 
+    //MODIFIES: this and main
+    //EFFECTS : displays the main menu
     public static void returnToMainMenu() {
         activeScene = menuScene;
         main.updateScene();
     }
 
+    //MODIFIES: this and main
+    //EFFECTS : displays a new game
     private Scene newGameScene() {
         game = new Game();
         gameGuiTool = game.gameGuiTool;
@@ -63,6 +68,8 @@ public class Menu {
         return gameScene;
     }
 
+    //MODIFIES: this
+    //EFFECTS : initializes the Main Menu screen
     private void initializeMenuScene() {
         Pane root = new AnchorPane();
         Rectangle background = new Rectangle(PREF_WIDTH, PREF_HEIGHT, Color.valueOf("#e88d15"));
@@ -81,6 +88,8 @@ public class Menu {
         menuScene = new Scene(root);
     }
 
+    //MODIFIES: this
+    //EFFECTS : nitializes the Match History Button
     private void initializeMatchHistoryButton(Button matchHistoryButton) {
         matchHistoryButton.setFont(new Font("Impact", 30));
         matchHistoryButton.setTextFill(Color.valueOf("#823b0e"));
@@ -89,6 +98,8 @@ public class Menu {
         AnchorPane.setTopAnchor(matchHistoryButton, 300.0);
     }
 
+    //MODIFIES: this
+    //EFFECTS : nitializes the Play Button
     private void initializePlayButton(Button playButton) {
         playButton.setFont(new Font("Impact", 40));
         playButton.setTextFill(Color.valueOf("#823b0e"));
@@ -103,6 +114,8 @@ public class Menu {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS : nitializes the title
     private void initializeTitleLabel(Label title) {
         title.setFont(new Font("Impact", 100));
         title.setTextFill(Color.valueOf("#823b0e"));
@@ -115,19 +128,4 @@ public class Menu {
     public Scene getActiveScene() {
         return activeScene;
     }
-
-//    //EFFECTS : Interprets player input and puts it into effect
-//    private void interpretInput(String input) {
-//        if (input.equals("1") || input.equals("1.") || input.equalsIgnoreCase("play game")) {
-//            game = new Game();
-//            //TODO game.play();
-//        } else if (input.equals("2") || input.equals("2.") || input.equalsIgnoreCase("match history")) {
-//            matchHistory.display();
-//        } else if (input.equals("0") || input.equals("0.") || input.equalsIgnoreCase("exit")) {
-//            exit = true;
-//        } else {
-//            System.out.println("That is not a valid input");
-//        }
-//    }
 }
-//./data/match0

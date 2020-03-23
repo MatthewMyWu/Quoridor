@@ -3,14 +3,15 @@ package ui.gui.cell;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+//This class is the GUI component for the middle segment of a wall (model.walls.MiddleOfWall)
 public class Corner extends Rectangle {
     //following coordinates keeps track of the top left corner of this rectangle
     private double coordX;
     private double coordY;
 
     public Corner(int x, int y) {
-        this.coordX = getCoord(x);
-        this.coordY = getCoord(y);
+        this.coordX = calculateCoord(x);
+        this.coordY = calculateCoord(y);
 
         setWidth(GuiCell.SHORT_LENGTH);
         setHeight(GuiCell.SHORT_LENGTH);
@@ -20,7 +21,8 @@ public class Corner extends Rectangle {
         relocate(coordX, coordY);
     }
 
-    public static double getCoord(int coord) {
+    //converts the x or y coordinate of this cell into pixel coordinates on the panel
+    public static double calculateCoord(int coord) {
         return coord * GuiCell.SIDE_LENGTH;
     }
 

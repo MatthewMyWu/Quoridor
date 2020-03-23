@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    Menu menu;
+    Menu menu;// The main menu
     Stage primaryStage;
 
     @Override
@@ -22,6 +22,8 @@ public class Main extends Application {
         this.primaryStage.show();
     }
 
+    //MODIFIES: this
+    //EFFECTS : updates the scene so that it is the active scene
     public void updateScene() {
         Scene scene = menu.getActiveScene();
         this.primaryStage.setScene(scene);

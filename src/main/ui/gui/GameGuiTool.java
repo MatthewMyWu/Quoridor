@@ -6,17 +6,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import model.Cell;
 import model.players.Avatar;
 import model.walls.MiddleOfWall;
 import model.walls.WallTool;
-import org.w3c.dom.css.Rect;
 import ui.Game;
 import ui.gui.cell.GuiCell;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class GameGuiTool {
@@ -28,15 +25,15 @@ public class GameGuiTool {
     protected ArrayList<MiddleOfWall> wallMiddles;
     protected ArrayList<Cell> board;
 
-    private Rectangle background;
-    private Group cellGroup;
-    private Group cornerGroup;
-    private SidePanel sidePanel;
-    private BottomPanel bottomPanel;
+    private Rectangle background;// This rectangle will be the background of the board
+    private Group cellGroup;// This group will contain all the cells for the board
+    private Group cornerGroup;// This group will contain all the corner pieces (MiddleOfWall segments) of the board
+    private SidePanel sidePanel;// This group will contain the "side panel" (displayed beside the board)
+    private BottomPanel bottomPanel;// This group will contain the "bottom panel" (displayed under the board)
 
-    private InputHandler inputHandler;
+    private InputHandler inputHandler;// This handles keyboard and mouse inputs
 
-    //creates a GUI for the corresponding Game
+    //creates a GuiTool for game
     public GameGuiTool(Game game) {
         this.game = game;
         this.p1 = game.getP1();
@@ -50,13 +47,14 @@ public class GameGuiTool {
         bottomPanel = new BottomPanel(this);
     }
 
+    //EFFECTS : Creates the background for the board
     private void initializeBackground() {
         this.background = new Rectangle(Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH + GuiCell.SHORT_LENGTH,
                 Game.SIDE_LENGTH * GuiCell.SIDE_LENGTH + GuiCell.SHORT_LENGTH,
                 Color.valueOf(BG_COLOR));
     }
 
-    //resets the gui for when there is a new game
+    //EFFECTS : resets the GUI for when there is a new game
     public void reset() {
         this.wallMiddles = game.getWallTool().getWallMiddles();
         this.board = game.getBoard();
@@ -75,6 +73,7 @@ public class GameGuiTool {
         initializeCornerGroup();
     }
 
+    //EFFECTS : Resets the cornerGroup (all the corner pieces/MiddleOfWall segments on the board)
     private void initializeCornerGroup() {
         for (int y = 0; y < WallTool.WALL_MIDDLES_LENGTH; y++) {
             for (int x = 0; x < WallTool.WALL_MIDDLES_LENGTH; x++) {
@@ -83,6 +82,7 @@ public class GameGuiTool {
         }
     }
 
+    //EFFECTS : Resets the cellGroup (all the tiles on the board)
     private void initializeCellGroup() {
         for (int y = 0; y < Game.SIDE_LENGTH; y++) {
             for (int x = 0; x < Game.SIDE_LENGTH; x++) {
@@ -92,6 +92,7 @@ public class GameGuiTool {
         }
     }
 
+    //EFFECTS : returns the pane that contains the display of the game
     public Parent createContent() {
         root = new Pane();
         root.setPrefSize(ui.Menu.PREF_WIDTH,
@@ -101,32 +102,42 @@ public class GameGuiTool {
         return root;
     }
 
+    //EFFECTS : Displays the game-over screen
     public void displayGameOverScreen() {
         bottomPanel.displayGameOverLabel(true);
     }
 
+    //EFFECTS : handles keyboard presses
     public void handleKeyboard(KeyEvent key) {
         if (!game.isGameOver()) {
             inputHandler.handleKeyboard(key);
         }
     }
 
+    //EFFECTS : handles mouse presses
     public void handleMousePressed(MouseEvent click) {
         if (!game.isGameOver()) {
             inputHandler.handleMousePressed(click);
         }
     }
 
+    //EFFECTS : handles mouse drags
     public void handleMouseDragged(MouseEvent drag) {
         if (!game.isGameOver()) {
             inputHandler.handleMouseDragged(drag);
         }
     }
 
+    //EFFECTS : handles mouse releases
     public void handleMouseReleased(MouseEvent release) {
         if (!game.isGameOver()) {
             inputHandler.handleMouseReleased(release);
         }
+    }
+
+    //EFFECTS : updates the sidePanel
+    public void updateSidePanel() {
+        sidePanel.update();
     }
 
     protected Pane getRoot() {
@@ -135,9 +146,5 @@ public class GameGuiTool {
 
     public Game getGame() {
         return game;
-    }
-
-    public void updateSidePanel() {
-        sidePanel.update();
     }
 }

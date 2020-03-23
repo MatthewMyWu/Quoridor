@@ -6,6 +6,7 @@ import ui.Game;
 
 import java.util.ArrayList;
 
+//This class contains general methods for any object that should be able to be moved (eg. Avatar and Pathfinder)
 public abstract class Moveable {
     protected int coordX;
     protected int coordY;

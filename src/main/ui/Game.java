@@ -16,21 +16,19 @@ import java.util.Scanner;
 
 import java.util.ArrayList;
 
-/*This class handles user input, and contains all the methods for running the game*/
-
+//Contains methods and information necessary for the running of the main game
 public class Game {
-    public static final int SIDE_LENGTH = 9;
-    private Scanner keyboard = new Scanner(System.in);
+    public static final int SIDE_LENGTH = 9;// The number of cells on one side of the board
 
-    private WallTool wallTool;
-    public GameGuiTool gameGuiTool;
-    private MatchHistory matchHistory;
+    private WallTool wallTool;// Tool used for placing walls
+    public GameGuiTool gameGuiTool;// Tool used for GUI
+    private MatchHistory matchHistory;// Keeps track of MatchHistory
     private static Avatar p1;
     private static Avatar p2;
-    private Pathfinder p1Pathfinder;
-    private Pathfinder p2Pathfinder;
-    private boolean isP1Turn = true;//true when it is p1 turn, false if p2 turn
-    private boolean gameOver = false;
+    private Pathfinder p1Pathfinder;// Pathfinder for p1
+    private Pathfinder p2Pathfinder;// Pathfinder for p2
+    private boolean isP1Turn = true;// true when it is p1 turn, false if p2 turn
+    private boolean gameOver = false;// true if game is over
     private int winner; //Is the player that won the game (eg. 1 or 2)
     private boolean forfeit = false; //The player that sets this to true will have surrendered
     public static ArrayList<Cell> board;
@@ -47,22 +45,6 @@ public class Game {
 
         //(re)setting board, walls, and displayTool
         restart();
-    }
-
-    private void saveToMatchHistory() {
-        matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
-    }
-
-    //EFFECTS : Interprets player input for the game over screen
-    public void interpretBottomPanelInput(String input) {
-        if (input.equals("1") || input.equals("1.") || input.equals("PLAY AGAIN")) {
-            restart();
-        } else if (input.equals("2") || input.equals("2.") || input.equals("MAIN MENU")) {
-            //return;
-        } else {
-            System.out.println("That is not a valid input");
-            interpretBottomPanelInput(input);
-        }
     }
 
     //MODIFIES: this
@@ -86,6 +68,8 @@ public class Game {
         gameGuiTool.updateSidePanel();
     }
 
+    //MODIFIES: this
+    //EFFECTS : resets the board
     private void resetBoard() {
         board = generateBoard();
 
@@ -156,6 +140,7 @@ public class Game {
         }
     }
 
+    //EFFECTS : Ends the game
     private void endGame() {
         //saveToMatchHistory();
         gameGuiTool.displayGameOverScreen();
@@ -177,8 +162,7 @@ public class Game {
         winner = 1;
     }
 
-    //EFFECTS : interprets the player input while game is running, and calls the appropriate method
-    //TODO
+    //EFFECTS : interprets the player input and calls the appropriate method
     private void interpretInGameInput(Avatar player, String input) {
         try {
             //if the input matches one of the keys to move the player:
@@ -246,9 +230,16 @@ public class Game {
 
     }
 
+    //MODIFIES: mathHistory
+    //EFFECTS : Saves this game to match history
+    private void saveToMatchHistory() {
+        matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
+        //TODO
+    }
 
 
-    //getters
+
+    /////////////////////////////////////getters and setters///////////////////////////////////////
     public static Avatar getP1() {
         return p1;
     }

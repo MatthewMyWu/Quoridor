@@ -7,6 +7,8 @@ import ui.Game;
 import ui.Menu;
 import ui.gui.cell.GuiCell;
 
+//This class contains information about the "panel" at the bottom of the board (when the game is running)
+// This includes displaying the message for when the game is over, as well as the "restart" and "Main Menu" buttons
 public class BottomPanel extends Group {
     GameGuiTool gameGuiTool;
     Game game;
@@ -15,6 +17,12 @@ public class BottomPanel extends Group {
     private int coordX;
     private int coordY;
 
+    //These are the various components that exist in this panel
+    private Label gameOverLabel;
+    private Button restartButton;
+    private Button mainMenuButton;
+
+    //These are the x and y coordinates of the various components for this panel
     private int gameOverLabelCoordX;
     private int gameOverLabelCoordY;
     private int restartButtonCoordX;
@@ -22,10 +30,7 @@ public class BottomPanel extends Group {
     private int mainMenuButtonCoordX;
     private int mainMenuButtonCoordY;
 
-    private Label gameOverLabel;
-    private Button restartButton;
-    private Button mainMenuButton;
-
+    //EFFECTS : Constructor instantiates variables
     public BottomPanel(GameGuiTool gameGuiTool) {
         this.gameGuiTool = gameGuiTool;
         this.game = gameGuiTool.getGame();
@@ -46,6 +51,8 @@ public class BottomPanel extends Group {
         initialize();
     }
 
+    //EFFECTS : Initializes the components for this class
+    //          (eg. positions elements and sets ActionEvent handlers for thebuttons)
     private void initialize() {
         this.getChildren().addAll(gameOverLabel, restartButton, mainMenuButton);
         gameOverLabel.setVisible(false);
@@ -63,6 +70,8 @@ public class BottomPanel extends Group {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS : Displays (or doesn't display) the game over message
     public void displayGameOverLabel(boolean display) {
         gameOverLabel.setText("Player " + game.getWinner() + " wins!");
         gameOverLabel.setVisible(display);

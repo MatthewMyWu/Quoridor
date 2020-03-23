@@ -21,7 +21,7 @@ public class Cell {
     private boolean wallDown;
     private boolean wallRight;
 
-    //EFFECTS : This constructor is used for HistoricMatch.
+    //EFFECTS : Constructor is used for HistoricMatch.
     //          It constructs a cell where the final state of the cell is known (because the game is finished)
     public Cell(int x, int y, boolean p1Here, boolean p2Here,
                 boolean wallUp, boolean wallLeft, boolean wallDown, boolean wallRight) {
