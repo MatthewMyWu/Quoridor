@@ -44,7 +44,6 @@ public class Pathfinder extends Moveable {
 
         boolean pathFound = pathFound();
         reset();
-        System.out.println("x: " + coordX + ", y:" + coordY);//TODO debugging
         return pathFound;
     }
 

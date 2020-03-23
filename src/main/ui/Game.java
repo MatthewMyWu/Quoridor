@@ -133,8 +133,6 @@ public class Game {
         }
 
         if (gameOver) {
-            System.out.println("p1: " + p1.getScore());
-            System.out.println("p2: " + p2.getScore());
             gameGuiTool.updateSidePanel();
             endGame();
         }

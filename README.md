@@ -72,5 +72,6 @@ GUI. I have not yet refactored the tests to account for these changes.
 - As a user, I want each finished game to be recorded into the "match history" (final layout of board),
 which will store the past 10 games
 - As a user, I want to be able to view the "match history"
+- As a user, I want each player to be able to "jump" over each other (if moving into each other)
 - (Optional) as a user, I want there to be a "minotaur" that starts in the middle of the map and moves randomly, and
 if it reaches a player, that player loses
