@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public abstract class Moveable {
     protected int coordX;
     protected int coordY;
-    protected int arrayIndex; //keeps track of the index of the cell in the array
+    protected int arrayIndex; //keeps track of the index of the cell in the array (while not in limbo state)
     protected ArrayList<Cell> board;
 
     public Moveable(ArrayList<Cell> board) {
@@ -23,7 +23,9 @@ public abstract class Moveable {
     protected void moveUp() throws OutOfBoundsException, WallObstructionException {
         if (coordY == 0) {
             throw new OutOfBoundsException();
-        } else if (board.get(arrayIndex).isWallUp()) {
+        } else if (board.get(coordY * Game.SIDE_LENGTH + coordX).isWallUp()) {
+            //we are using the coordinates instead of arrayIndex to account for limboState
+            // (arrayIndex doesn't update when in limboState)
             throw new WallObstructionException();
         } else {
             coordY--;
@@ -36,7 +38,9 @@ public abstract class Moveable {
     protected void moveLeft() throws OutOfBoundsException, WallObstructionException {
         if (coordX == 0) {
             throw new OutOfBoundsException();
-        } else if (board.get(arrayIndex).isWallLeft()) {
+        } else if (board.get(coordY * Game.SIDE_LENGTH + coordX).isWallLeft()) {
+            //we are using the coordinates instead of arrayIndex to account for limboState
+            // (arrayIndex doesn't update when in limboState)
             throw new WallObstructionException();
         } else {
             coordX--;
@@ -49,7 +53,9 @@ public abstract class Moveable {
     protected void moveDown() throws OutOfBoundsException, WallObstructionException {
         if (coordY == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
-        } else if (board.get(arrayIndex).isWallDown()) {
+        } else if (board.get(coordY * Game.SIDE_LENGTH + coordX).isWallDown()) {
+            //we are using the coordinates instead of arrayIndex to account for limboState
+            // (arrayIndex doesn't update when in limboState)
             throw new WallObstructionException();
         } else {
             coordY++;
@@ -62,7 +68,9 @@ public abstract class Moveable {
     protected void moveRight() throws OutOfBoundsException, WallObstructionException {
         if (coordX == Game.SIDE_LENGTH - 1) {
             throw new OutOfBoundsException();
-        } else if (board.get(arrayIndex).isWallRight()) {
+        } else if (board.get(coordY * Game.SIDE_LENGTH + coordX).isWallRight()) {
+            //we are using the coordinates instead of arrayIndex to account for limboState
+            // (arrayIndex doesn't update when in limboState)
             throw new WallObstructionException();
         } else {
             coordX++;

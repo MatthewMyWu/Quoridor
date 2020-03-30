@@ -12,8 +12,6 @@ import ui.gui.GameGuiTool;
 import ui.gui.cell.HorizontalWall;
 import ui.gui.cell.VerticalWall;
 
-import java.util.Scanner;
-
 import java.util.ArrayList;
 
 //Contains methods and information necessary for the running of the main game
@@ -30,15 +28,18 @@ public class Game {
     private boolean isP1Turn = true;// true when it is p1 turn, false if p2 turn
     private boolean gameOver = false;// true if game is over
     private int winner; //Is the player that won the game (eg. 1 or 2)
+    private Boolean limboState;
     private boolean forfeit = false; //The player that sets this to true will have surrendered
     public static ArrayList<Cell> board;
 
     //MODIFIES: this
     //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
     public Game() {
+        limboState = false;
+
         //resetting players
-        p1 = new P1(generateBoard());
-        p2 = new P2(generateBoard());
+        p1 = new P1(this);
+        p2 = new P2(this);
 
         //creating guiTool
         gameGuiTool = new GameGuiTool(this);
@@ -168,7 +169,7 @@ public class Game {
                     || input.equals(player.getDownKey()) || input.equals(player.getRightKey())) {
                 handleMovementInput(player, input);
                 //if the input matches the format of placing a wall
-            } else if (isWallCommand(input)) {
+            } else if (isWallCommand(input) && !limboState) {
                 handleWallPlacementInput(player, input);
                 //if input is to forfeit
             } else if (input.equals("/ff") || input.equals("/FF")) {
@@ -178,18 +179,26 @@ public class Game {
                 throw new BadInputException();
             }
 
-            //switching the players turn (can only be reached if no exception is thrown)
-            isP1Turn = (isP1Turn == false);
+            //switching the players turn (can only be reached if no exception is thrown, and not in limboState)
+            if (!limboState) {
+                isP1Turn = (isP1Turn == false);
+            }
+        } catch (Exception e) {
+            handleInputExceptions(e);
+        }
+    }
 
-        } catch (InvalidWallException e) {
+    private void handleInputExceptions(Exception e) {
+        Object exception = e.getClass();
+        if (exception.equals(new InvalidWallException().getClass())) {
             System.out.println("You can not place a wall there");
-        } catch (NoMoreWallsException e) {
+        } else if (exception.equals(new NoMoreWallsException().getClass())) {
             System.out.println("You have no more walls");
-        }  catch (OutOfBoundsException e) {
+        }  else if (exception.equals(new OutOfBoundsException().getClass())) {
             System.out.println("You can not move off the board");
-        } catch (WallObstructionException e) {
+        } else if (exception.equals(new WallObstructionException().getClass())) {
             System.out.println("Can not move over a wall");
-        } catch (BadInputException e) {
+        } else if (exception.equals(new BadInputException().getClass())) {
             System.out.println("That is not a valid input");
         }
     }
@@ -226,6 +235,14 @@ public class Game {
                 //checking proper placements of commas
                 && input.charAt(1) == ',' && (input.charAt(3) == ',' && (input.charAt(5) == ','));
 
+    }
+
+    public void displayVerticalDecisionMessage() {
+        gameGuiTool.displayVerticalDecisionMessage();
+    }
+
+    public void displayHorizontalDecisionMessage() {
+        gameGuiTool.displayHorizontalDecisionMessage();
     }
 
     //MODIFIES: mathHistory
@@ -281,5 +298,17 @@ public class Game {
 
     public int getWinner() {
         return winner;
+    }
+
+    public Boolean getLimboState() {
+        return limboState;
+    }
+
+    //EFFECTS : setter for limbo state, but if not in limbo state, also clears the bottom pannel
+    public void setLimboState(Boolean limboState) {
+        this.limboState = limboState;
+        if (!limboState) {
+            gameGuiTool.clearBottomPanelDisplay();
+        }
     }
 }

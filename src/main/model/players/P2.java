@@ -18,8 +18,8 @@ public class P2 extends Avatar {
     public static final String DOWN_KEY = "k";//is actually the DOWN key using the GUI
     public static final String RIGHT_KEY = "l";//is actually the RIGHT key using the GUI
 
-    public P2(ArrayList<Cell> board) {
-        super(Game.SIDE_LENGTH / 2, 0, board);
+    public P2(Game game) {
+        super(Game.SIDE_LENGTH / 2, 0, game);
         startingCoordX = Game.SIDE_LENGTH / 2;
         startingCoordY = 0;
     }
@@ -27,7 +27,14 @@ public class P2 extends Avatar {
     @Override
     public void move(String input) throws OutOfBoundsException, WallObstructionException {
         super.moveDirection(UP_KEY, LEFT_KEY, DOWN_KEY, RIGHT_KEY, input);
-        updatePosition();
+        if (!game.getLimboState()) {
+            updatePosition();
+        }
+    }
+
+    @Override
+    protected boolean isAnotherPlayerHere(Cell cell) {
+        return cell.isP1Here();
     }
 
     @Override

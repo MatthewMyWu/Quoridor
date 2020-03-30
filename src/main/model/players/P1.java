@@ -5,9 +5,6 @@ import exceptions.WallObstructionException;
 import model.Cell;
 import model.Moveable;
 import ui.Game;
-import model.players.Avatar;
-
-import java.util.ArrayList;
 
 /*Contains specific information about player 1 that differs from player 2*/
 public class P1 extends Avatar {
@@ -18,8 +15,8 @@ public class P1 extends Avatar {
     public static final String RIGHT_KEY = "d";
 
 
-    public P1(ArrayList<Cell> board) {
-        super(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1, board);
+    public P1(Game game) {
+        super(Game.SIDE_LENGTH / 2, Game.SIDE_LENGTH - 1, game);
         startingCoordX = Game.SIDE_LENGTH / 2;
         startingCoordY = Game.SIDE_LENGTH - 1;
     }
@@ -27,7 +24,14 @@ public class P1 extends Avatar {
     @Override
     public void move(String input) throws OutOfBoundsException, WallObstructionException {
         super.moveDirection(UP_KEY, LEFT_KEY, DOWN_KEY, RIGHT_KEY, input);
-        updatePosition();
+        if (!game.getLimboState()) {
+            updatePosition();
+        }
+    }
+
+    @Override
+    protected boolean isAnotherPlayerHere(Cell cell) {
+        return cell.isP2Here();
     }
 
     @Override

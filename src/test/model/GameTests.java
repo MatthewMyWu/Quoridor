@@ -25,9 +25,9 @@ public class GameTests {
     public void runBefore() {
         game = new Game();
         board = game.getBoard();
-        p1 = new P1(board);
-        p2 = new P2(board);
-        wallTool = new WallTool(game.getP1Pathfinder(), game.getP2Pathfinder(), game.getBoard());
+        p1 = game.getP1();
+        p2 = game.getP2();
+        wallTool = game.getWallTool();
     }
 
     @Test

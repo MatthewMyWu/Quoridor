@@ -51,8 +51,9 @@ public class MatchHistory {
             }
         }
 
-        GenericAvatar p1 = new GenericAvatar(emptyBoard);
-        GenericAvatar p2 = new GenericAvatar(emptyBoard);
+        Game placeholderGame = new Game();
+        GenericAvatar p1 = new GenericAvatar(placeholderGame);
+        GenericAvatar p2 = new GenericAvatar(placeholderGame);
 
         //adding matches to ./data
         for (int y = threshold; y < MAX_MATCHES; y++) {

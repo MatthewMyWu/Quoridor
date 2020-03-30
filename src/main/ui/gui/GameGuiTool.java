@@ -62,7 +62,7 @@ public class GameGuiTool {
         assert (wallMiddles.size() == WallTool.WALL_MIDDLES_LENGTH * WallTool.WALL_MIDDLES_LENGTH);
 
         //resetting bottom panel
-        bottomPanel.displayGameOverLabel(false);
+        bottomPanel.displayTextLabel(false);
 
         //adding tiles
         cellGroup.getChildren().clear();
@@ -104,7 +104,8 @@ public class GameGuiTool {
 
     //EFFECTS : Displays the game-over screen
     public void displayGameOverScreen() {
-        bottomPanel.displayGameOverLabel(true);
+        bottomPanel.displayGameOverLabel();
+        bottomPanel.displayTextLabel(true);
     }
 
     //EFFECTS : handles keyboard presses
@@ -146,5 +147,22 @@ public class GameGuiTool {
 
     public Game getGame() {
         return game;
+    }
+
+    //EFFECTS : displays "vertical decision message" (ask player to move left or right)
+    public void displayVerticalDecisionMessage() {
+        bottomPanel.displayVerticalDecisionMessage();
+        bottomPanel.displayTextLabel(true);
+    }
+
+    //EFFECTS : displays "horizontal decision message" (ask player to up left or down)
+    public void displayHorizontalDecisionMessage() {
+        bottomPanel.displayHorizontalDecisionMessage();
+        bottomPanel.displayTextLabel(true);
+    }
+
+    //EFFECTS : Makes the bottom panel display no message
+    public void clearBottomPanelDisplay() {
+        bottomPanel.displayTextLabel(false);
     }
 }

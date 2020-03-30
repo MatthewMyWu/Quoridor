@@ -18,7 +18,7 @@ public class BottomPanel extends Group {
     private int coordY;
 
     //These are the various components that exist in this panel
-    private Label gameOverLabel;
+    private Label textLabel;
     private Button restartButton;
     private Button mainMenuButton;
 
@@ -34,7 +34,7 @@ public class BottomPanel extends Group {
     public BottomPanel(GameGuiTool gameGuiTool) {
         this.gameGuiTool = gameGuiTool;
         this.game = gameGuiTool.getGame();
-        gameOverLabel = new Label("Player - wins!");
+        textLabel = new Label("");
         restartButton = new Button("Restart");
         mainMenuButton = new Button("Main Menu");
 
@@ -54,10 +54,10 @@ public class BottomPanel extends Group {
     //EFFECTS : Initializes the components for this class
     //          (eg. positions elements and sets ActionEvent handlers for thebuttons)
     private void initialize() {
-        this.getChildren().addAll(gameOverLabel, restartButton, mainMenuButton);
-        gameOverLabel.setVisible(false);
+        this.getChildren().addAll(textLabel, restartButton, mainMenuButton);
+        textLabel.setVisible(false);
 
-        gameOverLabel.relocate(gameOverLabelCoordX, gameOverLabelCoordY);
+        textLabel.relocate(gameOverLabelCoordX, gameOverLabelCoordY);
         restartButton.relocate(restartButtonCoordX, restartButtonCoordY);
         mainMenuButton.relocate(mainMenuButtonCoordX, mainMenuButtonCoordY);
 
@@ -71,9 +71,26 @@ public class BottomPanel extends Group {
     }
 
     //MODIFIES: this
-    //EFFECTS : Displays (or doesn't display) the game over message
-    public void displayGameOverLabel(boolean display) {
-        gameOverLabel.setText("Player " + game.getWinner() + " wins!");
-        gameOverLabel.setVisible(display);
+    //EFFECTS : Sets text label to show game over message
+    public void displayGameOverLabel() {
+        textLabel.setText("Player " + game.getWinner() + " wins!");
+    }
+
+    //MODIFIES: this
+    //EFFECTS : Sets text label to show "vertical decision message" (ask player to move left or right)
+    public void displayVerticalDecisionMessage() {
+        textLabel.setText("Move left or right?");
+    }
+
+    //MODIFIES: this
+    //EFFECTS : Sets text label to show "horizontal decision message" (ask player to move up or down)
+    public void displayHorizontalDecisionMessage() {
+        textLabel.setText("Move up or down?");
+    }
+
+    //MODIFIES: this
+    //EFFECTS : Displays (or doesn't display) the text label
+    public void displayTextLabel(boolean display) {
+        textLabel.setVisible(display);
     }
 }

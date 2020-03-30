@@ -63,7 +63,7 @@ public class InputHandler {
         line.setStroke(Color.BROWN);
         line.setVisible(true);
         line.setStrokeWidth(5);
-        line.setOpacity(50.0);
+        line.setOpacity(30.0);
         gameGuiTool.getRoot().getChildren().add(line);
     }
 

@@ -2,6 +2,7 @@ package model.players;
 
 import model.Cell;
 import model.Moveable;
+import ui.Game;
 
 import java.util.ArrayList;
 
@@ -11,12 +12,12 @@ import java.util.ArrayList;
 // As a result, many of the implemented methods in this class are stubs.
 public class GenericAvatar extends Avatar {
 
-    public GenericAvatar(int x, int y, ArrayList<Cell> board) {
-        super(x, y, board);
+    public GenericAvatar(int x, int y, Game game) {
+        super(x, y, game);
     }
 
-    public GenericAvatar(ArrayList<Cell> board) {
-        super(0, 0, board);
+    public GenericAvatar(Game game) {
+        super(0, 0, game);
     }
 
     @Override
@@ -26,6 +27,11 @@ public class GenericAvatar extends Avatar {
 
     @Override
     public void move(String input){
+    }
+
+    @Override
+    protected boolean isAnotherPlayerHere(Cell cell) {
+        return false;
     }
 
     @Override
