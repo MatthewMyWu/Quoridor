@@ -51,10 +51,6 @@ GUI. I have not yet refactored the tests to account for these changes.
 - You can save the state of my application by... (unimplemented at this time)
 - You can reload the state of my application by... (unimplemented at this time)
 
-##Phase 4: Task 2
-I have decided to implement the "type hierarchy" option. The highest (super) class is the "Moveable" class (in model).
-The subclasses are: Pathfinder, Avatar, GenericAvatar, P1, P2.
-
 ## Implemented user stories
 - As a user, I want to be able to see both avatars on the board
 - As a user, I want to be able to move my avatar using the keyboard
@@ -79,3 +75,14 @@ which will store the past 10 games
 - As a user, I want to be able to view the "match history"
 - (Optional) as a user, I want there to be a "minotaur" that starts in the middle of the map and moves randomly, and
 if it reaches a player, that player loses
+
+##Phase 4: Task 2
+I have decided to implement the "type hierarchy" option. The highest (super) class is the "Moveable" class (in model).
+The subclasses are: Pathfinder, Avatar, GenericAvatar, P1, P2.
+ - Problem 1: Originally I had implemented the methods to "move" in the Avatar class (which is meant to represent a
+ player) I then realized that the pathfinder also needed access to these move methods so I abstracted these methods
+ (and appropriate fields) to a new "Moveable" class (better cohesiveness).
+- Originally I had both player 1 and player 2 being represented by the "Avatar" class. However, I realized that these
+ two players had different win conditions, had different inputs needed to move, and had slightly different behaviour
+ when they did move. As such, I created two new classes (P1 and P2) in order to have better cohesiveness
+ (for Avatar, P1, and P2).
