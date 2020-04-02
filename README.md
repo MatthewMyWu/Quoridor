@@ -86,3 +86,10 @@ The subclasses are: Pathfinder, Avatar, GenericAvatar, P1, P2.
  two players had different win conditions, had different inputs needed to move, and had slightly different behaviour
  when they did move. As such, I created two new classes (P1 and P2) in order to have better cohesiveness
  (for Avatar, P1, and P2).
+ 
+##Note about autobot
+I am using JavaFX for my GUI. My game needs to be ready to interpret keybaord and mouse input at any time,
+so I initialize the "listeners" at the same time the game is created. However, these listeners have a dependency with
+the GUI, which does not exist when the test methods run, and as such all of my tests fail (I get an
+ExceptionInInitializerError). As such, I test all my behaviour my playing the game to ensure the behaviour
+(including playtesting with my brother).
