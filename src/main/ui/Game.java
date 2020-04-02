@@ -7,6 +7,7 @@ import model.persistence.MatchHistory;
 import model.players.Avatar;
 import model.players.P1;
 import model.players.P2;
+import model.walls.MiddleOfWall;
 import model.walls.WallTool;
 import ui.gui.GameGuiTool;
 import ui.gui.cell.HorizontalWall;
@@ -19,10 +20,10 @@ public class Game {
     public static final int SIDE_LENGTH = 9;// The number of cells on one side of the board
 
     private WallTool wallTool;// Tool used for placing walls
-    public GameGuiTool gameGuiTool;// Tool used for GUI
-    private MatchHistory matchHistory;// Keeps track of MatchHistory
-    private static Avatar p1;
-    private static Avatar p2;
+    private GameGuiTool gameGuiTool;// Tool used for GUI
+    private MatchHistory matchHistory;//TODO Keeps track of MatchHistory
+    private Avatar p1;
+    private Avatar p2;
     private Pathfinder p1Pathfinder;// Pathfinder for p1
     private Pathfinder p2Pathfinder;// Pathfinder for p2
     private boolean isP1Turn = true;// true when it is p1 turn, false if p2 turn
@@ -30,10 +31,11 @@ public class Game {
     private int winner; //Is the player that won the game (eg. 1 or 2)
     private Boolean limboState;
     private boolean forfeit = false; //The player that sets this to true will have surrendered
-    public static ArrayList<Cell> board;
+    private ArrayList<Cell> board;
 
-    //MODIFIES: this
-    //EFFECTS : creates a new game (resets all elements of game: board, players and walls)
+
+    //EFFECTS : creates a new game (resets all elements of game: board, players and walls).
+    //          This constructor used to play game
     public Game() {
         limboState = false;
 
@@ -46,6 +48,18 @@ public class Game {
 
         //(re)setting board, walls, and displayTool
         restart();
+    }
+
+    //EFFECTS : A constructor for a finished game (used when reading matches from data)
+    public Game(Avatar p1, Avatar p2, int winner, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board) {
+        assert (wallMiddles.size() == WallTool.WALL_MIDDLES_LENGTH * WallTool.WALL_MIDDLES_LENGTH);
+        assert (wallMiddles.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
+
+        this.p1 = p1;
+        this.p2 = p2;
+        this.winner = winner;
+        this.board = board;
+        this.gameGuiTool = new GameGuiTool(this, wallMiddles);
     }
 
     //MODIFIES: this
@@ -248,18 +262,17 @@ public class Game {
     //MODIFIES: mathHistory
     //EFFECTS : Saves this game to match history
     private void saveToMatchHistory() {
-        matchHistory.saveNewMatch(p1, p2, winner, WallTool.getWallMiddles(), board);
+        matchHistory.saveNewMatch(this);
         //TODO
     }
 
 
-
     /////////////////////////////////////getters and setters///////////////////////////////////////
-    public static Avatar getP1() {
+    public Avatar getP1() {
         return p1;
     }
 
-    public static Avatar getP2() {
+    public Avatar getP2() {
         return p2;
     }
 
@@ -302,6 +315,10 @@ public class Game {
 
     public Boolean getLimboState() {
         return limboState;
+    }
+
+    public GameGuiTool getGameGuiTool() {
+        return gameGuiTool;
     }
 
     //EFFECTS : setter for limbo state, but if not in limbo state, also clears the bottom pannel

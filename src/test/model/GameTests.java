@@ -32,7 +32,7 @@ public class GameTests {
 
     @Test
     public void testGameConstructor() {
-        assertEquals(Game.SIDE_LENGTH * Game.SIDE_LENGTH, game.board.size());
+        assertEquals(Game.SIDE_LENGTH * Game.SIDE_LENGTH, game.getBoard().size());
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
             //checking if player has been placed properly
             if (x == Game.SIDE_LENGTH * (Game.SIDE_LENGTH - 1) + (Game.SIDE_LENGTH / 2)) {
@@ -48,10 +48,10 @@ public class GameTests {
             }
 
             //checking there are no walls on the map
-            assertFalse(game.board.get(x).isWallUp());
-            assertFalse(game.board.get(x).isWallLeft());
-            assertFalse(game.board.get(x).isWallDown());
-            assertFalse(game.board.get(x).isWallRight());
+            assertFalse(game.getBoard().get(x).isWallUp());
+            assertFalse(game.getBoard().get(x).isWallLeft());
+            assertFalse(game.getBoard().get(x).isWallDown());
+            assertFalse(game.getBoard().get(x).isWallRight());
         }
     }
 }

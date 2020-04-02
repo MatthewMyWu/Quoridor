@@ -1,7 +1,10 @@
 package model.persistence;
 
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import model.Cell;
 import model.players.Avatar;
+import model.players.GenericAvatar;
 import model.walls.MiddleOfWall;
 import ui.Game;
 import ui.gui.GameGuiTool;
@@ -12,55 +15,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-//contains the information that needs to be stored for 1 game in "match history", as well as methods to store it.
-public class HistoricMatch {
-    private static final String FIELD_DELIMITER = ",";//used to separate fields of an object
-    private static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
-    private static final String NEXT_LINE_DELIMITER = "\n";//used to separate information on different objects
-    private int winner = 0;//player # that won this match
-    private Avatar p1;
-    private Avatar p2;
-    private ArrayList<MiddleOfWall> wallMiddles;
-    private ArrayList<Cell> board;
-    private String fileName;
-    private GameGuiTool gameGuiTool;
-    private FileWriter writer;
-
-    // EFFECTS: constructs a writer with associated file.This constructor is generally used when the final state of
-    // the game is unknown (eg. for reading the final state of the game from a file)
-    public HistoricMatch(String fileName) throws IOException {
-        this.fileName = fileName;
-        readMatch();
-    }
-
-    // EFFECTS: constructs a writer with associated players, wallMiddles, board, and file.
-    // This constructor is generally used when the final state of the game is known (eg. for recording a finished game)
-    public HistoricMatch(Avatar p1, Avatar p2, int winner, ArrayList<MiddleOfWall> wallMiddles, ArrayList<Cell> board,
-                         String filename) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.winner = winner;
-        this.wallMiddles = wallMiddles;
-        this.board = board;
-        this.fileName = filename;
-
-        try {
-            writer = new FileWriter(fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //REQUIRES: players, wallMiddles, and board all be assigned
-    //EFFECTS : creates a console display of this match
-    public void displayMatch() {
-        //TODO stub
-//        guiTool = new DisplayTool(p1, p2, wallMiddles, board);
-//        guiTool.displayBoard();
-        System.out.println("Player " + winner + " wins!");
-    }
+//This match contains general information for matches in "Match History".
+public abstract class HistoricMatch {
+    protected static final String FIELD_DELIMITER = ",";//used to separate fields of an object
+    protected static final String ARRAY_ELEMENT_DELIMITER = ":";//used to separate elements of an array
+    protected static final String NEXT_LINE_DELIMITER = "\n";//used to separate information on different objects
+    protected int winner = 0;//player # that won this match
+    protected Avatar p1;
+    protected Avatar p2;
+    protected ArrayList<MiddleOfWall> wallMiddles;
+    protected ArrayList<Cell> board;
+    protected String fileName;
+    protected Game game; //This is the game that this match is tied to
+    protected GameGuiTool gameGuiTool;
+    protected FileWriter writer;
 
     //REQUIRES: players, wallMiddles, and board all be known
     //MODIFIES: file
@@ -121,106 +92,11 @@ public class HistoricMatch {
                     + FIELD_DELIMITER + x.isWallDown() + FIELD_DELIMITER + x.isWallRight() + ARRAY_ELEMENT_DELIMITER);
         }
     }
-
-    //EFFECTS : reads information for this match's associated file (and assigns the information to fields)
-    private void readMatch() throws IOException {
-        //reading from file
-        File targetFile = new File(fileName);
-        List<String> fileText = Files.readAllLines(targetFile.toPath());
-        //ensuring the correct number of objects have been read from file
-        assert (fileText.size() == 5);
-
-        //assigning information to fields
-        readPlayerInfo(this.p1, fileText.get(0));
-        readPlayerInfo(this.p2, fileText.get(1));
-        readWinnerInfo(fileText.get(2));
-        readWallMiddlesInfo(fileText.get(3));
-        readBoardInfo(fileText.get(4));
-    }
-
-    //REQUIRES: text be a valid representation of an Avatar
-    //MODIFIES: this (p1 and p2)
-    //EFFECTS : parses text and assigns the information to player
-    private void readPlayerInfo(Avatar player, String text) {
-        //parsing text
-        List<String> parsedFields = parseFields(text);
-        assert (parsedFields.size() == 4);//ensuring correct number of fields are in this object
-        int coordX = Integer.parseInt(parsedFields.get(0));
-        int coordY = Integer.parseInt(parsedFields.get(1));
-        int score = Integer.parseInt(parsedFields.get(2));
-        int walls = Integer.parseInt(parsedFields.get(3));
-
-        //modifying player
-        player.moveTo(coordX, coordY);
-        player.setScore(score);
-        player.setWalls(walls);
-    }
-
-    //REQUIRES: text be a valid representation of an Avatar
-    //MODIFIES: this (winner)
-    //EFFECTS : parses text and assigns the information to winner
-    private void readWinnerInfo(String text) {
-        this.winner = Integer.parseInt(text);
-    }
-
-    //REQUIRES: text be a valid representation of wallMiddles
-    //MODIFIES: this (wallMiddles)
-    //EFFECTS : parses text and assigns the information to wallMiddles
-    private void readWallMiddlesInfo(String text) {
-        //parsing text
-        List<String> parsedElements = parseElements(text);
-        assert (parsedElements.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
-
-        //creating wallMiddles
-        wallMiddles = new ArrayList<MiddleOfWall>();
-        for (int y = 1; y < Game.SIDE_LENGTH; y++) {
-            for (int x = 1; x < Game.SIDE_LENGTH; x++) {
-                String element = parsedElements.get((y - 1) * Game.SIDE_LENGTH + x);
-                List<String> parsedFields = parseFields(element);
-                assert (parsedFields.size() == 2);
-                boolean wallHere = Boolean.parseBoolean(parsedFields.get(0));
-                boolean isVertical = Boolean.parseBoolean(parsedFields.get(1));
-
-                wallMiddles.add(new MiddleOfWall(x, y, wallHere, isVertical));
-            }
-        }
-    }
-
-    //REQUIRES: text be a valid representation of board
-    //MODIFIES: this (board)
-    //EFFECTS : parses text and assigns the information to board
-    private void readBoardInfo(String text) {
-        //parsing text
-        List<String> parsedElements = parseElements(text);
-        assert (parsedElements.size() == Game.SIDE_LENGTH * Game.SIDE_LENGTH);
-
-        //creating board
-        board = new ArrayList<Cell>();
-        for (int y = 0; y < Game.SIDE_LENGTH; y++) {
-            for (int x = 0; x < Game.SIDE_LENGTH; x++) {
-                String element = parsedElements.get(y * Game.SIDE_LENGTH + x);
-                List<String> parsedFields = parseFields(element);
-                assert (parsedFields.size() == 6);
-                boolean p1Here = Boolean.parseBoolean(parsedFields.get(0));
-                boolean p2Here = Boolean.parseBoolean(parsedFields.get(1));
-                boolean wallUp = Boolean.parseBoolean(parsedFields.get(2));
-                boolean wallLeft = Boolean.parseBoolean(parsedFields.get(3));
-                boolean wallDown = Boolean.parseBoolean(parsedFields.get(4));
-                boolean wallRight = Boolean.parseBoolean(parsedFields.get(5));
-
-                board.add(new Cell(x, y, p1Here, p2Here, wallUp, wallLeft, wallDown, wallRight));
-            }
-        }
-    }
-
-    //EFFECTS : parses text into elements (of an array)
-    private List<String> parseElements(String text) {
-        return Arrays.asList(text.split(ARRAY_ELEMENT_DELIMITER));
-    }
-
-    //EFFECTS : parses text into fields (of an object)
-    private List<String> parseFields(String text) {
-        return Arrays.asList(text.split(FIELD_DELIMITER));
+    
+    //REQUIRES: players, wallMiddles, and board all be assigned
+    //EFFECTS : creates a console display of this match
+    public Parent createContent() {
+        return gameGuiTool.createContent();
     }
 
 

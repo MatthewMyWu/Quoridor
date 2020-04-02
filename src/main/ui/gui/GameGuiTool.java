@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class GameGuiTool {
     public static final String BG_COLOR = "F3CBA3";
-    Pane root = new Pane();
+    private Pane root = new Pane();
     private Game game;
     protected Avatar p1;
     protected Avatar p2;
@@ -33,7 +33,7 @@ public class GameGuiTool {
 
     private InputHandler inputHandler;// This handles keyboard and mouse inputs
 
-    //creates a GuiTool for game
+    //creates a GuiTool for an active game
     public GameGuiTool(Game game) {
         this.game = game;
         this.p1 = game.getP1();
@@ -41,6 +41,20 @@ public class GameGuiTool {
         initializeBackground();
 
         inputHandler = new InputHandler(this);
+        cellGroup = new Group();
+        cornerGroup = new Group();
+        sidePanel = new SidePanel(this);
+        bottomPanel = new BottomPanel(this);
+    }
+
+    //EFFECTS : Creates a GuiTool for a finished game (eg. when reading from a file)
+    public GameGuiTool(Game game, ArrayList<MiddleOfWall> wallMiddles) {
+        this.game = game;
+        this.p1 = game.getP1();
+        this.p2 = game.getP2();
+        this.wallMiddles = wallMiddles;
+        initializeBackground();
+
         cellGroup = new Group();
         cornerGroup = new Group();
         sidePanel = new SidePanel(this);

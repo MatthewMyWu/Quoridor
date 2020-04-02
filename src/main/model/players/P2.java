@@ -46,9 +46,9 @@ public class P2 extends Avatar {
 
     @Override
     protected void updatePosition() {
-        Game.board.get(arrayIndex).setP2Here(false);
+        game.getBoard().get(arrayIndex).setP2Here(false);
         updateArrayIndex();
-        Game.board.get(arrayIndex).setP2Here(true);
+        game.getBoard().get(arrayIndex).setP2Here(true);
     }
 
     @Override
@@ -78,6 +78,6 @@ public class P2 extends Avatar {
 
     @Override
     public boolean isHere(int index) {
-        return Game.board.get(index).isP2Here();
+        return game.getBoard().get(index).isP2Here();
     }
 }

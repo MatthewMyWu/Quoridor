@@ -11,11 +11,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import model.persistence.MatchHistory;
 import model.walls.WallTool;
 import ui.gui.GameGuiTool;
 import ui.gui.cell.GuiCell;
 
-//This class contains code on how the Main Menu functions
+//This class contains code on how the Main Menu functions.
 public class Menu {
     public static final int PREF_WIDTH = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 100;// width of main menu
     public static final int PREF_HEIGHT = WallTool.WALL_MIDDLES_LENGTH * GuiCell.SIDE_LENGTH + 50;// height of main menu
@@ -24,15 +25,17 @@ public class Menu {
     private static final double matchHistoryButtonWidth = 250;
 
     private static Main main;// The main program this is coupled with
+    private MatchHistory matchHistory;
     private Game game;
     private GameGuiTool gameGuiTool;
     private Scene gameScene;// The scene that will be displayed if the game is running
+    private Scene matchHistoryScene;// The scene that will be displayed when looking at match history
     private static Scene menuScene;// The scene that will be displayed for the main menu
     private static Scene activeScene;// The active scene (currently being displayed)
-    //public MatchHistory matchHistory = new MatchHistory();
 
     public Menu(Main main) {
         this.main = main;
+        //matchHistory = MatchHistory.getInstance();
         initializeMenuScene();
         activeScene = menuScene;
     }
@@ -48,7 +51,7 @@ public class Menu {
     //EFFECTS : displays a new game
     private Scene newGameScene() {
         game = new Game();
-        gameGuiTool = game.gameGuiTool;
+        gameGuiTool = game.getGameGuiTool();
         gameScene = new Scene(gameGuiTool.createContent());
 
         //adding listeners
@@ -89,13 +92,24 @@ public class Menu {
     }
 
     //MODIFIES: this
-    //EFFECTS : nitializes the Match History Button
+    //EFFECTS : initializes the Match History Button
     private void initializeMatchHistoryButton(Button matchHistoryButton) {
         matchHistoryButton.setFont(new Font("Impact", 30));
         matchHistoryButton.setTextFill(Color.valueOf("#823b0e"));
         matchHistoryButton.setPrefWidth(matchHistoryButtonWidth);
         AnchorPane.setLeftAnchor(matchHistoryButton, Double.valueOf((PREF_WIDTH - matchHistoryButtonWidth) / 2));
         AnchorPane.setTopAnchor(matchHistoryButton, 300.0);
+
+        matchHistoryButton.setOnAction(event -> {
+            //TODO activeScene = matchHistoryScene();
+            main.updateScene();
+        });
+    }
+
+    //EFFECTS : Displays the match history
+    private Scene matchHistoryScene() {
+        matchHistoryScene = new Scene(matchHistory.createContent());
+        return matchHistoryScene;
     }
 
     //MODIFIES: this
@@ -108,14 +122,13 @@ public class Menu {
         AnchorPane.setTopAnchor(playButton, 200.0);
 
         playButton.setOnAction(event -> {
-            System.out.println("working");
             activeScene = newGameScene();
             main.updateScene();
         });
     }
 
     //MODIFIES: this
-    //EFFECTS : nitializes the title
+    //EFFECTS : initializes the title
     private void initializeTitleLabel(Label title) {
         title.setFont(new Font("Impact", 100));
         title.setTextFill(Color.valueOf("#823b0e"));

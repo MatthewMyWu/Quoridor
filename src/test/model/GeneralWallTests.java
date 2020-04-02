@@ -65,10 +65,10 @@ public class GeneralWallTests extends GameTests {
 
         //ensuring no walls have been placed
         for (int x = 0; x < Game.SIDE_LENGTH * Game.SIDE_LENGTH; x++) {
-            assertFalse(game.board.get(x).isWallUp());
-            assertFalse(game.board.get(x).isWallLeft());
-            assertFalse(game.board.get(x).isWallDown());
-            assertFalse(game.board.get(x).isWallRight());
+            assertFalse(game.getBoard().get(x).isWallUp());
+            assertFalse(game.getBoard().get(x).isWallLeft());
+            assertFalse(game.getBoard().get(x).isWallDown());
+            assertFalse(game.getBoard().get(x).isWallRight());
         }
     }
 
@@ -85,28 +85,28 @@ public class GeneralWallTests extends GameTests {
 
             //checking only first wall was placed
             //cell to top left of wall
-            assertFalse(Game.board.get(0).isWallUp());
-            assertFalse(Game.board.get(0).isWallLeft());
-            assertFalse(Game.board.get(0).isWallDown());
-            assertTrue(Game.board.get(0).isWallRight());
+            assertFalse(game.getBoard().get(0).isWallUp());
+            assertFalse(game.getBoard().get(0).isWallLeft());
+            assertFalse(game.getBoard().get(0).isWallDown());
+            assertTrue(game.getBoard().get(0).isWallRight());
 
             //cell to top right of wall
-            assertFalse(Game.board.get(1).isWallUp());
-            assertTrue(Game.board.get(1).isWallLeft());
-            assertFalse(Game.board.get(1).isWallDown());
-            assertFalse(Game.board.get(1).isWallRight());
+            assertFalse(game.getBoard().get(1).isWallUp());
+            assertTrue(game.getBoard().get(1).isWallLeft());
+            assertFalse(game.getBoard().get(1).isWallDown());
+            assertFalse(game.getBoard().get(1).isWallRight());
 
             //cell to bottom left of wall
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallUp());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallLeft());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallDown());
-            assertTrue(Game.board.get(Game.SIDE_LENGTH).isWallRight());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallUp());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallLeft());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallDown());
+            assertTrue(game.getBoard().get(Game.SIDE_LENGTH).isWallRight());
 
             //cell to bottom right of wall
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallUp());
-            assertTrue(Game.board.get(Game.SIDE_LENGTH + 1).isWallLeft());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallDown());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallRight());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallUp());
+            assertTrue(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallLeft());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallDown());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallRight());
         }
     }
 
@@ -123,28 +123,28 @@ public class GeneralWallTests extends GameTests {
 
             //checking only first wall was placed
             //cell to top left of wall
-            assertFalse(Game.board.get(0).isWallUp());
-            assertFalse(Game.board.get(0).isWallLeft());
-            assertTrue(Game.board.get(0).isWallDown());
-            assertFalse(Game.board.get(0).isWallRight());
+            assertFalse(game.getBoard().get(0).isWallUp());
+            assertFalse(game.getBoard().get(0).isWallLeft());
+            assertTrue(game.getBoard().get(0).isWallDown());
+            assertFalse(game.getBoard().get(0).isWallRight());
 
             //cell to top right of wall
-            assertFalse(Game.board.get(1).isWallUp());
-            assertFalse(Game.board.get(1).isWallLeft());
-            assertTrue(Game.board.get(1).isWallDown());
-            assertFalse(Game.board.get(1).isWallRight());
+            assertFalse(game.getBoard().get(1).isWallUp());
+            assertFalse(game.getBoard().get(1).isWallLeft());
+            assertTrue(game.getBoard().get(1).isWallDown());
+            assertFalse(game.getBoard().get(1).isWallRight());
 
             //cell to bottom left of wall
-            assertTrue(Game.board.get(Game.SIDE_LENGTH).isWallUp());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallLeft());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallDown());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH).isWallRight());
+            assertTrue(game.getBoard().get(Game.SIDE_LENGTH).isWallUp());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallLeft());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallDown());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH).isWallRight());
 
             //cell to bottom right of wall
-            assertTrue(Game.board.get(Game.SIDE_LENGTH + 1).isWallUp());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallLeft());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallDown());
-            assertFalse(Game.board.get(Game.SIDE_LENGTH + 1).isWallRight());
+            assertTrue(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallUp());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallLeft());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallDown());
+            assertFalse(game.getBoard().get(Game.SIDE_LENGTH + 1).isWallRight());
         }
     }
 

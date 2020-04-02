@@ -76,6 +76,6 @@ public class P1 extends Avatar {
 
     @Override
     public boolean isHere(int index) {
-        return Game.board.get(index).isP1Here();
+        return game.getBoard().get(index).isP1Here();
     }
 }

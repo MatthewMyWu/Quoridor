@@ -51,6 +51,10 @@ GUI. I have not yet refactored the tests to account for these changes.
 - You can save the state of my application by... (unimplemented at this time)
 - You can reload the state of my application by... (unimplemented at this time)
 
+##Phase 4: Task 2
+I have decided to implement the "type hierarchy" option. The highest (super) class is the "Moveable" class (in model).
+The subclasses are: Pathfinder, Avatar, GenericAvatar, P1, P2.
+
 ## Implemented user stories
 - As a user, I want to be able to see both avatars on the board
 - As a user, I want to be able to move my avatar using the keyboard
@@ -67,11 +71,11 @@ GUI. I have not yet refactored the tests to account for these changes.
 - As a user, I want to be able to "forfeit" the match at any point
 - As a user, I want to be able to play again when the game ends
 - As a user, I want the game to display the score of each player
+- As a user, I want each player to be able to "jump" over each other (if moving into each other)
 
 ## Unimplemented user stories
 - As a user, I want each finished game to be recorded into the "match history" (final layout of board),
 which will store the past 10 games
 - As a user, I want to be able to view the "match history"
-- As a user, I want each player to be able to "jump" over each other (if moving into each other)
 - (Optional) as a user, I want there to be a "minotaur" that starts in the middle of the map and moves randomly, and
 if it reaches a player, that player loses
