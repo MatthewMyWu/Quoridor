@@ -78,16 +78,17 @@ public class Menu {
         Rectangle background = new Rectangle(PREF_WIDTH, PREF_HEIGHT, Color.valueOf("#e88d15"));
         Label title = new Label("Quorridor");
         Button playButton = new Button("Play");
-        Button matchHistoryButton = new Button("Match History");
+//        Button matchHistoryButton = new Button("Match History");
         root.setPrefSize(PREF_WIDTH, PREF_HEIGHT);
 
         initializeTitleLabel(title);
 
         initializePlayButton(playButton);
 
-        initializeMatchHistoryButton(matchHistoryButton);
+//        TODO: MATTHEW MATCH HISTORY
+//        initializeMatchHistoryButton(matchHistoryButton);
 
-        root.getChildren().addAll(background, title, playButton, matchHistoryButton);
+        root.getChildren().addAll(background, title, playButton);//, matchHistoryButton);
         menuScene = new Scene(root);
     }
 
