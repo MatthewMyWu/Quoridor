@@ -1,4 +1,6 @@
+
 ##What is Quoridor
+
 Quoridor is traditionally a 2-player turn-based board game, played on a 9x9 board.
  I wanted to create a virtual version of this game 
 
