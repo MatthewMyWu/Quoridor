@@ -8,9 +8,9 @@ import model.Cell;
 //contains information about a gui component of a cell, including the tile (piece where players stand on)
 // and all surrounding wall segments (excluding corner pieces)
 public class GuiCell extends Group {
-    public static final int LONG_LENGTH = 30; //The length of the long side of a wall
-    public static final int SHORT_LENGTH = 10; //The length of the short side of a wall
-    public static final int INSET = 4; //The space between the tile and the walls
+    public static final int LONG_LENGTH = 50; //The length of the long side of a wall
+    public static final int SHORT_LENGTH = 15; //The length of the short side of a wall
+    public static final int INSET = 6; //The space between the tile and the walls
     public static final int SIDE_LENGTH = SHORT_LENGTH + LONG_LENGTH;
     public static final String WALL_COLOR = "#ed8f13";
 

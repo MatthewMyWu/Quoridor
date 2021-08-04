@@ -18,7 +18,7 @@ public class Tile extends Rectangle {
     //EFFECTS : Sets this tile to display whether or not p1 is on this tile
     protected void setPlayer1Here(boolean p1Here) {
         if (p1Here) {
-            setFill(Color.CYAN);
+            setFill(Color.WHITE);
         } else if (!p1Here) {
             setFill(Color.valueOf("A96118"));
         }
@@ -27,7 +27,7 @@ public class Tile extends Rectangle {
     //EFFECTS : Sets this tile to display whether or not p2 is on this tile
     protected void setPlayer2Here(boolean p2Here) {
         if (p2Here) {
-            setFill(Color.RED);
+            setFill(Color.valueOf("#FFA500"));
         } else if (!p2Here) {
             setFill(Color.valueOf("A96118"));
         }
